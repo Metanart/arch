@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/configs/typescript/tsconfig.web.json",
+  "extends": "../../configs/tsconfig/tsconfig.web.json",
   "include": [
     "index.tsx",
     "domains/**/*",

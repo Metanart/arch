@@ -1,6 +1,7 @@
+import electronLogo from '../assets/electron.svg'
+
 import { AppVersions } from './AppVersions'
 
-import electronLogo from '../assets/electron.svg'
 import '../assets/main.css'
 
 export function AppRoot(): React.JSX.Element {
