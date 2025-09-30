@@ -1,4 +1,23 @@
 {
   "files": [],
-  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }]
+  "references": [
+    {
+      "path": "./apps/client/tsconfig.json"
+    },
+    {
+      "path": "./apps/server/tsconfig.json"
+    },
+    {
+      "path": "./apps/bridge/tsconfig.json"
+    }
+  ],
+  "include": [
+    "apps/*/domains/**/*.ts",
+    "apps/*/domains/**/*.tsx",
+    "apps/*/domains/**/*.js",
+    "apps/*/domains/**/*.jsx",
+    "apps/*/domains/**/*.d.ts",
+    "apps/*/index.ts",
+    "apps/*/index.tsx",
+  ]
 }

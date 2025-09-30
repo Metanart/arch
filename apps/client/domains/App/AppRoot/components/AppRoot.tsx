@@ -1,7 +1,9 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
+import { AppVersions } from './AppVersions'
 
-function App(): React.JSX.Element {
+import electronLogo from '../assets/electron.svg'
+import '../assets/main.css'
+
+export function AppRoot(): React.JSX.Element {
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
 
   return (
@@ -27,9 +29,7 @@ function App(): React.JSX.Element {
           </a>
         </div>
       </div>
-      <Versions></Versions>
+      <AppVersions />
     </>
   )
 }
-
-export default App

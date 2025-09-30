@@ -1,0 +1,23 @@
+{
+  "extends": "../../packages/configs/typescript/tsconfig.node.json",
+  "include": [
+    "index.ts",
+    "domains/**/*",
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "strict": true,
+    "strictPropertyInitialization": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "types": [
+      "electron-vite/node"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@server/*": [
+        "domains/*/public-api.ts"
+      ],
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "extends": "../../packages/configs/typescript/tsconfig.web.json",
+  "include": [
+    "index.tsx",
+    "domains/**/*",
+    "../bridge/index.d.ts"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@client/*": [
+        "domains/*/public-api.ts"
+      ]
+    }
+  }
+}

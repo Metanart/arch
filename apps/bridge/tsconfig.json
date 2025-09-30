@@ -1,0 +1,20 @@
+{
+  "extends": "../../packages/configs/typescript/tsconfig.node.json",
+  "include": [
+    "domains/**/*",
+    "index.ts",
+    "index.d.ts",
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "types": [
+      "electron-vite/node"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@bridge/*": [
+        "domains/*/public-api.ts"
+      ],
+    }
+  }
+}
