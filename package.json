@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "https://github.com/Metanart",
+  "homepage": "https://github.com/Metanart/arch",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
