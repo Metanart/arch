@@ -6,6 +6,8 @@ import { join } from 'path'
 
 import icon from '../../resources/icon.png?asset'
 
+import { AppDataSource } from '@server/App/AppRoot'
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -43,9 +45,19 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
-  // Set app user model id for windows
+app.whenReady().then(async () => {
+  // Set app user modasync async el id for windows
   electronApp.setAppUserModelId('com.electron')
+
+  try {
+    await AppDataSource.initialize()
+    console.log('Database connected at', AppDataSource.options.database)
+
+    await createWindow()
+  } catch (err) {
+    console.log('Failed to initialize database:', err)
+    app.quit()
+  }
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

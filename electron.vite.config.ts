@@ -15,7 +15,7 @@ const main: UserConfig = {
     alias: [
       {
         find: /^@server\/(.+)$/,
-        replacement: resolve('apps/server/domains/$1/public-api.ts')
+        replacement: resolve(__dirname, 'apps/server/domains/$1/public-api.ts')
       }
     ]
   },
