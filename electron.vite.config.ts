@@ -48,7 +48,7 @@ const electronClientConfig = {
   root: 'apps/client',
   build: {
     rollupOptions: {
-      input: 'index.html'
+      input: resolve('apps/client/index.html')
     }
   },
   resolve: {

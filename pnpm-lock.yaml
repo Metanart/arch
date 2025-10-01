@@ -88,6 +88,8 @@ importers:
         specifier: ^7.1.6
         version: 7.1.7(@types/node@22.18.7)
 
+  apps/bridge: {}
+
   apps/client:
     dependencies:
       react:
