@@ -97,6 +97,8 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
 
+  apps/server: {}
+
   packages/eslint-config:
     devDependencies:
       '@electron-toolkit/eslint-config-prettier':
