@@ -1,5 +1,5 @@
 {
-  "extends": "../../configs/tsconfig/tsconfig.web.json",
+  "extends": "@arch/tsconfig/tsconfig.web.json",
   "include": [
     "index.tsx",
     "domains/**/*",
