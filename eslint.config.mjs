@@ -3,12 +3,16 @@ import tseslint from 'typescript-eslint'
 
 import { defineConfig } from 'eslint/config'
 
-import { importConfig } from './configs/eslint-config/importConfig.mjs'
-import { ignoresConfig } from './configs/eslint-config/ignoresConfig.mjs'
-import { unusedImportsConfig } from './configs/eslint-config/unusedImportsConfig.mjs'
-import { prettierConfig } from './configs/eslint-config/prettierConfig.mjs'
-import { reactConfig } from './configs/eslint-config/reactConfig.mjs'
-import { clientSimpleImportSortConfig } from './configs/eslint-config/simpleImportSortConfig.mjs'
+import {
+  importConfig,
+  ignoresConfig,
+  unusedImportsConfig,
+  prettierConfig,
+  reactConfig,
+  clientSimpleImportSortConfig,
+  serverSimpleImportSortConfig,
+  commonSimpleImportSortConfig
+} from '@arch/eslint-config'
 
 export default defineConfig(
   // Ignores
