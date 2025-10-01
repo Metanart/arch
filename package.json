@@ -2,7 +2,7 @@
   "name": "arch",
   "version": "1.0.0",
   "description": "An Electron application with React and TypeScript",
-  "main": "./out/main/index.js",
+  "main": "./build/main/index.js",
   "author": "https://github.com/Metanart",
   "homepage": "https://github.com/Metanart/arch",
   "workspaces": [
@@ -12,12 +12,14 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
-    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
-    "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "typecheck:server": "tsc --noEmit -p apps/server/tsconfig.json --composite false",
+    "typecheck:client": "tsc --noEmit -p apps/client/tsconfig.json --composite false",
+    "typecheck:bridge": "tsc --noEmit -p apps/bridge/tsconfig.json --composite false",
+    "typecheck": "npm run typecheck:server && npm run typecheck:client && npm run typecheck:bridge",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "npm run typecheck && electron-vite build",
+    "build": "electron-vite build",
+    "build:typecheck": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
@@ -57,7 +59,9 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
-      "esbuild"
+      "esbuild",
+      "sqlite3",
+      "unrs-resolver"
     ]
   }
 }

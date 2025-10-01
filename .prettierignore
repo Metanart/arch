@@ -1,4 +1,5 @@
 out
+build
 dist
 pnpm-lock.yaml
 LICENSE.md

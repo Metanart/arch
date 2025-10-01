@@ -2,9 +2,10 @@
   "name": "@arch/bridge",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "main": "index.ts",
+  "type": "module",
   "scripts": {},
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@electron-toolkit/preload": "3.0.2"
+  }
 }

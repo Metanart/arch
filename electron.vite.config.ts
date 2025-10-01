@@ -1,64 +1,61 @@
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-import { resolve } from 'node:path'
-
 import react from '@vitejs/plugin-react'
+import { resolve } from 'node:path'
+import type { UserConfig } from 'vite'
 
-export const aliases = {
-  server: {
-    find: /^@server\/(.+)$/,
-    replacement: resolve('apps/server/domains/$1/public-api.ts')
-  },
-  client: {
-    find: /^@client\/(.+)$/,
-    replacement: resolve('apps/client/domains/$1/public-api.ts')
-  },
-  bridge: {
-    find: /^@bridge\/(.+)$/,
-    replacement: resolve('apps/bridge/domains/$1/public-api.ts')
-  }
-}
-
-const electronServerConfig = {
-  root: 'apps/server',
+const main: UserConfig = {
   build: {
+    outDir: 'build/main',
     lib: {
-      entry: 'index.ts'
+      entry: 'apps/server/index.ts',
+      formats: ['cjs']
     }
   },
   resolve: {
-    alias: [aliases.server]
+    alias: [
+      {
+        find: /^@server\/(.+)$/,
+        replacement: resolve('apps/server/domains/$1/public-api.ts')
+      }
+    ]
   },
   plugins: [externalizeDepsPlugin()]
 }
 
-const electronBridgeConfig = {
-  root: 'apps/bridge',
+const preload: UserConfig = {
   build: {
+    outDir: 'build/preload',
     lib: {
-      entry: 'index.ts'
+      entry: resolve('apps/bridge/index.ts'),
+      formats: ['cjs']
     }
   },
   resolve: {
-    alias: [aliases.bridge]
+    alias: [
+      {
+        find: /^@bridge\/(.+)$/,
+        replacement: resolve(__dirname, 'apps/bridge/domains/$1/public-api.ts')
+      }
+    ]
   },
   plugins: [externalizeDepsPlugin()]
 }
 
-const electronClientConfig = {
+const renderer: UserConfig = {
   root: 'apps/client',
   build: {
-    rollupOptions: {
-      input: resolve('apps/client/index.html')
-    }
+    outDir: 'build/renderer',
+    rollupOptions: { input: 'apps/client/index.html' }
   },
   resolve: {
-    alias: [aliases.client]
+    alias: [
+      {
+        find: /^@client\/(.+)$/,
+        replacement: resolve('apps/client/domains/$1/public-api.ts')
+      }
+    ]
   },
   plugins: [react()]
 }
 
-export default defineConfig({
-  main: electronServerConfig,
-  preload: electronBridgeConfig,
-  renderer: electronClientConfig
-})
+export default defineConfig({ main, preload, renderer })

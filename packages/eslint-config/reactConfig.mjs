@@ -2,12 +2,10 @@ import eslintPluginReact from 'eslint-plugin-react'
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks'
 import eslintPluginReactRefresh from 'eslint-plugin-react-refresh'
 
-import { clientFiles } from './utils.mjs'
-
 export const reactConfig = {
   name: 'react/client',
 
-  files: [clientFiles],
+  files: [`./apps/client/**/*.{ts,tsx}`],
 
   plugins: {
     react: eslintPluginReact,

@@ -1,7 +1,5 @@
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 
-import { bridgeFiles, clientFiles, configsFiles, serverFiles } from './utils.mjs'
-
 const CLIENT_GROUPS = [
   ['^react'],
   ['^@?\\w'],
@@ -47,18 +45,24 @@ function makeSimpleImportSortConfig({ name, files, groups }) {
 
 export const clientSimpleImportSortConfig = makeSimpleImportSortConfig({
   name: 'simple-import-sort/client',
-  files: [clientFiles],
+  files: [`./apps/client/**/*.{ts,tsx}`],
   groups: CLIENT_GROUPS
 })
 
 export const serverSimpleImportSortConfig = makeSimpleImportSortConfig({
   name: 'simple-import-sort/server',
-  files: [serverFiles],
+  files: [`./apps/server/**/*.{ts}`],
   groups: SERVER_GROUPS
 })
 
-export const commonSimpleImportSortConfig = makeSimpleImportSortConfig({
+export const bridgeSimpleImportSortConfig = makeSimpleImportSortConfig({
   name: 'simple-import-sort/common',
-  files: [bridgeFiles, configsFiles],
+  files: [`./apps/bridge/**/*.{ts}`],
+  groups: COMMON_GROUPS
+})
+
+export const configsSimpleImportSortConfig = makeSimpleImportSortConfig({
+  name: 'simple-import-sort/packages',
+  files: [`./packages/eslint-config/**/*.{mjs}`],
   groups: COMMON_GROUPS
 })

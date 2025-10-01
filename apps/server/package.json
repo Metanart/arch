@@ -2,11 +2,9 @@
   "name": "@arch/server",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "main": "index.ts",
   "scripts": {},
   "dependencies": {
-    "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.27"
+    "@electron-toolkit/utils": "^4.0.0"
   }
 }
