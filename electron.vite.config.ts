@@ -20,7 +20,8 @@ const typeOrmDriverExternals = [
   'better-sqlite3',
   '@sap/hana-client',
   'hdb-pool',
-  'tedious'
+  'tedious',
+  'better-sqlite3'
 ]
 
 const main: UserConfig = {

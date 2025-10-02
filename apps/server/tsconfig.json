@@ -11,7 +11,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "types": [
-      "electron-vite/node"
+      "electron-vite/node",
+      "better-sqlite3",
     ],
     "baseUrl": ".",
     "paths": {
