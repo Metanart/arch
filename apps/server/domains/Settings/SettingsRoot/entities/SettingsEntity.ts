@@ -8,10 +8,10 @@ const { outputDir, tempDir } = appPaths
 @Entity({ name: 'settings' })
 export class SettingsEntity extends BaseEntity {
   @Column({ type: 'varchar', default: outputDir })
-  outputFolder!: string
+  outputDir!: string
 
   @Column({ type: 'varchar', default: tempDir })
-  tempFolder!: string
+  tempDir!: string
 
   @Column({ type: 'int', default: 4 })
   maxThreads!: number
