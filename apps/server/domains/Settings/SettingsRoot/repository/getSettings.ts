@@ -1,15 +1,15 @@
 import { IsNull, Not } from 'typeorm'
 
 import { createLog } from '@arch/shared'
+import { SettingsServerSchema, TSettingsServerDTO } from '@arch/contracts'
+
 import { AppDataSource } from '@server/App/AppRoot'
 
-import { SettingsMapper } from '../mappers/SettingsMapper'
 import { SettingsEntity } from '../entities/SettingsEntity'
-import { SETTINGS_CONTRACTS_KEYS, SettingsDTO } from '../contracts/SettingsContracts'
 
-const repo = AppDataSource.getRepository(SettingsEntity)
+export async function getSettings(): Promise<TSettingsServerDTO> {
+  const repo = AppDataSource.getRepository(SettingsEntity)
 
-export async function getSettings(): Promise<SettingsDTO> {
   const log = createLog({ tag: 'SettingsRepo.getSettings' })
 
   let settings: SettingsEntity | null
@@ -39,19 +39,15 @@ export async function getSettings(): Promise<SettingsDTO> {
     log.info('Existing settings retrieved', settings)
   }
 
-  let mappedDTO: SettingsDTO
+  let serverDTO: TSettingsServerDTO
 
   try {
-    mappedDTO = SettingsMapper.map<SettingsEntity, SettingsDTO>(
-      settings,
-      SETTINGS_CONTRACTS_KEYS.SettingsEntity,
-      SETTINGS_CONTRACTS_KEYS.SettingsDTO
-    )
-    log.info('Mapped settings to DTO', mappedDTO)
+    serverDTO = await SettingsServerSchema.parseAsync(settings)
+    log.info('Mapped settings to DTO', serverDTO)
   } catch (error) {
     log.error('Failed to map settings to DTO:', (error as Error).message)
     throw new Error('Failed to map settings')
   }
 
-  return mappedDTO
+  return serverDTO
 }

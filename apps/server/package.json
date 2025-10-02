@@ -10,16 +10,13 @@
   },
   "dependencies": {
     "@arch/shared": "workspace:*",
-    "@automapper/core": "^8.8.1",
-    "@automapper/pojos": "^8.8.1",
+    "@arch/contracts": "workspace:*",
     "@electron-toolkit/utils": "^4.0.0",
     "better-sqlite3": "^12.4.1",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.27",
-    "zod": "^4.1.11"
+    "typeorm": "^0.3.27"
   },
   "devDependencies": {
-    "@automapper/types": "^6.3.1",
     "@electron/rebuild": "^4.0.1",
     "@types/better-sqlite3": "^7.6.13"
   },

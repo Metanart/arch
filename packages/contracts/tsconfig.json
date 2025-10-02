@@ -1,0 +1,17 @@
+{
+  "extends": "@arch/tsconfig/tsconfig.node.json",
+  "include": [
+    "domains/**/*",
+    "utils/**/*",
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@contracts/*": [
+        "domains/*/public-api.ts"
+      ],
+    }
+  }
+}
