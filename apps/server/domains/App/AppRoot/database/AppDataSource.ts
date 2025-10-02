@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm'
 
-import { appPaths } from '@server/Shared/Platform'
+import { appPaths } from '@server/Shared/platform'
 import { SettingsEntity } from '@server/Settings/SettingsRoot'
 
 const isTest = process.env.NODE_ENV === 'test'
