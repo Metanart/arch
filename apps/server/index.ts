@@ -52,7 +52,6 @@ app.whenReady().then(async () => {
   try {
     await AppDataSource.initialize()
     console.log('Database connected at', AppDataSource.options.database)
-
     await createWindow()
   } catch (err) {
     console.log('Failed to initialize database:', err)
@@ -65,8 +64,6 @@ app.whenReady().then(async () => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-
-  createWindow()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

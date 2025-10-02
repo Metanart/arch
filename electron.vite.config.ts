@@ -3,12 +3,35 @@ import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
 import type { UserConfig } from 'vite'
 
+const typeOrmDriverExternals = [
+  'typeorm',
+  'sqlite3',
+  '@google-cloud/spanner',
+  'pg',
+  'pg-native',
+  'pg-pool',
+  'pg-query-stream',
+  'mysql',
+  'mysql2',
+  'oracledb',
+  'mongodb',
+  'redis',
+  'ioredis',
+  'better-sqlite3',
+  '@sap/hana-client',
+  'hdb-pool',
+  'tedious'
+]
+
 const main: UserConfig = {
   build: {
     outDir: 'build/main',
     lib: {
       entry: 'apps/server/index.ts',
       formats: ['cjs']
+    },
+    rollupOptions: {
+      external: [...typeOrmDriverExternals, /^typeorm(\/.*)?$/]
     }
   },
   resolve: {
