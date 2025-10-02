@@ -12,7 +12,8 @@ import {
   clientSimpleImportSortConfig,
   serverSimpleImportSortConfig,
   bridgeSimpleImportSortConfig,
-  configsSimpleImportSortConfig
+  configsSimpleImportSortConfig,
+  sharedSimpleImportSortConfig
 } from '@arch/eslint-config'
 
 export default defineConfig(
@@ -39,6 +40,9 @@ export default defineConfig(
 
   // Configs
   configsSimpleImportSortConfig,
+
+  // Shared
+  sharedSimpleImportSortConfig,
 
   // Prettier
   prettierConfig

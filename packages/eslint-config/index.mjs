@@ -7,5 +7,6 @@ export {
   clientSimpleImportSortConfig,
   serverSimpleImportSortConfig,
   bridgeSimpleImportSortConfig,
-  configsSimpleImportSortConfig
+  configsSimpleImportSortConfig,
+  sharedSimpleImportSortConfig
 } from './simpleImportSortConfig.mjs'

@@ -56,13 +56,19 @@ export const serverSimpleImportSortConfig = makeSimpleImportSortConfig({
 })
 
 export const bridgeSimpleImportSortConfig = makeSimpleImportSortConfig({
-  name: 'simple-import-sort/common',
+  name: 'simple-import-sort/bridge',
   files: [`./apps/bridge/**/*.{ts}`],
   groups: COMMON_GROUPS
 })
 
 export const configsSimpleImportSortConfig = makeSimpleImportSortConfig({
-  name: 'simple-import-sort/packages',
+  name: 'simple-import-sort/configs',
   files: [`./packages/eslint-config/**/*.{mjs}`],
+  groups: COMMON_GROUPS
+})
+
+export const sharedSimpleImportSortConfig = makeSimpleImportSortConfig({
+  name: 'simple-import-sort/shared',
+  files: [`./packages/shared/**/*.{ts}`],
   groups: COMMON_GROUPS
 })

@@ -1,0 +1,16 @@
+{
+  "name": "@arch/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "files": [
+    "**/public-api.ts"
+  ],
+  "dependencies": {
+    "consola": "^3.4.2"
+  }
+}

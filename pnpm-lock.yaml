@@ -105,6 +105,15 @@ importers:
 
   apps/server:
     dependencies:
+      '@arch/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@automapper/core':
+        specifier: ^8.8.1
+        version: 8.8.1
+      '@automapper/pojos':
+        specifier: ^8.8.1
+        version: 8.8.1(@automapper/core@8.8.1)
       '@electron-toolkit/utils':
         specifier: ^4.0.0
         version: 4.0.0(electron@38.2.0)
@@ -117,7 +126,13 @@ importers:
       typeorm:
         specifier: ^0.3.27
         version: 0.3.27(better-sqlite3@12.4.1)(reflect-metadata@0.2.2)(sqlite3@5.1.7)
+      zod:
+        specifier: ^4.1.11
+        version: 4.1.11
     devDependencies:
+      '@automapper/types':
+        specifier: ^6.3.1
+        version: 6.3.1
       '@electron/rebuild':
         specifier: ^4.0.1
         version: 4.0.1
@@ -164,12 +179,32 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0(@typescript-eslint/eslint-plugin@8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.36.0)(typescript@5.9.3))(eslint@9.36.0)(typescript@5.9.3))(eslint@9.36.0)
 
+  packages/shared:
+    dependencies:
+      consola:
+        specifier: ^3.4.2
+        version: 3.4.2
+
   packages/tsconfig: {}
 
 packages:
 
   7zip-bin@5.2.0:
     resolution: {integrity: sha512-ukTPVhqG4jNzMro2qA9HSCSSVJN3aN7tlb+hfqYCt3ER0yWroeA2VR38MNrOHLQ/cVj+DaIMad0kFCtWWowh/A==}
+
+  '@automapper/core@8.8.1':
+    resolution: {integrity: sha512-VIRULNAImqaTojp8zqhVGVimjxjriawqZWlemooWh5B5tX2XlgA6icPrQBQh+M9wY8IVQipBTOcr338N9lf8RA==}
+    engines: {node: '>=16.0.0'}
+
+  '@automapper/pojos@8.8.1':
+    resolution: {integrity: sha512-nHzNmzPNikflL1S0m1NA9lYpPC54ZS/Mo/j2yyvyfoXjIqqzVmVWYefgp1EJRbqrL0g6lS/ZgSdEKgmUW/Tv0w==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      '@automapper/core': 8.8.1
+
+  '@automapper/types@6.3.1':
+    resolution: {integrity: sha512-f0Y/Q4dVfKH6SQyzS5bPk+hZ4pSxzVNAOPEHdEAUe3gAc6ou43DCBYERuOaVSZ3zbWJbVt1KgWVNLP1dj9OIeg==}
+    engines: {node: '>=10.0.0'}
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -1350,6 +1385,10 @@ packages:
 
   config-file-ts@0.2.8-rc1:
     resolution: {integrity: sha512-GtNECbVI82bT4RiDIzBSVuTKoSHufnU7Ce7/42bkWZJZFLjmDF2WBpVsvRkhKCfKBnTBb3qZrBwPpFBU/Myvhg==}
+
+  consola@3.4.2:
+    resolution: {integrity: sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA==}
+    engines: {node: ^14.18.0 || >=16.10.0}
 
   console-control-strings@1.1.0:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
@@ -3448,9 +3487,20 @@ packages:
     resolution: {integrity: sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ==}
     engines: {node: '>= 10'}
 
+  zod@4.1.11:
+    resolution: {integrity: sha512-WPsqwxITS2tzx1bzhIKsEs19ABD5vmCVa4xBo2tq/SrV4RNZtfws1EnCWQXM6yh8bD08a1idvkB5MZSBiZsjwg==}
+
 snapshots:
 
   7zip-bin@5.2.0: {}
+
+  '@automapper/core@8.8.1': {}
+
+  '@automapper/pojos@8.8.1(@automapper/core@8.8.1)':
+    dependencies:
+      '@automapper/core': 8.8.1
+
+  '@automapper/types@6.3.1': {}
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -4785,6 +4835,8 @@ snapshots:
     dependencies:
       glob: 10.4.5
       typescript: 5.9.3
+
+  consola@3.4.2: {}
 
   console-control-strings@1.1.0: {}
 
@@ -7288,3 +7340,5 @@ snapshots:
       archiver-utils: 3.0.4
       compress-commons: 4.1.2
       readable-stream: 3.6.2
+
+  zod@4.1.11: {}
