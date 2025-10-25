@@ -3,6 +3,7 @@
   "include": [
     "index.tsx",
     "domains/**/*",
+    "styles/**/*",
     "shared/**/*",
     "../bridge/index.d.ts"
   ],

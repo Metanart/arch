@@ -1,5 +1,16 @@
-import { LL } from '@i18n/utils/i18n-LL.sync'
-import { DBError } from '@main/types/DBError.types'
+type DBErrorCode =
+  | 'UNIQUE_VIOLATION'
+  | 'FOREIGN_KEY_VIOLATION'
+  | 'NOT_NULL_VIOLATION'
+  | 'CHECK_VIOLATION'
+  | 'CONSTRAINT_VIOLATION'
+
+type DBError = {
+  code?: DBErrorCode
+  message?: string
+  table?: string
+  columns?: string[]
+}
 
 export const convertDBErrorToMessage = (error: DBError): string | null => {
   if (!error) return null
@@ -8,23 +19,19 @@ export const convertDBErrorToMessage = (error: DBError): string | null => {
 
   switch (error.code) {
     case 'UNIQUE_VIOLATION':
-      return LL.app.dbErrors.uniqueViolation({
-        column: error.columns?.[0] || 'unknown'
-      })
+      return 'Unique violation'
 
     case 'NOT_NULL_VIOLATION':
-      return LL.app.dbErrors.notNullViolation({
-        column: error.columns?.[0] || 'unknown'
-      })
+      return 'Not null violation'
 
     case 'FOREIGN_KEY_VIOLATION':
-      return LL.app.dbErrors.foreignKeyViolation()
+      return 'Foreign key violation'
 
     case 'CHECK_VIOLATION':
-      return LL.app.dbErrors.checkViolation()
+      return 'Check violation'
 
     case 'CONSTRAINT_VIOLATION':
-      return LL.app.dbErrors.constraintViolation()
+      return 'Constraint violation'
 
     default:
       return null

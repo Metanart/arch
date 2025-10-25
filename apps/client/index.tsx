@@ -1,10 +1,29 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import ReactDOM from 'react-dom/client'
+import { HashRouter } from 'react-router-dom'
 
-import { AppRoot } from '@domains/App/AppRoot'
+import {
+  AppProvidersContainer,
+  AppRootContainer,
+  AppRoutesContainerMemo
+} from '@domains/App/AppRoot'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <AppRoot />
-  </StrictMode>
+import { theme } from './styles/theme'
+
+import './styles/mui.overrides.css'
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+
+root.render(
+  <HashRouter>
+    <CssBaseline>
+      <ThemeProvider theme={theme}>
+        <AppRootContainer>
+          <AppProvidersContainer>
+            <AppRoutesContainerMemo />
+          </AppProvidersContainer>
+        </AppRootContainer>
+      </ThemeProvider>
+    </CssBaseline>
+  </HashRouter>
 )
