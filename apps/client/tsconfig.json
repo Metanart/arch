@@ -3,6 +3,7 @@
   "include": [
     "index.tsx",
     "domains/**/*",
+    "shared/**/*",
     "../bridge/index.d.ts"
   ],
   "compilerOptions": {
@@ -12,6 +13,9 @@
     "paths": {
       "@domains/*": [
         "domains/*/public-api.ts"
+      ],
+      "@shared/*": [
+        "shared/*/public-api.ts"
       ]
     }
   }
