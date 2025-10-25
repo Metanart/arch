@@ -6,7 +6,7 @@ import { join } from 'path'
 
 import icon from '../../resources/icon.png?asset'
 
-import { AppDataSource } from '@server/App/AppRoot'
+import { AppDataSource } from '@domains/App/AppRoot'
 
 function createWindow(): void {
   // Create the browser window.

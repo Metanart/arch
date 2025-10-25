@@ -3,6 +3,7 @@
   "include": [
     "index.ts",
     "domains/**/*",
+    "shared/**/*",
   ],
   "compilerOptions": {
     "composite": true,
@@ -16,8 +17,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@server/*": [
+      "@domains/*": [
         "domains/*/public-api.ts"
+      ],
+      "@shared/*": [
+        "shared/*/public-api.ts"
       ],
     }
   }

@@ -12,7 +12,7 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@bridge/*": [
+      "@domains/*": [
         "domains/*/public-api.ts"
       ],
     }

@@ -10,11 +10,6 @@
     "strictPropertyInitialization": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "baseUrl": ".",
-    "paths": {
-      "@shared-types/*": [
-        "src/*"
-      ],
-    }
+    "baseUrl": "."
   }
 }

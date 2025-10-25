@@ -7,11 +7,6 @@
   "compilerOptions": {
     "composite": true,
     "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@contracts/*": [
-        "domains/*/public-api.ts"
-      ],
-    }
+    "baseUrl": "."
   }
 }

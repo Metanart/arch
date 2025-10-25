@@ -108,12 +108,12 @@ importers:
       '@arch/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
-      '@arch/shared-types':
+      '@arch/types':
         specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@arch/shared-utils':
+        version: link:../../packages/types
+      '@arch/utils':
         specifier: workspace:*
-        version: link:../../packages/shared-utils
+        version: link:../../packages/utils
       '@electron-toolkit/utils':
         specifier: ^4.0.0
         version: 4.0.0(electron@38.4.0)
@@ -189,15 +189,15 @@ importers:
         specifier: ^4.2.0
         version: 4.3.0(@typescript-eslint/eslint-plugin@8.46.2(@typescript-eslint/parser@8.46.2(eslint@9.38.0)(typescript@5.9.3))(eslint@9.38.0)(typescript@5.9.3))(eslint@9.38.0)
 
-  packages/shared-types: {}
+  packages/tsconfig: {}
 
-  packages/shared-utils:
+  packages/types: {}
+
+  packages/utils:
     dependencies:
       consola:
         specifier: ^3.4.2
         version: 3.4.2
-
-  packages/tsconfig: {}
 
 packages:
 

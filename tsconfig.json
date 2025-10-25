@@ -17,6 +17,11 @@
     "apps/*/domains/**/*.js",
     "apps/*/domains/**/*.jsx",
     "apps/*/domains/**/*.d.ts",
+    "apps/*/shared/**/*.ts",
+    "apps/*/shared/**/*.tsx",
+    "apps/*/shared/**/*.js",
+    "apps/*/shared/**/*.jsx",
+    "apps/*/shared/**/*.d.ts",
     "apps/*/index.ts",
     "apps/*/index.tsx",
   ]

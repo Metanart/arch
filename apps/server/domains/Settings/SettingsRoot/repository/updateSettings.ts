@@ -1,9 +1,9 @@
 import { IsNull, Not } from 'typeorm'
 
-import { createLog } from '@arch/shared-utils'
+import { createLog } from '@arch/utils'
 import { TSettingsServerDTO, TSettingsUpdateServerDTO, SettingsServerSchema } from '@arch/contracts'
 
-import { AppDataSource } from '@server/App/AppRoot'
+import { AppDataSource } from '@domains/App/AppRoot'
 
 import { SettingsEntity } from '../entities/SettingsEntity'
 
