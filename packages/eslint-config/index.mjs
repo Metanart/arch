@@ -6,7 +6,5 @@ export { reactConfig } from './reactConfig.mjs'
 export {
   clientSimpleImportSortConfig,
   serverSimpleImportSortConfig,
-  bridgeSimpleImportSortConfig,
-  configsSimpleImportSortConfig,
-  sharedSimpleImportSortConfig
+  commonSimpleImportSortConfig
 } from './simpleImportSortConfig.mjs'

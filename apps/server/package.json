@@ -9,7 +9,8 @@
     "postinstall": "electron-rebuild -f -w better-sqlite3"
   },
   "dependencies": {
-    "@arch/shared": "workspace:*",
+    "@arch/shared-utils": "workspace:*",
+    "@arch/shared-types": "workspace:*",
     "@arch/contracts": "workspace:*",
     "@electron-toolkit/utils": "^4.0.0",
     "better-sqlite3": "^12.4.1",

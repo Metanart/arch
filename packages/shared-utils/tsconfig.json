@@ -1,7 +1,8 @@
 {
   "extends": "@arch/tsconfig/tsconfig.node.json",
   "include": [
-    "src/**/*"
+    "src/*",
+    "index.ts"
   ],
   "compilerOptions": {
     "composite": true,
@@ -11,8 +12,8 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/*": [
-        "src/*/public-api.ts"
+      "@shared-utils/*": [
+        "src/*"
       ],
     }
   }

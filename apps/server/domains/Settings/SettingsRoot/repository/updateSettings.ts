@@ -1,6 +1,6 @@
 import { IsNull, Not } from 'typeorm'
 
-import { createLog } from '@arch/shared'
+import { createLog } from '@arch/shared-utils'
 import { TSettingsServerDTO, TSettingsUpdateServerDTO, SettingsServerSchema } from '@arch/contracts'
 
 import { AppDataSource } from '@server/App/AppRoot'
