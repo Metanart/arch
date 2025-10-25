@@ -1,4 +1,4 @@
-export type Domain = 'Config' | 'Sources' | 'Tasks'
+export type Domain = 'Settings' | 'Sources' | 'Tasks'
 
 export type ProjectArea = 'MAIN' | 'RENDERER' | 'SHARED' | 'PRELOAD'
 

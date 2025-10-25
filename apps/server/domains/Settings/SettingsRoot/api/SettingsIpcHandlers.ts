@@ -1,9 +1,11 @@
-import { handleServiceToIpc } from '@main/utils/ipc/handleServiceToIpc'
+import { handleServiceToIpc } from '@shared/ipc'
 
-import { ConfigDTO, ConfigUpdateDTO } from '@shared/domains/Config/Config.dtos'
+import { TSettingsServerDTO, TSettingsUpdateServerDTO } from '@arch/contracts'
+import { SettingsRepository } from '../repository/SettingsRepository'
 
-import { ConfigRepo } from '../repo/ConfigRepo'
+handleServiceToIpc<TSettingsServerDTO | null>('SettingsIpc.get', SettingsRepository.get)
 
-handleServiceToIpc<ConfigDTO | null>('ConfigIpc.get', ConfigRepo.get)
-
-handleServiceToIpc<ConfigDTO | null, ConfigUpdateDTO>('ConfigIpc.update', ConfigRepo.update)
+handleServiceToIpc<TSettingsServerDTO | null, TSettingsUpdateServerDTO>(
+  'SettingsIpc.update',
+  SettingsRepository.update
+)
