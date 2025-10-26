@@ -1,7 +1,7 @@
 {
   "extends": "@arch/tsconfig/tsconfig.node.json",
   "include": [
-    "src/*",
+    "src/**/*",
     "index.ts"
   ],
   "compilerOptions": {

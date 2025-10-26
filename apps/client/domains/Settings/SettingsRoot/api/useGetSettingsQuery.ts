@@ -1,11 +1,6 @@
-import {
-  ESettingsMapperKeys,
-  SettingsMapper,
-  TSettingsClientDTO,
-  TSettingsServerDTO
-} from '@arch/contracts'
+import { TSettingsClientDTO, TSettingsServerDTO } from '@arch/contracts'
 import { ApiDomain, ApiMethod } from '@arch/types'
-import { createLog } from '@arch/utils'
+import { convertDto, createLog } from '@arch/utils'
 
 import { SettingsApi, SettingsApiTags } from './SettingsApi'
 
@@ -21,20 +16,16 @@ function query(): QueryReturn {
   }
 }
 
-function transformResponse(settingsDto: TSettingsServerDTO): TSettingsClientDTO {
+function transformResponse(settingsServerDto: TSettingsServerDTO): TSettingsClientDTO {
   const log = createLog({ tag: 'Settings.get', category: 'RENDERER' })
 
-  log.info('Received raw settings', settingsDto)
+  log.info('Received raw settings', settingsServerDto)
 
-  const settingsFormDto = SettingsMapper.map<TSettingsServerDTO, TSettingsClientDTO>(
-    settingsDto,
-    ESettingsMapperKeys.SettingsServerDTO,
-    ESettingsMapperKeys.SettingsClientDTO
-  )
+  const settingsClientDto = convertDto<TSettingsServerDTO, TSettingsClientDTO>(settingsServerDto)
 
-  log.success('Returning mapped settings form', settingsFormDto)
+  log.success('Returning mapped settings client DTO', settingsClientDto)
 
-  return settingsFormDto
+  return settingsClientDto
 }
 
 const providesTags: SettingsApiTags[] = ['Settings']

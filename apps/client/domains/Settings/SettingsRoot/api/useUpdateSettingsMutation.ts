@@ -1,13 +1,11 @@
 import {
-  ESettingsMapperKeys,
-  SettingsMapper,
   TSettingsClientDTO,
   TSettingsServerDTO,
   TSettingsUpdateClientDTO,
   TSettingsUpdateServerDTO
 } from '@arch/contracts'
 import { ApiDomain, ApiMethod } from '@arch/types'
-import { createLog } from '@arch/utils'
+import { convertDto, createLog } from '@arch/utils'
 
 import { SettingsApi, SettingsApiTags } from './SettingsApi'
 
@@ -17,40 +15,34 @@ type QueryReturn = {
   payload: TSettingsUpdateServerDTO
 }
 
-function query(settingsUpdateFormDTO: TSettingsUpdateServerDTO): QueryReturn {
+function query(settingsUpdateClientDTO: TSettingsUpdateServerDTO): QueryReturn {
   const log = createLog({ tag: 'Config.update', category: 'RENDERER' })
 
-  log.info('Received raw settings form', settingsUpdateFormDTO)
+  log.info('Received raw settings form', settingsUpdateClientDTO)
 
-  const settingsUpdateDTO = SettingsMapper.map<TSettingsUpdateServerDTO, TSettingsUpdateClientDTO>(
-    settingsUpdateFormDTO,
-    ESettingsMapperKeys.SettingsUpdateServerDTO,
-    ESettingsMapperKeys.SettingsUpdateClientDTO
+  const settingsUpdateServerDTO = convertDto<TSettingsUpdateClientDTO, TSettingsUpdateServerDTO>(
+    settingsUpdateClientDTO
   )
 
-  log.success('Returning mapped settings form', settingsUpdateDTO)
+  log.success('Returning mapped settings form', settingsUpdateServerDTO)
 
   return {
     domain: 'Settings',
     method: 'update',
-    payload: settingsUpdateDTO
+    payload: settingsUpdateServerDTO
   }
 }
 
-function transformResponse(settingsDto: TSettingsServerDTO): TSettingsClientDTO {
+function transformResponse(settingsServerDTO: TSettingsServerDTO): TSettingsClientDTO {
   const log = createLog({ tag: 'Config.get', category: 'RENDERER' })
 
-  log.info('Received raw settings', settingsDto)
+  log.info('Received raw settings', settingsServerDTO)
 
-  const settingsFormDto = SettingsMapper.map<TSettingsServerDTO, TSettingsClientDTO>(
-    settingsDto,
-    ESettingsMapperKeys.SettingsServerDTO,
-    ESettingsMapperKeys.SettingsClientDTO
-  )
+  const settingsClientDTO = convertDto<TSettingsServerDTO, TSettingsClientDTO>(settingsServerDTO)
 
-  log.success('Returning mapped settings form', settingsFormDto)
+  log.success('Returning mapped settings form', settingsClientDTO)
 
-  return settingsFormDto
+  return settingsClientDTO
 }
 
 function invalidatesTags(result, error): SettingsApiTags[] {
