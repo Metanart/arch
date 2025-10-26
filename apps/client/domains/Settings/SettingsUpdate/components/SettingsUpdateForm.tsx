@@ -71,7 +71,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                 render={({ field, fieldState }) => (
                   <FolderInput
                     name={field.name}
-                    value={field.value as string}
+                    value={field.value || ''}
                     error={!!fieldState.error}
                     helperText={fieldState.error?.message}
                     label={'Output Directory'}
@@ -96,7 +96,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                 render={({ field, fieldState }) => (
                   <FolderInput
                     name={field.name}
-                    value={field.value as string}
+                    value={field.value || ''}
                     error={!!fieldState.error}
                     helperText={fieldState.error?.message}
                     label={'Temp Directory'}

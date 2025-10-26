@@ -90,6 +90,9 @@ importers:
 
   apps/bridge:
     dependencies:
+      '@arch/enums':
+        specifier: workspace:*
+        version: link:../../packages/enums
       '@electron-toolkit/preload':
         specifier: 3.0.2
         version: 3.0.2(electron@38.4.0)
@@ -147,6 +150,9 @@ importers:
       '@arch/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
+      '@arch/enums':
+        specifier: workspace:*
+        version: link:../../packages/enums
       '@arch/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -188,6 +194,8 @@ importers:
       '@automapper/types':
         specifier: ^6.3.1
         version: 6.3.1
+
+  packages/enums: {}
 
   packages/eslint-config:
     devDependencies:

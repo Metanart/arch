@@ -6,6 +6,13 @@
   "type": "module",
   "scripts": {},
   "dependencies": {
+    "@arch/enums": "workspace:*",
     "@electron-toolkit/preload": "3.0.2"
-  }
+  },
+  "files": [
+    "domains/**/*",
+    "shared/**/*",
+    "index.ts",
+    "index.d.ts"
+  ]
 }

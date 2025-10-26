@@ -8,12 +8,21 @@ import icon from '../../resources/icon.png?asset'
 
 import { AppDataSource } from '@domains/App/AppRoot'
 import { setupSettingsIpcHandlers } from '@domains/Settings/SettingsRoot'
+import { setupCommonIpcHandlers } from '@shared/services'
 
 import 'dotenv/config'
 
+console.log('Starting server')
+
+console.log('Setting up common IPC handlers')
+setupCommonIpcHandlers()
+
+console.log('Setting up settings IPC handlers')
 setupSettingsIpcHandlers()
 
 function createWindow(): void {
+  console.log('Creating main window')
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1000,
@@ -30,10 +39,13 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
+    console.log('MainWindow ready to show')
     mainWindow.show()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
+    console.log('MainWindow webContents setWindowOpenHandler', details)
+
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
@@ -45,6 +57,8 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../client/index.html'))
   }
+
+  console.log('MainWindow loaded')
 }
 
 // This method will be called when Electron has finished
@@ -52,14 +66,17 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   // Set app user modasync async el id for windows
+  console.log('App ready')
+
   electronApp.setAppUserModelId('com.electron')
+  console.log('App user model id set')
 
   try {
     await AppDataSource.initialize()
     console.log('Database connected at', AppDataSource.options.database)
     await createWindow()
   } catch (err) {
-    console.log('Failed to initialize database:', err)
+    console.error('Failed to initialize database:', err)
     app.quit()
   }
 
@@ -67,10 +84,13 @@ app.whenReady().then(async () => {
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
+    console.log('Browser window created', window)
     optimizer.watchWindowShortcuts(window)
   })
 
   app.on('activate', function () {
+    console.log('App activate')
+
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
@@ -81,6 +101,8 @@ app.whenReady().then(async () => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
+  console.log('Window all closed')
+
   if (process.platform !== 'darwin') {
     app.quit()
   }

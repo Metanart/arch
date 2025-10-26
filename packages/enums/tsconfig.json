@@ -1,0 +1,14 @@
+{
+  "extends": "@arch/tsconfig/tsconfig.node.json",
+  "include": [
+    "index.ts"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "strict": true,
+    "strictPropertyInitialization": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": "."
+  }
+}

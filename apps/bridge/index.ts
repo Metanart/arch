@@ -3,6 +3,7 @@ import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 import { settingsIpcInvokers } from '@domains/Settings'
+import { commonIpcInvokers } from '@shared/ipc'
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -10,7 +11,8 @@ import { settingsIpcInvokers } from '@domains/Settings'
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', {
-      ...electronAPI
+      ...electronAPI,
+      ...commonIpcInvokers
     })
     contextBridge.exposeInMainWorld('api', {
       settings: settingsIpcInvokers
