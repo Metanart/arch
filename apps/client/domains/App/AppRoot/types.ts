@@ -14,10 +14,10 @@ export type AppNavigationParams = {
 }
 
 export type AppRoute = {
-  id: `${AppDomains}Route`
+  id: string
   testId?: string
   icon: ReactElement
-  path: AppURL
+  path: string
   element: ReactElement
 }
 
@@ -26,5 +26,3 @@ export type AppBaseDomains = 'App' | 'Common'
 export type AppFeatureDomains = 'Home' | 'Models' | 'Sources' | 'Settings' | 'Tasks'
 
 export type AppDomains = AppBaseDomains | AppFeatureDomains
-
-export type AppURL = '/' | `/${AppFeatureDomains}`

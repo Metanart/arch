@@ -1,3 +1,4 @@
+export { FolderInput } from './FolderInput'
 export { Notification } from './Notification/Notification'
 export { Page } from './Page/Page'
 export { PageContent } from './Page/PageContent'
