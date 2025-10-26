@@ -41,7 +41,6 @@ export const FolderInput: FC<Props> = (props) => {
 
   const handleSelectFolder = async (): Promise<void> => {
     setIsSelecting(true)
-    // @ts-expect-error - TODO: add type for selectFolder
     const selectedPath = await window.electron.selectFolder()
 
     if (selectedPath) onSelect(selectedPath)
