@@ -7,6 +7,11 @@ import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 
 import { AppDataSource } from '@domains/App/AppRoot'
+import { setupSettingsIpcHandlers } from '@domains/Settings/SettingsRoot'
+
+import 'dotenv/config'
+
+setupSettingsIpcHandlers()
 
 function createWindow(): void {
   // Create the browser window.
