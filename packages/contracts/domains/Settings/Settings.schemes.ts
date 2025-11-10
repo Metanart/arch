@@ -11,7 +11,7 @@ const SettingsBaseSchema = z.object({
   debugMode: z.boolean()
 })
 
-const SettingsUpdateBaseSchema = z.object({
+const UpdateSettingsBaseSchema = z.object({
   id: z.string(),
   outputDir: z.string().min(3, 'Output directory is required'),
   tempDir: z.string().min(3, 'Temp directory is required'),
@@ -25,11 +25,11 @@ const SettingsUpdateBaseSchema = z.object({
 export const SettingsClientSchema = SettingsBaseSchema
 export const SettingsServerSchema = SettingsBaseSchema
 
-export const SettingsUpdateClientSchema = SettingsUpdateBaseSchema
-export const SettingsUpdateServerSchema = SettingsUpdateBaseSchema
+export const UpdateSettingsClientSchema = UpdateSettingsBaseSchema
+export const UpdateSettingsServerSchema = UpdateSettingsBaseSchema
 
 export type TSettingsClientDTO = z.infer<typeof SettingsClientSchema>
 export type TSettingsServerDTO = z.infer<typeof SettingsServerSchema>
 
-export type TSettingsUpdateClientDTO = z.infer<typeof SettingsUpdateClientSchema>
-export type TSettingsUpdateServerDTO = z.infer<typeof SettingsUpdateServerSchema>
+export type TUpdateSettingsClientDTO = z.infer<typeof UpdateSettingsClientSchema>
+export type TUpdateSettingsServerDTO = z.infer<typeof UpdateSettingsServerSchema>

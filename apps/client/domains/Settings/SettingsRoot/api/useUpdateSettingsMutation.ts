@@ -1,8 +1,8 @@
 import {
   TSettingsClientDTO,
   TSettingsServerDTO,
-  TSettingsUpdateClientDTO,
-  TSettingsUpdateServerDTO
+  TUpdateSettingsClientDTO,
+  TUpdateSettingsServerDTO
 } from '@arch/contracts'
 import { ApiDomain, ApiMethod } from '@arch/types'
 import { convertDto, createLog } from '@arch/utils'
@@ -12,15 +12,15 @@ import { SettingsApi, SettingsApiTags } from './SettingsApi'
 type QueryReturn = {
   domain: ApiDomain
   method: ApiMethod
-  payload: TSettingsUpdateServerDTO
+  payload: TUpdateSettingsServerDTO
 }
 
-function query(settingsUpdateClientDTO: TSettingsUpdateServerDTO): QueryReturn {
+function query(settingsUpdateClientDTO: TUpdateSettingsServerDTO): QueryReturn {
   const log = createLog({ tag: 'Config.update', category: 'RENDERER' })
 
   log.info('Received raw settings form', settingsUpdateClientDTO)
 
-  const settingsUpdateServerDTO = convertDto<TSettingsUpdateClientDTO, TSettingsUpdateServerDTO>(
+  const settingsUpdateServerDTO = convertDto<TUpdateSettingsClientDTO, TUpdateSettingsServerDTO>(
     settingsUpdateClientDTO
   )
 
@@ -53,7 +53,7 @@ function invalidatesTags(result, error): SettingsApiTags[] {
 
 export const { useUpdateSettingsMutation } = SettingsApi.injectEndpoints({
   endpoints: (builder) => ({
-    updateSettings: builder.mutation<TSettingsClientDTO, TSettingsUpdateServerDTO>({
+    updateSettings: builder.mutation<TSettingsClientDTO, TUpdateSettingsServerDTO>({
       query,
       transformResponse,
       invalidatesTags

@@ -1,14 +1,14 @@
 import { IsNull, Not } from 'typeorm'
 
 import { createLog } from '@arch/utils'
-import { TSettingsServerDTO, TSettingsUpdateServerDTO, SettingsServerSchema } from '@arch/contracts'
+import { TSettingsServerDTO, TUpdateSettingsServerDTO, SettingsServerSchema } from '@arch/contracts'
 
 import { AppDataSource } from '@domains/App/AppRoot'
 
 import { SettingsEntity } from '../entities/SettingsEntity'
 
 export async function updateSettings(
-  updatedSettings: TSettingsUpdateServerDTO
+  updatedSettings: TUpdateSettingsServerDTO
 ): Promise<TSettingsServerDTO | null> {
   const repo = AppDataSource.getRepository(SettingsEntity)
 

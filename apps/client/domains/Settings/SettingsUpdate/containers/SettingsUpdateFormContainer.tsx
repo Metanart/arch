@@ -1,6 +1,6 @@
 import { FC, Fragment, JSX, useCallback } from 'react'
 
-import { TSettingsClientDTO, TSettingsUpdateClientDTO } from '@arch/contracts'
+import { TSettingsClientDTO, TUpdateSettingsClientDTO } from '@arch/contracts'
 import { createLog } from '@arch/utils'
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '@domains/Settings/SettingsRoot'
 import { Message } from '@shared/components'
@@ -15,7 +15,7 @@ export const SettingsUpdateFormContainer: FC = () => {
   const [updateSettings, { isLoading: isUpdating }] = useUpdateSettingsMutation()
 
   const handleSave = useCallback(
-    async (settingsUpdateDto: TSettingsUpdateClientDTO, isDirty: boolean): Promise<void> => {
+    async (settingsUpdateDto: TUpdateSettingsClientDTO, isDirty: boolean): Promise<void> => {
       if (!isDirty) {
         notify('No changes to save', 'warning')
         return

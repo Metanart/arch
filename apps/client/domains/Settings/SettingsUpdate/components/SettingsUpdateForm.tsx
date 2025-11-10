@@ -2,9 +2,9 @@ import { FC, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import {
-  SettingsUpdateClientSchema,
+  UpdateSettingsClientSchema,
   TSettingsClientDTO,
-  TSettingsUpdateClientDTO
+  TUpdateSettingsClientDTO
 } from '@arch/contracts'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -34,7 +34,7 @@ const DEFAULT_VALUES = {
 type Props = {
   settingsDto?: TSettingsClientDTO
   isDisabled?: boolean
-  onSave: (settingsUpdateDto: TSettingsUpdateClientDTO, isDirty: boolean) => void
+  onSave: (settingsUpdateDto: TUpdateSettingsClientDTO, isDirty: boolean) => void
 }
 
 export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave }) => {
@@ -43,8 +43,8 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
     reset,
     handleSubmit,
     formState: { isDirty }
-  } = useForm<TSettingsUpdateClientDTO>({
-    resolver: zodResolver(SettingsUpdateClientSchema),
+  } = useForm<TUpdateSettingsClientDTO>({
+    resolver: zodResolver(UpdateSettingsClientSchema),
     defaultValues: DEFAULT_VALUES
   })
 
@@ -54,7 +54,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
     }
   }, [settingsDto, reset])
 
-  const onSubmit = (settingsUpdateFormDto: TSettingsUpdateClientDTO): void => {
+  const onSubmit = (settingsUpdateFormDto: TUpdateSettingsClientDTO): void => {
     onSave(settingsUpdateFormDto, isDirty)
   }
 
