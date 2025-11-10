@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
-import { APP_ROUTES } from '../routes'
 import { AppNavigation } from '../components/AppNavigation'
 import { AppNavigationButton } from '../components/AppNavigationButton'
+import { APP_ROUTES } from '../routes'
 import { AppNavigationParams } from '../types'
 
 type Props = {
@@ -23,7 +23,7 @@ export const AppNavigationContainer: FC<Props> = (props) => {
           id={item.id}
           testId={item.testId}
           key={item.id}
-          text={item.id}
+          text={item.title}
           icon={item.icon}
           to={item.path}
           isOpen={isOpen}

@@ -15,6 +15,7 @@ export type AppNavigationParams = {
 
 export type AppRoute = {
   id: string
+  title: string
   testId?: string
   icon: ReactElement
   path: string
