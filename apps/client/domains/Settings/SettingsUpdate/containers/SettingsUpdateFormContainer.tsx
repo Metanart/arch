@@ -15,14 +15,14 @@ export const SettingsUpdateFormContainer: FC = () => {
   const [updateSettings, { isLoading: isUpdating }] = useUpdateSettingsMutation()
 
   const handleSave = useCallback(
-    async (settingsUpdateDto: TUpdateSettingsClientDTO, isDirty: boolean): Promise<void> => {
+    async (updateSettingsDto: TUpdateSettingsClientDTO, isDirty: boolean): Promise<void> => {
       if (!isDirty) {
         notify('No changes to save', 'warning')
         return
       }
 
       try {
-        await updateSettings(settingsUpdateDto).unwrap()
+        await updateSettings(updateSettingsDto).unwrap()
         notify('Settings updated successfully', 'success')
       } catch (error) {
         log.error('Failed to update settings', error)

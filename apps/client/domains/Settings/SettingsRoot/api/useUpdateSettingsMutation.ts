@@ -15,21 +15,21 @@ type QueryReturn = {
   payload: TUpdateSettingsServerDTO
 }
 
-function query(settingsUpdateClientDTO: TUpdateSettingsServerDTO): QueryReturn {
+function query(updateSettingsClientDTO: TUpdateSettingsServerDTO): QueryReturn {
   const log = createLog({ tag: 'Config.update', category: 'RENDERER' })
 
-  log.info('Received raw settings form', settingsUpdateClientDTO)
+  log.info('Received raw settings form', updateSettingsClientDTO)
 
-  const settingsUpdateServerDTO = convertDto<TUpdateSettingsClientDTO, TUpdateSettingsServerDTO>(
-    settingsUpdateClientDTO
+  const updateSettingsServerDTO = convertDto<TUpdateSettingsClientDTO, TUpdateSettingsServerDTO>(
+    updateSettingsClientDTO
   )
 
-  log.success('Returning mapped settings form', settingsUpdateServerDTO)
+  log.success('Returning mapped settings form', updateSettingsServerDTO)
 
   return {
     domain: 'Settings',
     method: 'update',
-    payload: settingsUpdateServerDTO
+    payload: updateSettingsServerDTO
   }
 }
 

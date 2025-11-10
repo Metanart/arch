@@ -34,7 +34,7 @@ const DEFAULT_VALUES = {
 type Props = {
   settingsDto?: TSettingsClientDTO
   isDisabled?: boolean
-  onSave: (settingsUpdateDto: TUpdateSettingsClientDTO, isDirty: boolean) => void
+  onSave: (updateSettingsDto: TUpdateSettingsClientDTO, isDirty: boolean) => void
 }
 
 export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave }) => {
@@ -54,8 +54,8 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
     }
   }, [settingsDto, reset])
 
-  const onSubmit = (settingsUpdateFormDto: TUpdateSettingsClientDTO): void => {
-    onSave(settingsUpdateFormDto, isDirty)
+  const onSubmit = (updateSettingsFormDto: TUpdateSettingsClientDTO): void => {
+    onSave(updateSettingsFormDto, isDirty)
   }
 
   return (
