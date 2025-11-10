@@ -4,7 +4,9 @@ const SourceBaseSchema = z.object({
   id: z.string(),
   path: z.string(),
   name: z.string(),
-  comment: z.string().nullable()
+  comment: z.string().nullable(),
+  createdAt: z.date(),
+  updatedAt: z.date()
 })
 
 const CreateSourceBaseSchema = z.object({

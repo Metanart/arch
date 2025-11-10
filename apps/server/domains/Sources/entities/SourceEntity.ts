@@ -1,4 +1,4 @@
-import { Column, Entity } from 'typeorm'
+import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm'
 
 import { BaseEntity } from '@shared/entities'
 
@@ -12,4 +12,14 @@ export class SourceEntity extends BaseEntity {
 
   @Column({ type: 'varchar', nullable: true })
   comment!: string | null
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt!: Date
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP'
+  })
+  updatedAt!: Date
 }
