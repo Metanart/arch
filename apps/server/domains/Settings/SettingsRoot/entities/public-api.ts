@@ -1,0 +1,1 @@
+export { SettingsEntity } from './SettingsEntity'

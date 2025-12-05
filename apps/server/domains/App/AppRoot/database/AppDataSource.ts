@@ -1,8 +1,11 @@
 import { DataSource } from 'typeorm'
 
 import { appPaths } from '@shared/utils'
-import { SettingsEntity } from '@domains/Settings/SettingsRoot'
-import { SourceEntity } from '@domains/Sources/SourcesRoot'
+
+// Entities have to be imported first and separately from the main repository code
+// to avoid errors like "ReferenceError: Cannot access 'AppDataSource' before initialization"
+import { SettingsEntity } from '@domains/Settings/SettingsRoot/entities'
+import { SourceEntity } from '@domains/Sources/SourcesRoot/entities'
 
 const isTest = process.env.NODE_ENV === 'test'
 
