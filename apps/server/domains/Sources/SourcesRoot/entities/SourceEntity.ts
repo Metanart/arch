@@ -13,11 +13,11 @@ export class SourceEntity extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   comment!: string | null
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date
 
   @UpdateDateColumn({
-    type: 'timestamp',
+    type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP'
   })
