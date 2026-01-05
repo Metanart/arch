@@ -29,8 +29,8 @@ export async function getSettings(): Promise<TSettingsServerDTO> {
   if (!settings) {
     log.warn('No settings found — creating new default settings')
     try {
-      const createdSettings = await createSettings({})
-      log.success('New default settings saved', createdSettings)
+      settings = await createSettings({})
+      log.success('New default settings saved', settings)
     } catch (error) {
       log.error('Failed to create new settings:', (error as Error).message)
       throw new Error('Failed to create new settings')
