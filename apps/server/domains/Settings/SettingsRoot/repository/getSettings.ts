@@ -6,6 +6,7 @@ import { SettingsServerSchema, TSettingsServerDTO } from '@arch/contracts'
 import { AppDataSource } from '@domains/App/AppRoot'
 
 import { SettingsEntity } from '../entities/SettingsEntity'
+import { createSettings } from './createSettings'
 
 export async function getSettings(): Promise<TSettingsServerDTO> {
   const repo = AppDataSource.getRepository(SettingsEntity)
@@ -28,12 +29,11 @@ export async function getSettings(): Promise<TSettingsServerDTO> {
   if (!settings) {
     log.warn('No settings found — creating new default settings')
     try {
-      const newSettings = repo.create()
-      settings = await repo.save(newSettings)
-      log.success('New default settings saved', settings)
+      const createdSettings = await createSettings({})
+      log.success('New default settings saved', createdSettings)
     } catch (error) {
       log.error('Failed to create new settings:', (error as Error).message)
-      throw new Error('Failed to create new configuration')
+      throw new Error('Failed to create new settings')
     }
   } else {
     log.info('Existing settings retrieved', settings)
