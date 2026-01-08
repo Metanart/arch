@@ -1,35 +1,36 @@
 import { FC, Fragment, JSX, useCallback } from 'react'
 
-import { SettingsClientDTO, UpdateSettingsClientDTO } from '@arch/contracts'
+import { UpdateSettingsClientDTO } from '@arch/contracts'
 import { createLogger } from '@arch/utils'
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '@domains/Settings/SettingsRoot'
 import { Message } from '@shared/components'
 import { notify } from '@shared/utils'
 
-import { SettingsUpdateForm } from '../components/SettingsUpdateForm'
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '../../Root/public-api'
+import { UpdateSettingsForm } from '../components/UpdateSettingsForm'
 
-const log = createLogger({
+const logger = createLogger({
   domain: 'Settings',
   layer: 'Container',
   origin: 'SettingsUpdateFormContainer'
 })
 
-export const SettingsUpdateFormContainer: FC = () => {
-  const { data: settingsDto, isLoading, error } = useGetSettingsQuery()
+export const UpdateSettingsFormContainer: FC = () => {
+  const { data, isLoading, error } = useGetSettingsQuery()
   const [updateSettings, { isLoading: isUpdating }] = useUpdateSettingsMutation()
 
   const handleSave = useCallback(
-    async (updateSettingsDto: UpdateSettingsClientDTO, isDirty: boolean): Promise<void> => {
+    async (dto: UpdateSettingsClientDTO, isDirty: boolean): Promise<void> => {
       if (!isDirty) {
         notify('No changes to save', 'warning')
         return
       }
 
       try {
-        await updateSettings(updateSettingsDto).unwrap()
+        await updateSettings(dto).unwrap()
         notify('Settings updated successfully', 'success')
       } catch (error) {
-        log.error('Failed to update settings', error)
+        logger.error('Failed to update settings', error)
+        notify('Failed to update settings', 'error')
       }
     },
     [updateSettings]
@@ -51,11 +52,7 @@ export const SettingsUpdateFormContainer: FC = () => {
     return (
       <Fragment>
         {errorComponent}
-        <SettingsUpdateForm
-          isDisabled={isDisabled}
-          settingsDto={settingsDto as SettingsClientDTO}
-          onSave={handleSave}
-        />
+        <UpdateSettingsForm isDisabled={isDisabled} dto={data} onSave={handleSave} />
       </Fragment>
     )
   }

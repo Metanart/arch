@@ -2,14 +2,14 @@ import { FC } from 'react'
 
 import { Page, PageContent, PageHeader } from '@shared/components'
 
-import { SettingsUpdateFormContainer } from '../containers/SettingsUpdateFormContainer'
+import { UpdateSettingsFormContainer } from '../containers/UpdateSettingsFormContainer'
 
-export const SettingsUpdatePage: FC = () => {
+export const UpdateSettingsPage: FC = () => {
   return (
     <Page>
       <PageHeader title={'Settings'} />
       <PageContent>
-        <SettingsUpdateFormContainer />
+        <UpdateSettingsFormContainer />
       </PageContent>
     </Page>
   )

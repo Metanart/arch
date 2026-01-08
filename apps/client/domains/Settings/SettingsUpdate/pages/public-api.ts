@@ -1,1 +1,0 @@
-export { SettingsUpdatePage } from './SettingsUpdatePage'

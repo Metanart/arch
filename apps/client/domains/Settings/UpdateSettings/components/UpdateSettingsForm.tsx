@@ -2,9 +2,9 @@ import { FC, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import {
-  UpdateSettingsClientSchema,
-  TSettingsClientDTO,
-  TUpdateSettingsClientDTO
+  SettingsClientDTO,
+  UpdateSettingsClientDTO,
+  UpdateSettingsClientSchema
 } from '@arch/contracts'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import { FolderInput } from '@shared/components'
 
-import { SettingsUpdateFormDataQa } from './SettingsUpdateForm.testid'
+import { testIds } from './testIds'
 
 const DEFAULT_VALUES = {
   outputFolder: '',
@@ -32,29 +32,29 @@ const DEFAULT_VALUES = {
 }
 
 type Props = {
-  settingsDto?: TSettingsClientDTO
+  dto?: SettingsClientDTO
   isDisabled?: boolean
-  onSave: (updateSettingsDto: TUpdateSettingsClientDTO, isDirty: boolean) => void
+  onSave: (updateSettingsDto: UpdateSettingsClientDTO, isDirty: boolean) => void
 }
 
-export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave }) => {
+export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
   const {
     control,
     reset,
     handleSubmit,
     formState: { isDirty }
-  } = useForm<TUpdateSettingsClientDTO>({
+  } = useForm<UpdateSettingsClientDTO>({
     resolver: zodResolver(UpdateSettingsClientSchema),
     defaultValues: DEFAULT_VALUES
   })
 
   useEffect(() => {
-    if (settingsDto) {
-      reset(settingsDto)
+    if (dto) {
+      reset(dto)
     }
-  }, [settingsDto, reset])
+  }, [dto, reset])
 
-  const onSubmit = (updateSettingsFormDto: TUpdateSettingsClientDTO): void => {
+  const onSubmit = (updateSettingsFormDto: UpdateSettingsClientDTO): void => {
     onSave(updateSettingsFormDto, isDirty)
   }
 
@@ -81,7 +81,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                     fullWidth={true}
                     isDisabled={isDisabled || field.disabled}
                     slotProps={{
-                      htmlInput: { 'data-testid': SettingsUpdateFormDataQa.outputFolderInput }
+                      htmlInput: { 'data-testid': testIds.outputFolderInput }
                     }}
                   />
                 )}
@@ -106,7 +106,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                     fullWidth={true}
                     isDisabled={isDisabled || field.disabled}
                     slotProps={{
-                      htmlInput: { 'data-testid': SettingsUpdateFormDataQa.tempFolderInput }
+                      htmlInput: { 'data-testid': testIds.tempFolderInput }
                     }}
                   />
                 )}
@@ -132,7 +132,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                     }
                     fullWidth={true}
                     slotProps={{
-                      htmlInput: { 'data-testid': SettingsUpdateFormDataQa.maxThreadsInput }
+                      htmlInput: { 'data-testid': testIds.maxThreadsInput }
                     }}
                   />
                 )}
@@ -156,7 +156,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                           slotProps={{
                             input: {
                               // @ts-expect-error - TODO: add type for data-testid
-                              'data-testid': SettingsUpdateFormDataQa.autoProcessOnScanSwitch
+                              'data-testid': testIds.autoProcessOnScanSwitch
                             }
                           }}
                         />
@@ -182,7 +182,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                           slotProps={{
                             input: {
                               // @ts-expect-error - TODO: add type for data-testid
-                              'data-testid': SettingsUpdateFormDataQa.autoArchiveOnCompleteSwitch
+                              'data-testid': testIds.autoArchiveOnCompleteSwitch
                             }
                           }}
                         />
@@ -208,7 +208,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                           slotProps={{
                             input: {
                               // @ts-expect-error - TODO: add type for data-testid
-                              'data-testid': SettingsUpdateFormDataQa.useMultithreadingSwitch
+                              'data-testid': testIds.useMultithreadingSwitch
                             }
                           }}
                         />
@@ -234,7 +234,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
                           slotProps={{
                             input: {
                               // @ts-expect-error - TODO: add type for data-testid
-                              'data-testid': SettingsUpdateFormDataQa.debugModeSwitch
+                              'data-testid': testIds.debugModeSwitch
                             }
                           }}
                         />
@@ -253,7 +253,7 @@ export const SettingsUpdateForm: FC<Props> = ({ settingsDto, isDisabled, onSave 
             variant="contained"
             sx={{ alignSelf: 'flex-start' }}
             disabled={isDisabled}
-            data-testid={SettingsUpdateFormDataQa.submitButton}
+            data-testid={testIds.submitButton}
           >
             Save
           </Button>

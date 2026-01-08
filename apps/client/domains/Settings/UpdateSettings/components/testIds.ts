@@ -1,4 +1,4 @@
-export const SettingsUpdateFormDataQa = {
+export const testIds = {
   outputFolderInput: 'settings-update-form-output-folder-input',
   tempFolderInput: 'settings-update-form-temp-folder-input',
   maxThreadsInput: 'settings-update-form-max-threads-input',
@@ -8,5 +8,3 @@ export const SettingsUpdateFormDataQa = {
   debugModeSwitch: 'settings-update-form-debug-mode-switch',
   submitButton: 'settings-update-form-submit-button'
 } as const
-
-export type SettingsUpdateFormDataQaType = typeof SettingsUpdateFormDataQa
