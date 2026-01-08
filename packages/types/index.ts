@@ -1,3 +1,2 @@
-export * from './src/api.types'
-export * from './src/common.types'
 export * from './src/ipc.types'
+export * from './src/app.types'

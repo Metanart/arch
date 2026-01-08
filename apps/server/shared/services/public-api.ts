@@ -1,9 +1,9 @@
 import { ipcMain } from 'electron'
 
-import { ECommonIpcTags } from '@arch/enums'
+import { SHARED_IPC_CHANNELS } from '@arch/enums'
 
-import { DialogService } from './DialogService'
+import { selectFolder } from './selectFolder'
 
-export function setupCommonIpcHandlers(): void {
-  ipcMain.handle(ECommonIpcTags.DialogServiceSelectFolder, DialogService.selectFolder)
+export function setupSharedIpcHandlers(): void {
+  ipcMain.handle(SHARED_IPC_CHANNELS.SELECT_FOLDER, selectFolder)
 }

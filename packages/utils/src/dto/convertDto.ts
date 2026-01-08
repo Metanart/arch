@@ -6,7 +6,7 @@ type Key = string | number | symbol
 
 export function convertDto<
   SourceObject extends Record<Key, any>,
-  ResultObject extends Record<Key, any>
+  TargetObject extends Record<Key, any>
 >(
   sourceObject: SourceObject,
   options?: {
@@ -17,7 +17,7 @@ export function convertDto<
     >
     defaultTransform?: (value: any, key: string, source: SourceObject) => any
   }
-): ResultObject {
+): TargetObject {
   const { includeKeys, excludeKeys, transforms, defaultTransform } = options ?? {}
 
   const includeSet =
@@ -26,7 +26,7 @@ export function convertDto<
   const excludeSet =
     excludeKeys && excludeKeys.length > 0 ? new Set<string>(excludeKeys as any) : null
 
-  const resultObject = Object.keys(sourceObject).reduce<Record<string, any>>((acc, key) => {
+  const targetObject = Object.keys(sourceObject).reduce<Record<string, any>>((acc, key) => {
     if (includeSet && !includeSet.has(key)) return acc
     if (excludeSet && excludeSet.has(key)) return acc
 
@@ -47,5 +47,5 @@ export function convertDto<
     return acc
   }, {})
 
-  return resultObject as any as ResultObject
+  return targetObject as any as TargetObject
 }

@@ -1,23 +1,43 @@
 import { IsNull, Not } from 'typeorm'
 
-import { createLog } from '@arch/utils'
-import { TSettingsServerDTO, TUpdateSettingsServerDTO, SettingsServerSchema } from '@arch/contracts'
+import { AppContext } from '@arch/types'
+import { SettingsServerDTO, UpdateSettingsServerDTO, SettingsServerSchema } from '@arch/contracts'
 
 import { AppDataSource } from '@domains/App/AppRoot'
 
 import { SettingsEntity } from '../entities/SettingsEntity'
+import { AppError, createLogger } from '@arch/utils'
+import { normalizeError } from '@shared/utils'
+
+const appContext: AppContext = { domain: 'Settings', layer: 'Database', origin: 'updateSettings' }
+
+const messages = {
+  start: 'Update settings with payload',
+  existingSettingsFound: 'Existing settings found — merging changes',
+  settingsNotFound: 'Settings not found — creating a new one',
+  updateFailed: 'Failed to update settings with payload',
+  updateSuccess: 'Successfully updated settings with payload',
+  dtoSuccess: 'Successfully mapped updated settings to DTO',
+  dtoFailed: 'Failed to map updated settings to DTO'
+}
 
 export async function updateSettings(
-  updatedSettings: TUpdateSettingsServerDTO
-): Promise<TSettingsServerDTO | null> {
+  updatedSettings: UpdateSettingsServerDTO | null
+): Promise<SettingsServerDTO> {
+  if (!updatedSettings)
+    throw new AppError({
+      ...appContext,
+      message: 'No data provided to update settings',
+      code: 'EMPTY_ARGUMENTS'
+    })
+
   const repo = AppDataSource.getRepository(SettingsEntity)
 
-  const log = createLog({ tag: 'SettingsRepo.updateSettings' })
+  const logger = createLogger(appContext)
 
-  log.info('Updating settings with payload', updatedSettings)
+  logger.info(messages.start, updatedSettings)
 
   let existingSettings: SettingsEntity | null
-
   try {
     existingSettings = await repo.findOne({
       where: {
@@ -25,37 +45,40 @@ export async function updateSettings(
       }
     })
   } catch (error) {
-    log.error('Failed to fetch existing settings from database:', (error as Error).message)
-    throw new Error('Failed to fetch settings from the database')
+    const normalizedError = normalizeError(error, appContext)
+    logger.error(messages.updateFailed, normalizedError.message)
+    throw normalizedError
   }
 
-  let finalSettings: SettingsEntity
+  let mergedSettings: SettingsEntity
 
   if (existingSettings) {
-    log.info('Existing settings found — merging changes')
-    finalSettings = repo.merge(existingSettings, { ...existingSettings, ...updatedSettings })
+    logger.info(messages.existingSettingsFound, existingSettings)
+    mergedSettings = repo.merge(existingSettings, updatedSettings)
   } else {
-    log.warn('Settings not found — creating a new one')
-    finalSettings = repo.create(updatedSettings)
+    logger.warn(messages.settingsNotFound)
+    mergedSettings = repo.create(updatedSettings)
   }
 
-  let savedSettings: SettingsEntity | null
+  let savedMergedSettings: SettingsEntity | null
   try {
-    savedSettings = await repo.save(finalSettings)
-    log.success('Settings saved successfully', savedSettings)
+    savedMergedSettings = await repo.save(mergedSettings)
+    logger.success(messages.updateSuccess, savedMergedSettings)
   } catch (error) {
-    log.error('Failed to save settings to database:', (error as Error).message)
-    throw new Error('Failed to save settings to the database')
+    const normalizedError = normalizeError(error, appContext)
+    logger.error(messages.updateFailed, normalizedError.message)
+    throw normalizedError
   }
 
-  let serverDTO: TSettingsServerDTO
+  let settingsDTO: SettingsServerDTO
   try {
-    serverDTO = await SettingsServerSchema.parseAsync(savedSettings)
-    log.info('Mapped saved settings to DTO', serverDTO)
+    settingsDTO = await SettingsServerSchema.parseAsync(savedMergedSettings)
+    logger.info(messages.dtoSuccess, settingsDTO)
   } catch (error) {
-    log.error('Failed to map saved settings:', (error as Error).message)
-    throw new Error('Failed to map saved config')
+    const normalizedError = normalizeError(error, appContext)
+    logger.error(messages.dtoFailed, normalizedError.message)
+    throw normalizedError
   }
 
-  return serverDTO
+  return settingsDTO
 }

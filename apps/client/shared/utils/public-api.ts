@@ -1,2 +1,2 @@
-export { baseApiQuery } from './baseApiQuery'
+export { baseIpcQuery } from './baseIpcQuery'
 export { notify } from './notify'

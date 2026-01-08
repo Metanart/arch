@@ -1,20 +1,33 @@
 import { IsNull, Not } from 'typeorm'
 
-import { createLog } from '@arch/utils'
-import { SettingsServerSchema, TSettingsServerDTO } from '@arch/contracts'
+import { createLogger } from '@arch/utils'
+import { AppContext } from '@arch/types'
+import { normalizeError } from '@shared/utils'
+import { SettingsServerSchema, SettingsServerDTO } from '@arch/contracts'
 
 import { AppDataSource } from '@domains/App/AppRoot'
 
 import { SettingsEntity } from '../entities/SettingsEntity'
 import { createSettings } from './createSettings'
 
-export async function getSettings(): Promise<TSettingsServerDTO> {
-  const repo = AppDataSource.getRepository(SettingsEntity)
+const appContext: AppContext = { domain: 'Settings', layer: 'Database', origin: 'getSettings' }
 
-  const log = createLog({ tag: 'SettingsRepo.getSettings' })
+const messages = {
+  start: 'Get requested settings from database',
+  getFailed: 'Failed to get requested settings from database',
+  getSuccess: 'Successfully got requested settings from database',
+  dtoSuccess: 'Successfully mapped requested settings to DTO',
+  dtoFailed: 'Failed to map requested settings to DTO',
+  settingsNotFound: 'Settings not found in database — creating a new one'
+}
+
+export async function getSettings(): Promise<SettingsServerDTO> {
+  const repo = AppDataSource.getRepository(SettingsEntity)
+  const logger = createLogger(appContext)
+
+  logger.info(messages.start)
 
   let settings: SettingsEntity | null
-
   try {
     settings = await repo.findOne({
       where: {
@@ -22,32 +35,33 @@ export async function getSettings(): Promise<TSettingsServerDTO> {
       }
     })
   } catch (error) {
-    log.error('Failed to query settings from database:', (error as Error).message)
-    throw new Error('Error getting configuration from database')
+    const normalizedError = normalizeError(error, appContext)
+    logger.error(messages.getFailed, normalizedError.message)
+    throw normalizedError
   }
 
   if (!settings) {
-    log.warn('No settings found — creating new default settings')
+    logger.warn(messages.settingsNotFound)
+
     try {
       settings = await createSettings({})
-      log.success('New default settings saved', settings)
+      logger.success(messages.getSuccess, settings)
     } catch (error) {
-      log.error('Failed to create new settings:', (error as Error).message)
-      throw new Error('Failed to create new settings')
+      const normalizedError = normalizeError(error, appContext)
+      logger.error(messages.getFailed, normalizedError.message)
+      throw normalizedError
     }
-  } else {
-    log.info('Existing settings retrieved', settings)
   }
 
-  let serverDTO: TSettingsServerDTO
-
+  let settingsDTO: SettingsServerDTO
   try {
-    serverDTO = await SettingsServerSchema.parseAsync(settings)
-    log.info('Mapped settings to DTO', serverDTO)
+    settingsDTO = await SettingsServerSchema.parseAsync(settings)
+    logger.info(messages.dtoSuccess, settingsDTO)
   } catch (error) {
-    log.error('Failed to map settings to DTO:', (error as Error).message)
-    throw new Error('Failed to map settings')
+    const normalizedError = normalizeError(error, appContext)
+    logger.error(messages.dtoFailed, normalizedError.message)
+    throw normalizedError
   }
 
-  return serverDTO
+  return settingsDTO
 }

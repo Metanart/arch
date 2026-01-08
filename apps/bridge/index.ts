@@ -3,7 +3,10 @@ import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 import { settingsIpcInvokers } from '@domains/Settings'
-import { commonIpcInvokers } from '@shared/ipc'
+import { createLogger } from '@arch/utils'
+import { sharedIpcInvokers } from '@shared/ipc'
+
+const logger = createLogger({ layer: 'IPC', domain: 'Global', origin: 'Bridge invokers expose' })
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -11,14 +14,14 @@ import { commonIpcInvokers } from '@shared/ipc'
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', {
-      ...electronAPI,
-      ...commonIpcInvokers
+      ...electronAPI
     })
-    contextBridge.exposeInMainWorld('api', {
-      settings: settingsIpcInvokers
+    contextBridge.exposeInMainWorld('ipc', {
+      Shared: sharedIpcInvokers,
+      Settings: settingsIpcInvokers
     })
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 } else {
   // @ts-expect-error (define in dts)

@@ -1,1 +1,1 @@
-export { handleServiceToIpc } from './handleServiceToIpc'
+export { addIpcListener, addIpcListenerWithPayload } from './addIpcListener'

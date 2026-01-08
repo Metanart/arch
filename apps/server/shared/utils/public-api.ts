@@ -1,4 +1,4 @@
 export { appPaths } from './appPaths'
 export type { AppPaths } from './appPaths'
-export { convertDBErrorToMessage } from './convertDBErrorToMessage'
-export { mapDbError } from './mapDBError'
+
+export { normalizeError } from './normalize-error/normalizeError'

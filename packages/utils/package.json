@@ -11,6 +11,7 @@
     "src/**/*"
   ],
   "dependencies": {
-    "consola": "^3.4.2"
+    "consola": "^3.4.2",
+    "@arch/types": "workspace:*"
   }
 }

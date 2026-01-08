@@ -1,12 +1,15 @@
-import { Action, Domain } from './common.types'
+import { SETTINGS_IPC_CHANNELS, SHARED_IPC_CHANNELS } from '@arch/enums'
 
-// These Ipc tags are used to invoke methods from the main process
-// and they should be the same as the ones used in the main process
+export type IpcError = {
+  message: string
+}
+export type IpcResponse<Data> =
+  | { status: 'success'; data: Data }
+  | { status: 'error'; error: IpcError }
 
-export type IpcDomain = `${Domain}Ipc`
+export type IpcChannel = SETTINGS_IPC_CHANNELS | SHARED_IPC_CHANNELS
 
-export type IpcMethod = Action
-
-export type IpcTag = `${IpcDomain}.${IpcMethod}`
-
-export type IpcTagCustom = 'dialog.select-folder'
+export type IpcQuery<Payload = void> = {
+  channel: IpcChannel
+  payload?: Payload
+}

@@ -1,21 +1,25 @@
 import { FC, Fragment, JSX, useCallback } from 'react'
 
-import { TSettingsClientDTO, TUpdateSettingsClientDTO } from '@arch/contracts'
-import { createLog } from '@arch/utils'
+import { SettingsClientDTO, UpdateSettingsClientDTO } from '@arch/contracts'
+import { createLogger } from '@arch/utils'
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '@domains/Settings/SettingsRoot'
 import { Message } from '@shared/components'
 import { notify } from '@shared/utils'
 
 import { SettingsUpdateForm } from '../components/SettingsUpdateForm'
 
-const log = createLog({ category: 'RENDERER', tag: 'Settings' })
+const log = createLogger({
+  domain: 'Settings',
+  layer: 'Container',
+  origin: 'SettingsUpdateFormContainer'
+})
 
 export const SettingsUpdateFormContainer: FC = () => {
   const { data: settingsDto, isLoading, error } = useGetSettingsQuery()
   const [updateSettings, { isLoading: isUpdating }] = useUpdateSettingsMutation()
 
   const handleSave = useCallback(
-    async (updateSettingsDto: TUpdateSettingsClientDTO, isDirty: boolean): Promise<void> => {
+    async (updateSettingsDto: UpdateSettingsClientDTO, isDirty: boolean): Promise<void> => {
       if (!isDirty) {
         notify('No changes to save', 'warning')
         return
@@ -49,7 +53,7 @@ export const SettingsUpdateFormContainer: FC = () => {
         {errorComponent}
         <SettingsUpdateForm
           isDisabled={isDisabled}
-          settingsDto={settingsDto as TSettingsClientDTO}
+          settingsDto={settingsDto as SettingsClientDTO}
           onSave={handleSave}
         />
       </Fragment>

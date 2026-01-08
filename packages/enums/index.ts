@@ -1,3 +1,8 @@
-export enum ECommonIpcTags {
-  DialogServiceSelectFolder = 'DialogService.selectFolder'
+export enum SETTINGS_IPC_CHANNELS {
+  GET = 'SETTINGS_IPC_CHANNELS.GET',
+  UPDATE = 'SETTINGS_IPC_CHANNELS.UPDATE'
+}
+
+export enum SHARED_IPC_CHANNELS {
+  SELECT_FOLDER = 'SHARED_IPC_CHANNELS.SELECT_FOLDER'
 }

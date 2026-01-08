@@ -1,9 +1,9 @@
-import { SettingsApi } from '@domains/Settings/SettingsRoot'
+import { SettingsIpcApi } from '@domains/Settings/SettingsRoot'
 import { configureStore } from '@reduxjs/toolkit'
 
 export const AppStore = configureStore({
   reducer: {
-    [SettingsApi.reducerPath]: SettingsApi.reducer
+    [SettingsIpcApi.reducerPath]: SettingsIpcApi.reducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(SettingsApi.middleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(SettingsIpcApi.middleware)
 })

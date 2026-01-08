@@ -45,11 +45,11 @@ export const UpdateSettingsServerSchema = UpdateSettingsBaseSchema
 export const CreateSettingsClientSchema = CreateSettingsBaseSchema
 export const CreateSettingsServerSchema = CreateSettingsBaseSchema
 
-export type TSettingsClientDTO = z.infer<typeof SettingsClientSchema>
-export type TSettingsServerDTO = z.infer<typeof SettingsServerSchema>
+export type SettingsClientDTO = z.infer<typeof SettingsClientSchema>
+export type SettingsServerDTO = z.infer<typeof SettingsServerSchema>
 
-export type TUpdateSettingsClientDTO = z.infer<typeof UpdateSettingsClientSchema>
-export type TUpdateSettingsServerDTO = z.infer<typeof UpdateSettingsServerSchema>
+export type UpdateSettingsClientDTO = z.infer<typeof UpdateSettingsClientSchema>
+export type UpdateSettingsServerDTO = z.infer<typeof UpdateSettingsServerSchema>
 
-export type TCreateSettingsClientDTO = z.infer<typeof CreateSettingsClientSchema>
-export type TCreateSettingsServerDTO = z.infer<typeof CreateSettingsServerSchema>
+export type CreateSettingsClientDTO = z.infer<typeof CreateSettingsClientSchema>
+export type CreateSettingsServerDTO = z.infer<typeof CreateSettingsServerSchema>

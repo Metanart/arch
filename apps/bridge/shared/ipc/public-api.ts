@@ -1,2 +1,1 @@
-export { createIpcInvoker, createIpcInvokerWithPayload } from './createIpcInvoker'
-export * from './CommonIpcInvokers'
+export * from './SharedIpcInvokers'

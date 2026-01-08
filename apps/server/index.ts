@@ -7,21 +7,24 @@ import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 
 import { AppDataSource } from '@domains/App/AppRoot'
-import { setupSettingsIpcHandlers } from '@domains/Settings/SettingsRoot'
-import { setupCommonIpcHandlers } from '@shared/services'
+import { setupSettingsIpcListeners } from '@domains/Settings/SettingsRoot'
+import { setupSharedIpcHandlers } from '@shared/services'
 
 import 'dotenv/config'
+import { createLogger } from '@arch/utils'
 
-console.log('Starting server')
+const logger = createLogger({ domain: 'Global', layer: 'StartApp', origin: 'Server main file' })
 
-console.log('Setting up common IPC handlers')
-setupCommonIpcHandlers()
+logger.log('Starting server')
 
-console.log('Setting up settings IPC handlers')
-setupSettingsIpcHandlers()
+logger.log('Setting up shared IPC listeners')
+setupSharedIpcHandlers()
+
+logger.log('Setting up settings IPC listeners')
+setupSettingsIpcListeners()
 
 function createWindow(): void {
-  console.log('Creating main window')
+  logger.log('Creating main window')
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -39,12 +42,12 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    console.log('MainWindow ready to show')
+    logger.log('MainWindow ready to show')
     mainWindow.show()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    console.log('MainWindow webContents setWindowOpenHandler', details)
+    logger.log('MainWindow webContents setWindowOpenHandler', details)
 
     shell.openExternal(details.url)
     return { action: 'deny' }
@@ -58,7 +61,7 @@ function createWindow(): void {
     mainWindow.loadFile(join(__dirname, '../client/index.html'))
   }
 
-  console.log('MainWindow loaded')
+  logger.log('MainWindow loaded')
 }
 
 // This method will be called when Electron has finished
@@ -66,17 +69,17 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   // Set app user modasync async el id for windows
-  console.log('App ready')
+  logger.log('App ready')
 
   electronApp.setAppUserModelId('com.electron')
-  console.log('App user model id set')
+  logger.log('App user model id set')
 
   try {
     await AppDataSource.initialize()
-    console.log('Database connected at', AppDataSource.options.database)
+    logger.log('Database connected at', AppDataSource.options.database)
     await createWindow()
   } catch (err) {
-    console.error('Failed to initialize database:', err)
+    logger.error('Failed to initialize database:', err)
     app.quit()
   }
 
@@ -84,12 +87,12 @@ app.whenReady().then(async () => {
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
-    console.log('Browser window created', window)
+    logger.log('Browser window created', window)
     optimizer.watchWindowShortcuts(window)
   })
 
   app.on('activate', function () {
-    console.log('App activate')
+    logger.log('App activate')
 
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -101,7 +104,7 @@ app.whenReady().then(async () => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  console.log('Window all closed')
+  logger.log('Window all closed')
 
   if (process.platform !== 'darwin') {
     app.quit()

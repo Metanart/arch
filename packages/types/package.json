@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "main": "index.ts",
+  "dependencies": {
+    "@arch/enums": "workspace:*"
+  },
   "exports": {
     ".": "./index.ts"
   },
