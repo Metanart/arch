@@ -5,7 +5,7 @@ import {
   AppProvidersContainer,
   AppRootContainer,
   AppRoutesContainerMemo
-} from '@domains/App/AppRoot'
+} from './domains/App/Root/public-api'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 
 import { theme } from './styles/theme'

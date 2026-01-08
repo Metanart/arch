@@ -2,6 +2,7 @@ import { FC, useState } from 'react'
 
 import FolderOpenIcon from '@mui/icons-material/FolderOpen'
 import { IconButton, InputAdornment, StandardTextFieldProps, TextField } from '@mui/material'
+import { SharedIpcMethods } from '@shared/ipc'
 
 type Props = {
   label: string
@@ -41,9 +42,10 @@ export const FolderInput: FC<Props> = (props) => {
 
   const handleSelectFolder = async (): Promise<void> => {
     setIsSelecting(true)
-    const selectedPath = await window.electron.selectFolder()
+    const selectedPath = await SharedIpcMethods.selectFolder()
 
     if (selectedPath) onSelect(selectedPath)
+
     setIsSelecting(false)
   }
 
