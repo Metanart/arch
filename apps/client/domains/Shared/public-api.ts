@@ -1,5 +1,6 @@
 export { FolderInput } from './components/FolderInput'
 export { Message } from './components/Message'
+export { Modal } from './components/Modal/Modal'
 export { Notification } from './components/Notification/Notification'
 export { Page } from './components/Page/Page'
 export { PageContent } from './components/Page/PageContent'

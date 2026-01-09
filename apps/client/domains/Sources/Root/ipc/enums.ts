@@ -1,0 +1,3 @@
+export enum SOURCES_IPC_API_TAGS {
+  GLOBAL = 'GLOBAL'
+}

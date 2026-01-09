@@ -13,7 +13,9 @@ export const sourcesIpcInvokers = {
     SourceClientDTO,
     UpdateSourceClientDTO
   >(SOURCES_IPC_CHANNELS.UPDATE),
-  [SOURCES_IPC_CHANNELS.REMOVE]: createIpcInvoker<string>(SOURCES_IPC_CHANNELS.REMOVE)
+  [SOURCES_IPC_CHANNELS.REMOVE]: createIpcInvokerWithPayload<boolean, string>(
+    SOURCES_IPC_CHANNELS.REMOVE
+  )
 } as const
 
 export type SourcesIpcInvokers = typeof sourcesIpcInvokers
