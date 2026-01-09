@@ -1,12 +1,13 @@
-import { createIpcInvoker, createIpcInvokerWithPayload } from '@shared/utils'
-import { SettingsServerDTO, UpdateSettingsServerDTO } from '@arch/contracts'
+import { SettingsClientDTO, UpdateSettingsClientDTO } from '@arch/contracts'
 import { SETTINGS_IPC_CHANNELS } from '@arch/enums'
 
+import { createIpcInvoker, createIpcInvokerWithPayload } from '@domains/Shared'
+
 export const settingsIpcInvokers = {
-  [SETTINGS_IPC_CHANNELS.GET]: createIpcInvoker<SettingsServerDTO>(SETTINGS_IPC_CHANNELS.GET),
+  [SETTINGS_IPC_CHANNELS.GET]: createIpcInvoker<SettingsClientDTO>(SETTINGS_IPC_CHANNELS.GET),
   [SETTINGS_IPC_CHANNELS.UPDATE]: createIpcInvokerWithPayload<
-    SettingsServerDTO,
-    UpdateSettingsServerDTO
+    SettingsClientDTO,
+    UpdateSettingsClientDTO
   >(SETTINGS_IPC_CHANNELS.UPDATE)
 } as const
 

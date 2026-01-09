@@ -4,7 +4,6 @@
     "index.tsx",
     "domains/**/*",
     "styles/**/*",
-    "shared/**/*",
     "../bridge/index.d.ts"
   ],
   "compilerOptions": {
@@ -15,9 +14,6 @@
       "@domains/*": [
         "domains/*/public-api.ts"
       ],
-      "@shared/*": [
-        "shared/*/public-api.ts"
-      ]
     }
   }
 }

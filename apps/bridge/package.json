@@ -2,8 +2,8 @@
   "name": "@arch/bridge",
   "version": "1.0.0",
   "private": true,
-  "main": "index.ts",
   "type": "module",
+  "main": "index.ts",
   "scripts": {},
   "dependencies": {
     "@arch/enums": "workspace:*",
@@ -11,7 +11,6 @@
   },
   "files": [
     "domains/**/*",
-    "shared/**/*",
     "index.ts",
     "index.d.ts"
   ]

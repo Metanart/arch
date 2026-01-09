@@ -6,6 +6,7 @@ declare global {
     ipc: {
       Shared: SharedIpcInvokers
       Settings: SettingsIpcInvokers
+      Sources: SourcesIpcInvokers
     }
   }
 }

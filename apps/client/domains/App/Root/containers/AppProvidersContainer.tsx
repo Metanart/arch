@@ -1,8 +1,9 @@
 import { FC, JSX, PropsWithChildren } from 'react'
 import { Provider } from 'react-redux'
 
-import { Notification } from '@shared/components'
 import { SnackbarProvider } from 'notistack'
+
+import { Notification } from '@domains/Shared'
 
 import { AppStore } from '../store/AppStore'
 

@@ -1,9 +1,9 @@
 import { JSX, PropsWithChildren, useState } from 'react'
 
+import { AppNavigationContainer } from './AppNavigationContainer'
+
 import { AppContent } from '../components/AppContent'
 import { AppRoot } from '../components/AppRoot'
-
-import { AppNavigationContainer } from './AppNavigationContainer'
 
 const NAVIGATION_OPEN_WIDTH = 240
 const NAVIGATION_CLOSE_WIDTH = 64

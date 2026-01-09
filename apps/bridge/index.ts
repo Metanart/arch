@@ -1,10 +1,13 @@
 import { contextBridge } from 'electron'
 
-import { electronAPI } from '@electron-toolkit/preload'
+import { createLogger } from '@arch/utils'
+
+import { sharedIpcInvokers } from '@domains/Shared'
 
 import { settingsIpcInvokers } from '@domains/Settings'
-import { createLogger } from '@arch/utils'
-import { sharedIpcInvokers } from '@shared/ipc'
+import { sourcesIpcInvokers } from '@domains/Sources'
+
+import { electronAPI } from '@electron-toolkit/preload'
 
 const logger = createLogger({ layer: 'IPC', domain: 'Global', origin: 'Bridge invokers expose' })
 
@@ -18,7 +21,8 @@ if (process.contextIsolated) {
     })
     contextBridge.exposeInMainWorld('ipc', {
       Shared: sharedIpcInvokers,
-      Settings: settingsIpcInvokers
+      Settings: settingsIpcInvokers,
+      Sources: sourcesIpcInvokers
     })
   } catch (error) {
     logger.error(error)

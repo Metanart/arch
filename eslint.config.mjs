@@ -11,7 +11,8 @@ import {
   reactConfig,
   clientSimpleImportSortConfig,
   serverSimpleImportSortConfig,
-  commonSimpleImportSortConfig
+  packagesSimpleImportSortConfig,
+  bridgeSimpleImportSortConfig
 } from '@arch/eslint-config'
 
 export default defineConfig(
@@ -26,15 +27,18 @@ export default defineConfig(
   importConfig,
   unusedImportsConfig,
 
+  // Server
+  serverSimpleImportSortConfig,
+
+  // Bridge
+  bridgeSimpleImportSortConfig,
+
   // Client
   reactConfig,
   clientSimpleImportSortConfig,
 
-  // Server
-  serverSimpleImportSortConfig,
-
-  // Common
-  commonSimpleImportSortConfig,
+  // Packages
+  packagesSimpleImportSortConfig,
 
   // Prettier
   prettierConfig

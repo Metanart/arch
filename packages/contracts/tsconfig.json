@@ -1,12 +1,11 @@
 {
   "extends": "@arch/tsconfig/tsconfig.node.json",
   "include": [
-    "domains/**/*",
-    "utils/**/*",
+    "domains/**/*.ts",
+    "index.ts"
   ],
   "compilerOptions": {
     "composite": true,
     "strict": true,
-    "baseUrl": "."
   }
 }

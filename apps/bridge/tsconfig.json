@@ -2,7 +2,6 @@
   "extends": "@arch/tsconfig/tsconfig.node.json",
   "include": [
     "domains/**/*",
-    "shared/**/*",
     "index.ts",
     "index.d.ts",
   ],
@@ -15,9 +14,6 @@
     "paths": {
       "@domains/*": [
         "domains/*/public-api.ts"
-      ],
-      "@shared/*": [
-        "shared/*/public-api.ts"
       ],
     }
   }

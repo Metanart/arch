@@ -1,3 +1,3 @@
-export { SettingsIpcApi } from './ipc-api/SettingsIpcApi'
-export { useGetSettingsQuery } from './ipc-api/useGetSettingsQuery'
-export { useUpdateSettingsMutation } from './ipc-api/useUpdateSettingsMutation'
+export { SettingsIpcApi } from './ipc/SettingsIpcApi'
+export { useGetSettingsQuery } from './ipc/useGetSettingsQuery'
+export { useUpdateSettingsMutation } from './ipc/useUpdateSettingsMutation'

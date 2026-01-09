@@ -1,4 +1,5 @@
 import { AppContext } from '@arch/types'
+
 import { AppError } from './AppError'
 
 type ErrorAdapter<ErrorCode, ErrorDetails> = (

@@ -1,17 +1,19 @@
-import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import 'dotenv/config'
 
 import { app, BrowserWindow, shell } from 'electron'
 
+import { createLogger } from '@arch/utils'
+
+import { setupSharedIpcHandlers } from '@domains/Shared'
+
+import { AppDataSource } from '@domains/App/Root'
+import { setupSettingsIpcListeners } from '@domains/Settings/Root'
+import { setupSourcesIpcListeners } from '@domains/Sources/Root'
+
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { join } from 'path'
 
 import icon from '../../resources/icon.png?asset'
-
-import { AppDataSource } from '@domains/App/AppRoot'
-import { setupSettingsIpcListeners } from '@domains/Settings/SettingsRoot'
-import { setupSharedIpcHandlers } from '@shared/services'
-
-import 'dotenv/config'
-import { createLogger } from '@arch/utils'
 
 const logger = createLogger({ domain: 'Global', layer: 'StartApp', origin: 'Server main file' })
 
@@ -22,6 +24,9 @@ setupSharedIpcHandlers()
 
 logger.log('Setting up settings IPC listeners')
 setupSettingsIpcListeners()
+
+logger.log('Setting up sources IPC listeners')
+setupSourcesIpcListeners()
 
 function createWindow(): void {
   logger.log('Creating main window')

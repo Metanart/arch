@@ -1,4 +1,5 @@
-import { AppRoute } from '../../../App/Root/public-api'
+import { AppRoute } from '@domains/App/Root'
+
 import SettingsIcon from '@mui/icons-material/Settings'
 
 import { UpdateSettingsPage } from '../pages/UpdateSettingsPage'

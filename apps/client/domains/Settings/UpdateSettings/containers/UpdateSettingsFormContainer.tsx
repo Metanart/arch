@@ -2,10 +2,11 @@ import { FC, Fragment, JSX, useCallback } from 'react'
 
 import { UpdateSettingsClientDTO } from '@arch/contracts'
 import { createLogger } from '@arch/utils'
-import { Message } from '@shared/components'
-import { notify } from '@shared/utils'
 
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '../../Root/public-api'
+import { Message, notify } from '@domains/Shared'
+
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '@domains/Settings/Root'
+
 import { UpdateSettingsForm } from '../components/UpdateSettingsForm'
 
 const logger = createLogger({

@@ -1,11 +1,8 @@
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 
-import {
-  AppProvidersContainer,
-  AppRootContainer,
-  AppRoutesContainerMemo
-} from './domains/App/Root/public-api'
+import { AppProvidersContainer, AppRootContainer, AppRoutesContainerMemo } from '@domains/App/Root'
+
 import { CssBaseline, ThemeProvider } from '@mui/material'
 
 import { theme } from './styles/theme'

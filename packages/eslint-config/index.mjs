@@ -1,10 +1,6 @@
-export { ignoresConfig } from './ignoresConfig.mjs'
-export { importConfig } from './importConfig.mjs'
-export { unusedImportsConfig } from './unusedImportsConfig.mjs'
-export { prettierConfig } from './prettierConfig.mjs'
-export { reactConfig } from './reactConfig.mjs'
-export {
-  clientSimpleImportSortConfig,
-  serverSimpleImportSortConfig,
-  commonSimpleImportSortConfig
-} from './simpleImportSortConfig.mjs'
+export * from './ignoresConfig.mjs'
+export * from './importConfig.mjs'
+export * from './unusedImportsConfig.mjs'
+export * from './prettierConfig.mjs'
+export * from './reactConfig.mjs'
+export * from './simpleImportSortConfig.mjs'

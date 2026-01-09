@@ -28,7 +28,7 @@
     ]
   },
   "files": [
-    "dist/**",
-    "node_modules/**"
+    "domains/**/*",
+    "index.ts"
   ]
 }

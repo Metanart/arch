@@ -1,7 +1,8 @@
+import { AppContext } from '@arch/types'
+
 import { consola, ConsolaInstance, LogLevel } from 'consola'
 
 import { getEnv } from '../platform/getEnv'
-import { AppContext } from '@arch/types'
 
 const ENV_LOGS_ENABLED = getEnv('VITE_LOGS_ENABLED') === 'true'
 

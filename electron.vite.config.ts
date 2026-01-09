@@ -40,10 +40,6 @@ const main: UserConfig = {
       {
         find: /^@domains\/(.+)$/,
         replacement: resolve(__dirname, 'apps/server/domains/$1/public-api.ts')
-      },
-      {
-        find: /^@shared\/(.+)$/,
-        replacement: resolve(__dirname, 'apps/server/shared/$1/public-api.ts')
       }
     ]
   },
@@ -63,10 +59,6 @@ const preload: UserConfig = {
       {
         find: /^@domains\/(.+)$/,
         replacement: resolve(__dirname, 'apps/bridge/domains/$1/public-api.ts')
-      },
-      {
-        find: /^@shared\/(.+)$/,
-        replacement: resolve(__dirname, 'apps/bridge/shared/$1/public-api.ts')
       }
     ]
   },
@@ -84,10 +76,6 @@ const renderer: UserConfig = {
       {
         find: /^@domains\/(.+)$/,
         replacement: resolve('apps/client/domains/$1/public-api.ts')
-      },
-      {
-        find: /^@shared\/(.+)$/,
-        replacement: resolve(__dirname, 'apps/client/shared/$1/public-api.ts')
       }
     ]
   },

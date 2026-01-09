@@ -2,33 +2,51 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort'
 
 const CLIENT_GROUPS = [
   ['^react'],
-  ['^@?\\w'],
-  // 4. parent imports
-  ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-  // 5. sibling imports
+  ['^notistack'],
+  ['^@reduxjs'],
+  ['^@react-hook-form'],
+  ['^@react-error-boundary'],
+  ['^@react-router-dom'],
+  ['^@react-redux'],
+  ['^@react-router'],
+  ['^@react-router-dom'],
+  ['^@react-router-dom'],
+  ['^@hookform'],
+  ['^@arch'],
+  ['^@domains/Shared'],
+  ['^@domains'],
+  ['^@mui'],
+  ['^@'],
   ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-  // 6. style imports
+  ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+  ['^\\.(?!/?$)', '^\\./?$'],
   ['^.+\\.s?css$']
 ]
 
 const SERVER_GROUPS = [
-  ['^\\u0000', '^reflect-metadata$'], // side-effects / polyfills
+  ['^\\u0000', '^reflect-metadata$'],
   ['^electron'],
   ['^typeorm$'],
-  ['^node:'], // Node built-ins
-  ['^@?\\w'], // external deps (no React priority on server)
-  ['^(@server|@shared|@)(/.*|$)'], // monorepo aliases (server/shared)
+  ['^node:'],
+  ['^@arch'],
+  ['^@domains/Shared'],
+  ['^@domains'],
+  ['^@?\\w'],
+  ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
   ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-  ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$']
+  ['^\\.(?!/?$)', '^\\./?$']
 ]
 
 const COMMON_GROUPS = [
   ['^\\u0000'],
   ['^electron'],
+  ['^@arch'],
+  ['^@domains/Shared'],
+  ['^@domains'],
   ['^@?\\w'],
-  ['^(@shared|@)(/.*|$)'], // shared + root alias
+  ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
   ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-  ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$']
+  ['^\\.(?!/?$)', '^\\./?$']
 ]
 
 function makeSimpleImportSortConfig({ name, files, groups }) {
@@ -51,12 +69,18 @@ export const clientSimpleImportSortConfig = makeSimpleImportSortConfig({
 
 export const serverSimpleImportSortConfig = makeSimpleImportSortConfig({
   name: 'simple-import-sort/server',
-  files: [`./apps/server/**/*.{ts}`],
+  files: [`./apps/server/**/*.ts`],
   groups: SERVER_GROUPS
 })
 
-export const commonSimpleImportSortConfig = makeSimpleImportSortConfig({
+export const bridgeSimpleImportSortConfig = makeSimpleImportSortConfig({
   name: 'simple-import-sort/bridge',
-  files: [`./apps/bridge/**/*.{ts}`, `./packages/**/*.{ts}`],
+  files: [`./apps/bridge/**/*.ts`],
+  groups: COMMON_GROUPS
+})
+
+export const packagesSimpleImportSortConfig = makeSimpleImportSortConfig({
+  name: 'simple-import-sort/packages',
+  files: [`./packages/**/*.ts`],
   groups: COMMON_GROUPS
 })

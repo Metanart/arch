@@ -1,12 +1,16 @@
 import { FC, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+
 import {
   SettingsClientDTO,
   UpdateSettingsClientDTO,
   UpdateSettingsClientSchema
 } from '@arch/contracts'
-import { zodResolver } from '@hookform/resolvers/zod'
+
+import { FolderInput } from '@domains/Shared'
+
 import {
   Button,
   Card,
@@ -17,9 +21,8 @@ import {
   Switch,
   TextField
 } from '@mui/material'
-import { FolderInput } from '@shared/components'
 
-import { testIds } from './testIds'
+import { TEST_IDS } from './test-ids'
 
 const DEFAULT_VALUES = {
   outputFolder: '',
@@ -81,7 +84,7 @@ export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
                     fullWidth={true}
                     isDisabled={isDisabled || field.disabled}
                     slotProps={{
-                      htmlInput: { 'data-testid': testIds.outputFolderInput }
+                      htmlInput: { 'data-testid': TEST_IDS.outputFolderInput }
                     }}
                   />
                 )}
@@ -106,7 +109,7 @@ export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
                     fullWidth={true}
                     isDisabled={isDisabled || field.disabled}
                     slotProps={{
-                      htmlInput: { 'data-testid': testIds.tempFolderInput }
+                      htmlInput: { 'data-testid': TEST_IDS.tempFolderInput }
                     }}
                   />
                 )}
@@ -132,7 +135,7 @@ export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
                     }
                     fullWidth={true}
                     slotProps={{
-                      htmlInput: { 'data-testid': testIds.maxThreadsInput }
+                      htmlInput: { 'data-testid': TEST_IDS.maxThreadsInput }
                     }}
                   />
                 )}
@@ -156,7 +159,7 @@ export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
                           slotProps={{
                             input: {
                               // @ts-expect-error - TODO: add type for data-testid
-                              'data-testid': testIds.autoProcessOnScanSwitch
+                              'data-testid': TEST_IDS.autoProcessOnScanSwitch
                             }
                           }}
                         />
@@ -182,7 +185,7 @@ export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
                           slotProps={{
                             input: {
                               // @ts-expect-error - TODO: add type for data-testid
-                              'data-testid': testIds.autoArchiveOnCompleteSwitch
+                              'data-testid': TEST_IDS.autoArchiveOnCompleteSwitch
                             }
                           }}
                         />
@@ -208,7 +211,7 @@ export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
                           slotProps={{
                             input: {
                               // @ts-expect-error - TODO: add type for data-testid
-                              'data-testid': testIds.useMultithreadingSwitch
+                              'data-testid': TEST_IDS.useMultithreadingSwitch
                             }
                           }}
                         />
@@ -234,7 +237,7 @@ export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
                           slotProps={{
                             input: {
                               // @ts-expect-error - TODO: add type for data-testid
-                              'data-testid': testIds.debugModeSwitch
+                              'data-testid': TEST_IDS.debugModeSwitch
                             }
                           }}
                         />
@@ -253,7 +256,7 @@ export const UpdateSettingsForm: FC<Props> = ({ dto, isDisabled, onSave }) => {
             variant="contained"
             sx={{ alignSelf: 'flex-start' }}
             disabled={isDisabled}
-            data-testid={testIds.submitButton}
+            data-testid={TEST_IDS.submitButton}
           >
             Save
           </Button>

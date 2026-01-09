@@ -12,6 +12,7 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache --fix --ext .ts,.tsx apps packages",
     "typecheck:server": "tsc --noEmit -p apps/server/tsconfig.json --composite false",
     "typecheck:client": "tsc --noEmit -p apps/client/tsconfig.json --composite false",
     "typecheck:bridge": "tsc --noEmit -p apps/bridge/tsconfig.json --composite false",

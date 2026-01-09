@@ -1,5 +1,6 @@
-import { SettingsIpcApi } from '@domains/Settings/Root'
 import { configureStore } from '@reduxjs/toolkit'
+
+import { SettingsIpcApi } from '@domains/Settings/Root'
 
 export const AppStore = configureStore({
   reducer: {
