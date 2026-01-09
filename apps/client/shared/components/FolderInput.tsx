@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 
 import FolderOpenIcon from '@mui/icons-material/FolderOpen'
 import { IconButton, InputAdornment, StandardTextFieldProps, TextField } from '@mui/material'
-import { SharedIpcMethods } from '@shared/ipc'
+import { SharedIpcApi } from '@shared/ipc-api'
 
 type Props = {
   label: string
@@ -42,7 +42,7 @@ export const FolderInput: FC<Props> = (props) => {
 
   const handleSelectFolder = async (): Promise<void> => {
     setIsSelecting(true)
-    const selectedPath = await SharedIpcMethods.selectFolder()
+    const selectedPath = await SharedIpcApi.selectFolder()
 
     if (selectedPath) onSelect(selectedPath)
 
