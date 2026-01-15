@@ -11,6 +11,7 @@ export type AppLayer =
   | 'IPC'
   | 'API'
   | 'StartApp'
+  | 'FileSystem'
 
 export type AppContext = {
   domain: AppDomain

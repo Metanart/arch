@@ -27,9 +27,10 @@ const CLIENT_GROUPS = [
 
 const SERVER_GROUPS = [
   ['^\\u0000', '^reflect-metadata$'],
+  ['^node:'],
+  ['^fs', '^crypto'],
   ['^electron'],
   ['^typeorm$'],
-  ['^node:'],
   ['^@arch'],
   ['^@domains/Shared'],
   ['^@domains'],

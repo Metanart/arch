@@ -15,8 +15,8 @@ export function createErrorNormalizer<ErrorCode, ErrorDetails>(
     context: AppContext
   ): AppError<ErrorCode, ErrorDetails> {
     for (const adapter of adapters) {
-      const mapped = adapter(error, context)
-      if (mapped) return mapped
+      const mappedAppError = adapter(error, context)
+      if (mappedAppError) return mappedAppError
     }
 
     return new AppError<ErrorCode, ErrorDetails>({
