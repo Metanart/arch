@@ -16,7 +16,9 @@
     "@electron-toolkit/utils": "^4.0.0",
     "better-sqlite3": "^12.4.1",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.27"
+    "typeorm": "^0.3.27",
+    "yazl": "^3.3.1",
+    "node-stream-zip": "^1.15.0"
   },
   "devDependencies": {
     "@electron/rebuild": "^4.0.1",
