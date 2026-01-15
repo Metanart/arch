@@ -28,6 +28,7 @@ const CLIENT_GROUPS = [
 const SERVER_GROUPS = [
   ['^\\u0000', '^reflect-metadata$'],
   ['^node:'],
+  ['^child_process'],
   ['^fs', '^crypto'],
   ['^electron'],
   ['^typeorm$'],
