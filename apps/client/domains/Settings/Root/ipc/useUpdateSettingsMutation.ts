@@ -1,8 +1,9 @@
 import { SettingsClientDTO, UpdateSettingsClientDTO } from '@arch/contracts'
 import { SETTINGS_IPC_CHANNELS } from '@arch/enums'
 
-import { SETTINGS_IPC_API_TAGS } from './enums'
 import { SettingsIpcApi } from './SettingsIpcApi'
+
+import { SETTINGS_IPC_API_TAGS } from './enums'
 
 export const { useUpdateSettingsMutation } = SettingsIpcApi.injectEndpoints({
   endpoints: (builder) => ({

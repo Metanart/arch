@@ -3,7 +3,7 @@ import { isPasswordProtected } from './isPasswordProtected'
 import { listContents } from './listContents'
 import { testIntegrity } from './testIntegrity'
 
-export const UnrarService = {
+export const UnrarAdapter = {
   extract,
   isPasswordProtected,
   listContents,

@@ -1,7 +1,7 @@
+import { spawn } from 'child_process'
+
 import { AppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
-
-import { spawn } from 'child_process'
 
 import { resolvePathToExecutable } from './resolvePathToExecutable'
 

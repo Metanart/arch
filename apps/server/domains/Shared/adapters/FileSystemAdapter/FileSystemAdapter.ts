@@ -1,8 +1,8 @@
-import { AppContext } from '@arch/types'
-import { AppError, getMessageFromError } from '@arch/utils'
-
 import { constants } from 'fs'
 import { access, copyFile, lstat, mkdir, rename, stat, unlink } from 'fs/promises'
+
+import { AppContext } from '@arch/types'
+import { AppError, getMessageFromError } from '@arch/utils'
 
 import { walkDirectoryTree } from './walkDirectoryTree/walkDirectoryTree'
 import { calculateFileHash } from './calculateFileHash'
@@ -145,7 +145,7 @@ async function moveFile(source: string, destination: string): Promise<boolean> {
   }
 }
 
-export const FileSystemService = {
+export const FileSystemAdapter = {
   checkFileExists,
   checkDirectoryExists,
   checkSymlinkExists,
