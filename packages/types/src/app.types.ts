@@ -1,6 +1,6 @@
 export type AppPart = 'Server' | 'Bridge' | 'Client'
 
-export type AppDomain = 'Settings' | 'Sources' | 'Global'
+export type AppDomain = 'Settings' | 'Sources' | 'Global' | 'Tasks'
 
 export type AppLayer =
   | 'Database'
