@@ -2,16 +2,9 @@ import { CreateSourceClientDTO, SourceServerDTO, UpdateSourceClientDTO } from '@
 import { IpcResponse } from '@arch/types'
 import { getMessageFromError } from '@arch/utils'
 
-import { SourcesRepository } from '../repository/SourcesRepository'
+import { getAllSources } from './getAllSources'
 
-async function getAll(): Promise<IpcResponse<SourceServerDTO[]>> {
-  try {
-    const sourcesDto = await SourcesRepository.getAll()
-    return { status: 'success', data: sourcesDto }
-  } catch (error: unknown) {
-    return { status: 'error', error: { message: getMessageFromError(error) } }
-  }
-}
+import { SourcesRepository } from '../repository/SourcesRepository'
 
 async function create(source: CreateSourceClientDTO): Promise<IpcResponse<SourceServerDTO>> {
   try {
@@ -45,7 +38,7 @@ async function remove(sourceId: string): Promise<IpcResponse<boolean>> {
 }
 
 export const SourcesIpcListeners = {
-  getAll,
+  getAll: getAllSources,
   create,
   update,
   remove
