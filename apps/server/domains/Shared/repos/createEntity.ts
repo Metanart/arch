@@ -16,20 +16,20 @@ const messages = {
   dtoFailed: 'Failed to map saved entity to DTO'
 }
 
-export async function createEntity<Entity extends ObjectLiteral, OutputDto>(
+export async function createEntity<TEntity extends ObjectLiteral, TOutputDto>(
   appContext: AppContext,
-  entityTarget: EntityTarget<Entity>,
-  outputSchema: z.ZodType<OutputDto>,
-  inputDto: DeepPartial<Entity>
-): Promise<OutputDto> {
-  const repo = AppDataSource.getRepository<Entity>(entityTarget)
+  entityTarget: EntityTarget<TEntity>,
+  outputSchema: z.ZodType<TOutputDto>,
+  inputDto: DeepPartial<TEntity>
+): Promise<TOutputDto> {
+  const repo = AppDataSource.getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start, inputDto)
 
   const newEntity = repo.create(inputDto)
 
-  let savedEntity: Entity
+  let savedEntity: TEntity
   try {
     savedEntity = await repo.save(newEntity)
     logger.success(messages.saveSuccess, savedEntity)

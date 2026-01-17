@@ -15,18 +15,18 @@ const messages = {
   updateFailed: 'Failed to update requested entity from database'
 }
 
-export async function updateEntity<Entity extends BaseEntity>(
+export async function updateEntity<TEntity extends BaseEntity>(
   appContext: AppContext,
-  entityTarget: EntityTarget<Entity>,
-  entityWhere: FindOptionsWhere<Entity>,
-  updatedEntity: DeepPartial<Entity>
-): Promise<Entity> {
-  const repo = AppDataSource.getRepository<Entity>(entityTarget)
+  entityTarget: EntityTarget<TEntity>,
+  entityWhere: FindOptionsWhere<TEntity>,
+  inputDto: DeepPartial<TEntity>
+): Promise<TEntity> {
+  const repo = AppDataSource.getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
-  logger.info(messages.start, updatedEntity)
+  logger.info(messages.start, inputDto)
 
-  let existingEntity: Entity | null
+  let existingEntity: TEntity | null
   try {
     existingEntity = await repo.findOne({
       where: entityWhere
@@ -45,5 +45,17 @@ export async function updateEntity<Entity extends BaseEntity>(
     })
   }
 
-  return existingEntity
+  const mergedEntity = repo.merge(existingEntity, inputDto)
+
+  let savedEntity: TEntity
+  try {
+    savedEntity = await repo.save(mergedEntity)
+    logger.success(messages.updateSuccess, savedEntity)
+  } catch (error) {
+    const normalizedError = normalizeError(error, appContext)
+    logger.error(messages.updateFailed, normalizedError.message)
+    throw normalizedError
+  }
+
+  return savedEntity
 }

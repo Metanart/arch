@@ -17,16 +17,16 @@ const messages = {
   dtoFailed: 'Failed to map requested entity to DTO'
 }
 
-export async function getFirstEntity<Entity extends BaseEntity, OutputDto>(
+export async function getFirstEntity<TEntity extends BaseEntity, TOutputDto>(
   appContext: AppContext,
-  entityTarget: EntityTarget<Entity>,
-  outputSchema: z.ZodType<OutputDto>
-): Promise<OutputDto> {
-  const repo = AppDataSource.getRepository<Entity>(entityTarget)
+  entityTarget: EntityTarget<TEntity>,
+  outputSchema: z.ZodType<TOutputDto>
+): Promise<TOutputDto> {
+  const repo = AppDataSource.getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start)
-  let entity: Entity | null
+  let entity: TEntity | null
   try {
     entity = await repo.findOne({})
   } catch (error) {
@@ -43,7 +43,7 @@ export async function getFirstEntity<Entity extends BaseEntity, OutputDto>(
     })
   }
 
-  let outputDto: OutputDto
+  let outputDto: TOutputDto
   try {
     outputDto = await outputSchema.parseAsync(entity)
     logger.info(messages.dtoSuccess, outputDto)

@@ -15,12 +15,12 @@ const messages = {
   removeFailed: 'Failed to remove requested entity from database'
 }
 
-export async function removeEntity<Entity extends BaseEntity>(
+export async function removeEntity<TEntity extends BaseEntity>(
   appContext: AppContext,
-  entityTarget: EntityTarget<Entity>,
-  entityWhere: FindOptionsWhere<Entity>
+  entityTarget: EntityTarget<TEntity>,
+  entityWhere: FindOptionsWhere<TEntity>
 ): Promise<boolean> {
-  const repo = AppDataSource.getRepository<Entity>(entityTarget)
+  const repo = AppDataSource.getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start)
