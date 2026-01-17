@@ -17,10 +17,10 @@ const messages = {
 }
 
 export async function createEntity<Entity extends ObjectLiteral, OutputDto>(
-  inputDto: DeepPartial<Entity>,
+  appContext: AppContext,
   entityTarget: EntityTarget<Entity>,
   outputSchema: z.ZodType<OutputDto>,
-  appContext: AppContext
+  inputDto: DeepPartial<Entity>
 ): Promise<OutputDto> {
   const repo = AppDataSource.getRepository<Entity>(entityTarget)
   const logger = createLogger(appContext)

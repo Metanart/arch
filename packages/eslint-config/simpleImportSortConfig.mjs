@@ -3,6 +3,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort'
 const CLIENT_GROUPS = [
   ['^react'],
   ['^notistack'],
+  ['^zod'],
   ['^@reduxjs'],
   ['^@react-hook-form'],
   ['^@react-error-boundary'],
