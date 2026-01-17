@@ -17,8 +17,9 @@ const messages = {
   dtoFailed: 'Failed to map requested entity to DTO'
 }
 
+const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'getFirstEntity' }
+
 export async function getFirstEntity<TEntity extends BaseEntity, TOutputDto>(
-  appContext: AppContext,
   entityTarget: EntityTarget<TEntity>,
   outputSchema: z.ZodType<TOutputDto>
 ): Promise<TOutputDto> {

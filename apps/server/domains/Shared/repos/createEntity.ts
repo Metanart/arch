@@ -16,8 +16,9 @@ const messages = {
   dtoFailed: 'Failed to map saved entity to DTO'
 }
 
+const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'createEntity' }
+
 export async function createEntity<TEntity extends ObjectLiteral, TOutputDto>(
-  appContext: AppContext,
   entityTarget: EntityTarget<TEntity>,
   outputSchema: z.ZodType<TOutputDto>,
   inputDto: DeepPartial<TEntity>

@@ -15,8 +15,9 @@ const messages = {
   removeFailed: 'Failed to remove requested entity from database'
 }
 
+const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'removeEntity' }
+
 export async function removeEntity<TEntity extends BaseEntity>(
-  appContext: AppContext,
   entityTarget: EntityTarget<TEntity>,
   entityWhere: FindOptionsWhere<TEntity>
 ): Promise<boolean> {

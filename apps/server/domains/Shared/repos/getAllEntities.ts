@@ -17,8 +17,9 @@ const messages = {
   dtoFailed: 'Failed to map entities to DTOs'
 }
 
+const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'getAllEntities' }
+
 export async function getAllEntities<TEntity extends BaseEntity, TOutputDto>(
-  appContext: AppContext,
   entityTarget: EntityTarget<TEntity>,
   outputSchema: z.ZodType<TOutputDto>
 ): Promise<TOutputDto[]> {

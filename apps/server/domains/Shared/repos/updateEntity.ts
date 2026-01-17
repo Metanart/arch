@@ -9,6 +9,8 @@ import { AppDataSource } from '@domains/App/Root'
 
 import { BaseEntity } from '../entities/BaseEntity'
 
+const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'updateEntity' }
+
 const messages = {
   start: 'Update requested entity from database',
   updateSuccess: 'Successfully updated requested entity from database',
@@ -16,7 +18,6 @@ const messages = {
 }
 
 export async function updateEntity<TEntity extends BaseEntity>(
-  appContext: AppContext,
   entityTarget: EntityTarget<TEntity>,
   entityWhere: FindOptionsWhere<TEntity>,
   inputDto: DeepPartial<TEntity>
