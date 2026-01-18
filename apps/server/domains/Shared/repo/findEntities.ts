@@ -5,7 +5,7 @@ import { BaseEntity, normalizeError } from '@domains/Shared'
 
 import { AppDataSource } from '@domains/App/Root'
 
-import type { EntityTarget } from 'typeorm'
+import type { EntityTarget, FindOptionsWhere } from 'typeorm'
 import type { z } from 'zod'
 
 const messages = {
@@ -19,9 +19,10 @@ const messages = {
 
 const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'getAllEntities' }
 
-export async function getAllEntities<TEntity extends BaseEntity, TOutputDto>(
+export async function findEntities<TEntity extends BaseEntity, TOutputDto>(
   entityTarget: EntityTarget<TEntity>,
-  outputSchema: z.ZodType<TOutputDto>
+  outputSchema: z.ZodType<TOutputDto>,
+  entityWhere: FindOptionsWhere<TEntity> = {}
 ): Promise<TOutputDto[]> {
   const repo = AppDataSource.getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
@@ -29,7 +30,7 @@ export async function getAllEntities<TEntity extends BaseEntity, TOutputDto>(
   let entities: TEntity[]
 
   try {
-    entities = await repo.find({})
+    entities = await repo.find({ where: entityWhere })
     logger.success(messages.getSuccess, entities)
   } catch (error) {
     const normalizedError = normalizeError(error, appContext)

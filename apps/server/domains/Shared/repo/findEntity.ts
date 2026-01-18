@@ -1,13 +1,15 @@
-import { EntityTarget } from 'typeorm'
+import { EntityTarget, FindOptionsWhere } from 'typeorm'
 
 import { AppContext } from '@arch/types'
 import { AppError, createLogger } from '@arch/utils'
 
-import { BaseEntity, normalizeError } from '@domains/Shared'
+import { normalizeError } from '@domains/Shared'
 
 import { AppDataSource } from '@domains/App/Root'
 
-import type { z } from 'zod'
+import { z } from 'zod'
+
+import { BaseEntity } from '../entities/BaseEntity'
 
 const messages = {
   start: 'Get requested entity from database',
@@ -17,19 +19,20 @@ const messages = {
   dtoFailed: 'Failed to map requested entity to DTO'
 }
 
-const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'getFirstEntity' }
+const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'getEntity' }
 
-export async function getFirstEntity<TEntity extends BaseEntity, TOutputDto>(
+export async function findEntity<TEntity extends BaseEntity, TOutputDto>(
   entityTarget: EntityTarget<TEntity>,
-  outputSchema: z.ZodType<TOutputDto>
+  outputSchema: z.ZodType<TOutputDto>,
+  entityWhere: FindOptionsWhere<TEntity> = {}
 ): Promise<TOutputDto> {
   const repo = AppDataSource.getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
-  logger.info(messages.start)
+  logger.info(messages.start, entityWhere)
   let entity: TEntity | null
   try {
-    entity = await repo.findOne({})
+    entity = await repo.findOne({ where: entityWhere })
   } catch (error) {
     const normalizedError = normalizeError(error, appContext)
     logger.error(messages.getFailed, normalizedError.message)

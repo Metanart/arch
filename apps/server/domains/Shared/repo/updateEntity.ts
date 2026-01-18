@@ -23,8 +23,8 @@ const messages = {
 
 export async function updateEntity<TEntity extends BaseEntity, TOutputDto>(
   entityTarget: EntityTarget<TEntity>,
-  entityWhere: FindOptionsWhere<TEntity>,
   outputSchema: z.ZodType<TOutputDto>,
+  entityWhere: FindOptionsWhere<TEntity>,
   inputDto: DeepPartial<TEntity>
 ): Promise<TOutputDto> {
   const repo = AppDataSource.getRepository<TEntity>(entityTarget)

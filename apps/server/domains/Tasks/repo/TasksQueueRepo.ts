@@ -5,15 +5,9 @@ import {
   UpdateTasksQueueServerDTO
 } from '@arch/contracts'
 
-import {
-  createEntity,
-  getAllEntities,
-  getEntity,
-  removeEntity,
-  updateEntity
-} from '@domains/Shared'
+import { createEntity, findEntities, findEntity, removeEntity, updateEntity } from '@domains/Shared'
 
-import { TasksQueueEntity } from '../../entities/TasksQueueEntity'
+import { TasksQueueEntity } from '../entities/TasksQueueEntity'
 
 async function createTasksQueue(
   taskQueueDto: CreateTasksQueueServerDTO
@@ -26,17 +20,17 @@ async function createTasksQueue(
 }
 
 async function getAllTasksQueues(): Promise<TasksQueueServerDTO[]> {
-  return getAllEntities<TasksQueueEntity, TasksQueueServerDTO>(
+  return findEntities<TasksQueueEntity, TasksQueueServerDTO>(
     TasksQueueEntity,
     TasksQueueServerSchema
   )
 }
 
 async function getTasksQueueById(id: string): Promise<TasksQueueServerDTO> {
-  return getEntity<TasksQueueEntity, TasksQueueServerDTO>(
+  return findEntity<TasksQueueEntity, TasksQueueServerDTO>(
     TasksQueueEntity,
-    { id },
-    TasksQueueServerSchema
+    TasksQueueServerSchema,
+    { id }
   )
 }
 
@@ -45,8 +39,8 @@ async function updateTasksQueue(
 ): Promise<TasksQueueServerDTO> {
   return updateEntity<TasksQueueEntity, TasksQueueServerDTO>(
     TasksQueueEntity,
-    { id: taskQueueDto.id },
     TasksQueueServerSchema,
+    { id: taskQueueDto.id },
     taskQueueDto
   )
 }
