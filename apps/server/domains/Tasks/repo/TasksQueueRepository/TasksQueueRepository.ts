@@ -1,13 +1,21 @@
 import {
   CreateTasksQueueServerDTO,
   TasksQueueServerDTO,
-  TasksQueueServerSchema
+  TasksQueueServerSchema,
+  UpdateTasksQueueServerDTO
 } from '@arch/contracts'
 
-import { createEntity } from 'domains/Shared/repo/createEntity'
-import { TasksQueueEntity } from 'domains/Tasks/entities/TasksQueueEntity'
+import {
+  createEntity,
+  getAllEntities,
+  getEntity,
+  removeEntity,
+  updateEntity
+} from '@domains/Shared'
 
-export async function createTasksQueue(
+import { TasksQueueEntity } from '../../entities/TasksQueueEntity'
+
+async function createTasksQueue(
   taskQueueDto: CreateTasksQueueServerDTO
 ): Promise<TasksQueueServerDTO> {
   return createEntity<TasksQueueEntity, TasksQueueServerDTO>(
@@ -17,6 +25,40 @@ export async function createTasksQueue(
   )
 }
 
+async function getAllTasksQueues(): Promise<TasksQueueServerDTO[]> {
+  return getAllEntities<TasksQueueEntity, TasksQueueServerDTO>(
+    TasksQueueEntity,
+    TasksQueueServerSchema
+  )
+}
+
+async function getTasksQueueById(id: string): Promise<TasksQueueServerDTO> {
+  return getEntity<TasksQueueEntity, TasksQueueServerDTO>(
+    TasksQueueEntity,
+    { id },
+    TasksQueueServerSchema
+  )
+}
+
+async function updateTasksQueue(
+  taskQueueDto: UpdateTasksQueueServerDTO
+): Promise<TasksQueueServerDTO> {
+  return updateEntity<TasksQueueEntity, TasksQueueServerDTO>(
+    TasksQueueEntity,
+    { id: taskQueueDto.id },
+    TasksQueueServerSchema,
+    taskQueueDto
+  )
+}
+
+async function removeTasksQueue(id: string): Promise<boolean> {
+  return removeEntity<TasksQueueEntity>(TasksQueueEntity, { id })
+}
+
 export const TasksQueueRepo = {
-  create: createTasksQueue
+  create: createTasksQueue,
+  getAll: getAllTasksQueues,
+  getById: getTasksQueueById,
+  update: updateTasksQueue,
+  remove: removeTasksQueue
 }

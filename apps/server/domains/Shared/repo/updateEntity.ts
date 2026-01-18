@@ -7,6 +7,8 @@ import { normalizeError } from '@domains/Shared'
 
 import { AppDataSource } from '@domains/App/Root'
 
+import { z } from 'zod'
+
 import { BaseEntity } from '../entities/BaseEntity'
 
 const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'updateEntity' }
@@ -14,14 +16,17 @@ const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'u
 const messages = {
   start: 'Update requested entity from database',
   updateSuccess: 'Successfully updated requested entity from database',
-  updateFailed: 'Failed to update requested entity from database'
+  updateFailed: 'Failed to update requested entity from database',
+  dtoSuccess: 'Successfully mapped updated entity to DTO',
+  dtoFailed: 'Failed to map updated entity to DTO'
 }
 
-export async function updateEntity<TEntity extends BaseEntity>(
+export async function updateEntity<TEntity extends BaseEntity, TOutputDto>(
   entityTarget: EntityTarget<TEntity>,
   entityWhere: FindOptionsWhere<TEntity>,
+  outputSchema: z.ZodType<TOutputDto>,
   inputDto: DeepPartial<TEntity>
-): Promise<TEntity> {
+): Promise<TOutputDto> {
   const repo = AppDataSource.getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
@@ -58,5 +63,15 @@ export async function updateEntity<TEntity extends BaseEntity>(
     throw normalizedError
   }
 
-  return savedEntity
+  let outputDto: TOutputDto
+  try {
+    outputDto = await outputSchema.parseAsync(savedEntity)
+    logger.info(messages.dtoSuccess, outputDto)
+  } catch (error) {
+    const normalizedError = normalizeError(error, appContext)
+    logger.error(messages.dtoFailed, normalizedError.message)
+    throw normalizedError
+  }
+
+  return outputDto
 }
