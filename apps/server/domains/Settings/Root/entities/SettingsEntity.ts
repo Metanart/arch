@@ -1,6 +1,8 @@
 import { Column, Entity } from 'typeorm'
 
-import { appPaths, BaseEntity } from '@domains/Shared'
+import { appPaths } from '@appPaths'
+
+import { BaseEntity } from '@domains/Shared'
 
 const { outputDir, tempDir } = appPaths
 

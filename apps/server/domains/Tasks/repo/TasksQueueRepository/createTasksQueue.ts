@@ -4,7 +4,7 @@ import {
   TasksQueueServerSchema
 } from '@arch/contracts'
 
-import { createEntity } from 'domains/Shared/repos/createEntity'
+import { createEntity } from '@domains/Shared'
 
 import { TasksQueueEntity } from '../../entities/TasksQueueEntity'
 

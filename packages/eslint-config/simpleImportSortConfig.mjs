@@ -34,6 +34,7 @@ const SERVER_GROUPS = [
   ['^electron'],
   ['^typeorm$'],
   ['^@arch'],
+  ['^@appPaths'],
   ['^@domains/Shared'],
   ['^@domains'],
   ['^@?\\w'],

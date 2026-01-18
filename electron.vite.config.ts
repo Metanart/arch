@@ -40,6 +40,10 @@ const main: UserConfig = {
       {
         find: /^@domains\/(.+)$/,
         replacement: resolve(__dirname, 'apps/server/domains/$1/public-api.ts')
+      },
+      {
+        find: /^@appPaths$/,
+        replacement: resolve(__dirname, 'apps/server/appPaths.ts')
       }
     ]
   },

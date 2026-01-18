@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm'
 
-import { appPaths } from '@domains/Shared'
+import { appPaths } from '@appPaths'
 
 import { SettingsEntity } from '@domains/Settings/Root'
 import { SourceEntity } from '@domains/Sources/Root'
