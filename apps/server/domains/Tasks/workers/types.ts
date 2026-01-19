@@ -1,7 +1,7 @@
 import { TASK_TYPE } from '@arch/contracts'
 
 type BaseMessage = {
-  requestId: string
+  id: string
 }
 
 type Message<Type extends string, Payload> = BaseMessage & {
