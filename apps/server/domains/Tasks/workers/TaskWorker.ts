@@ -2,6 +2,8 @@ import { type MessagePort, parentPort } from 'node:worker_threads'
 
 import { TASK_TYPE } from '@arch/contracts'
 
+import { FileSystemAdapter } from '@domains/Shared'
+
 import type { TaskWorkerRequestWithId, TaskWorkerResponse } from './types'
 
 if (parentPort === null) {
@@ -16,14 +18,6 @@ function multiply(num: number): number {
   }
 
   return num * 2
-}
-
-function scanDir(dirPath: string): string {
-  if (typeof dirPath !== 'string') {
-    throw new TypeError('dirPath must be a string')
-  }
-
-  return dirPath
 }
 
 MESSAGE_PORT.on('message', async (message: TaskWorkerRequestWithId) => {
@@ -42,7 +36,7 @@ MESSAGE_PORT.on('message', async (message: TaskWorkerRequestWithId) => {
       }
 
       case TASK_TYPE.SCAN_SOURCE: {
-        const dirTree = await scanDir(message.payload.dirPath)
+        const dirTree = await FileSystemAdapter.walkDirectoryTree(message.payload.dirPath)
 
         response = {
           ...message,

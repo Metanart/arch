@@ -22,6 +22,8 @@ export async function getAllSources(): Promise<IpcResponse<SourceServerDTO[]>> {
   logger.log('Sources before', sourcesDto)
 
   for (const sourceDto of sourcesDto) {
+    logger.log('Sending request to worker', sourceDto.path)
+
     try {
       const workerResponse = await taskWorkerClient.sendRequest({
         type: TASK_TYPE.SCAN_SOURCE,

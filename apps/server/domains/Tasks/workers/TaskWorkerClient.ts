@@ -1,5 +1,7 @@
-import { dirname, resolve } from 'node:path'
+import { resolve } from 'node:path'
 import { Worker } from 'node:worker_threads'
+
+import { app } from 'electron'
 
 import { AppContext } from '@arch/types'
 import { AppError, createLogger, isNumber, isObject, isString } from '@arch/utils'
@@ -13,10 +15,11 @@ const appContext: AppContext = { domain: 'Tasks', layer: 'Worker', origin: 'Task
 const logger = createLogger(appContext)
 
 function resolveTaskWorkerEntryPath(): string {
-  const mainEntryFile = require.main?.filename
-  const mainDir = mainEntryFile ? dirname(mainEntryFile) : process.cwd()
+  if (!app.isReady()) {
+    throw new Error('Cannot resolve worker path before app is ready')
+  }
 
-  return resolve(mainDir, 'build', 'main', 'workers', 'task-worker.js')
+  return resolve(app.getAppPath(), 'build', 'main', 'workers', 'task-worker.js')
 }
 
 const DEFAULT_REQUEST_TIMEOUT_MS = 5_000
@@ -30,16 +33,33 @@ type PendingRequest = {
 }
 
 class TaskWorkerClient {
-  private worker: Worker
   private isTerminated: boolean = false
   private pendingRequests = new Map<number, PendingRequest>()
   private lastRequestId: number = 0
+  private worker: Worker | null = null
 
   constructor() {
-    this.worker = new Worker(resolveTaskWorkerEntryPath())
-    this.worker.on('message', this.handleWorkerResponse.bind(this))
-    this.worker.on('error', this.handleWorkerError.bind(this))
-    this.worker.on('exit', this.handleWorkerExit.bind(this))
+    this.isTerminated = false
+  }
+
+  private ensureWorker(): Worker {
+    if (this.isTerminated) {
+      throw new AppError({ ...appContext, code: 'WORKER_TERMINATED', message: 'Worker terminated' })
+    }
+
+    if (this.worker) return this.worker
+
+    const entryPath = resolveTaskWorkerEntryPath()
+    logger.log('Starting worker from', entryPath)
+
+    const worker = new Worker(entryPath)
+
+    worker.on('message', (msg) => this.handleWorkerResponse(msg))
+    worker.on('error', (err) => this.handleWorkerError(err))
+    worker.on('exit', (code) => this.handleWorkerExit(code))
+
+    this.worker = worker
+    return worker
   }
 
   private getRequest(requestId: number): PendingRequest | undefined {
@@ -77,13 +97,7 @@ class TaskWorkerClient {
     request: TaskWorkerRequest,
     timeoutMs: number = DEFAULT_REQUEST_TIMEOUT_MS
   ): Promise<TaskWorkerResponse> {
-    if (this.isTerminated) {
-      throw new AppError({
-        ...appContext,
-        code: 'WORKER_TERMINATED',
-        message: 'Worker terminated'
-      })
-    }
+    const worker = this.ensureWorker()
 
     const deferredPromise = createDeferredPromise<TaskWorkerResponse>()
 
@@ -117,7 +131,7 @@ class TaskWorkerClient {
 
     try {
       this.setRequest(requestId, newPendingRequest)
-      this.worker.postMessage(message)
+      worker.postMessage(message)
     } catch (error) {
       this.deleteRequest(requestId)
       reject(
@@ -217,9 +231,15 @@ class TaskWorkerClient {
 
   public async terminate() {
     this.failAllPendingRequests(0)
-    const terminated = await this.worker.terminate()
+
+    const worker = this.worker
+    this.worker = null
     this.isTerminated = true
-    logger.log('Worker terminated with code', terminated)
+
+    if (worker) {
+      const code = await worker.terminate()
+      logger.log('Worker terminated with code', code)
+    }
   }
 }
 
