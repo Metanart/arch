@@ -27,11 +27,19 @@ const typeOrmDriverExternals = [
 const main: UserConfig = {
   build: {
     outDir: 'build/main',
-    lib: {
-      entry: 'apps/server/index.ts',
-      formats: ['cjs']
-    },
+
+    // ВАЖНО: для worker'а нужен multi-entry => выходим из lib-mode
     rollupOptions: {
+      input: {
+        index: resolve(__dirname, 'apps/server/index.ts'),
+        'workers/task-worker': resolve(__dirname, 'apps/server/domains/Tasks/workers/TaskWorker.ts')
+      },
+      output: {
+        entryFileNames: '[name].js',
+        chunkFileNames: 'chunks/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        format: 'cjs'
+      },
       external: [...typeOrmDriverExternals, /^typeorm(\/.*)?$/]
     }
   },

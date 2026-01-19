@@ -12,6 +12,7 @@ export type AppLayer =
   | 'API'
   | 'StartApp'
   | 'FileSystem'
+  | 'Worker'
 
 export type AppContext = {
   domain: AppDomain
