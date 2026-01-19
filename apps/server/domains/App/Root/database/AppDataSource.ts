@@ -1,17 +1,33 @@
 import { DataSource } from 'typeorm'
 
-import { appPaths } from '@appPaths'
-
 import { SettingsEntity } from '@domains/Settings/Root'
 import { SourceEntity } from '@domains/Sources/Root'
 
 const isTest = process.env.NODE_ENV === 'test'
 
-export const AppDataSource = new DataSource({
-  type: 'better-sqlite3',
-  database: isTest ? ':memory:' : appPaths.dbFile,
-  entities: [SettingsEntity, SourceEntity],
-  synchronize: true, // 🔧 DEV FLAG
-  logging: false,
-  cache: false
-})
+let dataSource: DataSource | null = null
+
+export function createDataSource(dbPath: string): DataSource {
+  if (dataSource) return dataSource
+
+  const database = isTest ? ':memory:' : dbPath
+
+  dataSource = new DataSource({
+    type: 'better-sqlite3',
+    database,
+    entities: [SettingsEntity, SourceEntity],
+    synchronize: true, // 🔧 DEV FLAG
+    logging: false,
+    cache: false
+  })
+
+  return dataSource
+}
+
+export function getDataSource(): DataSource {
+  if (!dataSource) {
+    throw new Error('DataSource is not initialized. Call initDataSource() first.')
+  }
+
+  return dataSource
+}

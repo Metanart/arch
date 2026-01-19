@@ -5,7 +5,7 @@ import { AppError, createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
 
-import { AppDataSource } from '@domains/App/Root'
+import { getDataSource } from '@domains/App/Root'
 
 import { z } from 'zod'
 
@@ -27,7 +27,7 @@ export async function updateEntity<TEntity extends BaseEntity, TOutputDto>(
   entityWhere: FindOptionsWhere<TEntity>,
   inputDto: DeepPartial<TEntity>
 ): Promise<TOutputDto> {
-  const repo = AppDataSource.getRepository<TEntity>(entityTarget)
+  const repo = getDataSource().getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start, inputDto)

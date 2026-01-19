@@ -3,7 +3,6 @@
   "include": [
     "index.ts",
     "domains/**/*",
-    "appPaths.ts",
   ],
   "compilerOptions": {
     "composite": true,
@@ -17,9 +16,6 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@appPaths": [
-        "appPaths.ts"
-      ],
       "@domains/*": [
         "domains/*/public-api.ts"
       ],

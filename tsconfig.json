@@ -24,6 +24,6 @@
     "apps/*/shared/**/*.d.ts",
     "apps/*/index.ts",
     "apps/*/index.tsx",
-    "apps/server/appPaths.ts",
+    "apps/server/domains/Shared/utils/getDefaultAppPaths.ts",
   ]
 }

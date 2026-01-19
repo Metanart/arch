@@ -1,4 +1,4 @@
-export { taskWorkerClient } from './services/TaskWorkerClient'
+export { taskWorkerClient } from './workers/TaskWorkerClient'
 export type {
   TaskWorkerErrorResponse,
   TaskWorkerRequest,

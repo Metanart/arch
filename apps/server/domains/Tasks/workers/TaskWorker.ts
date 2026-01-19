@@ -2,7 +2,7 @@ import { type MessagePort, parentPort } from 'node:worker_threads'
 
 import { TASK_TYPE } from '@arch/contracts'
 
-import type { TaskWorkerRequest, TaskWorkerResponse } from './types'
+import type { TaskWorkerRequestWithId, TaskWorkerResponse } from './types'
 
 if (parentPort === null) {
   throw new Error('This file must be run as a worker thread')
@@ -26,33 +26,43 @@ function scanDir(dirPath: string): string {
   return dirPath
 }
 
-MESSAGE_PORT.on('message', (message: TaskWorkerRequest) => {
-  let result: TaskWorkerResponse | null = null
+MESSAGE_PORT.on('message', async (message: TaskWorkerRequestWithId) => {
+  let response: TaskWorkerResponse | null = null
 
-  switch (message.type) {
-    case TASK_TYPE.MULTIPLY: {
-      result = {
-        ...message,
-        payload: {
-          result: multiply(message.payload.value)
+  try {
+    switch (message.type) {
+      case TASK_TYPE.MULTIPLY: {
+        response = {
+          ...message,
+          payload: {
+            result: multiply(message.payload.value)
+          }
         }
+        break
       }
-      break
-    }
 
-    case TASK_TYPE.SCAN_SOURCE: {
-      result = {
-        ...message,
-        payload: {
-          dirTree: scanDir(message.payload.dirPath)
+      case TASK_TYPE.SCAN_SOURCE: {
+        const dirTree = await scanDir(message.payload.dirPath)
+
+        response = {
+          ...message,
+          payload: {
+            dirTree: JSON.stringify(dirTree)
+          }
         }
+        break
       }
-      break
     }
+  } catch (error) {
+    MESSAGE_PORT.postMessage({
+      ...message,
+      type: 'error',
+      payload: { message: error instanceof Error ? error.message : 'Unknown error' }
+    })
   }
 
-  if (result !== null) {
-    MESSAGE_PORT.postMessage(result)
+  if (response !== null) {
+    MESSAGE_PORT.postMessage(response)
   } else {
     MESSAGE_PORT.postMessage({
       ...message,

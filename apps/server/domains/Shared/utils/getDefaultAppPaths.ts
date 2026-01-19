@@ -10,8 +10,17 @@ export type AppPaths = {
   dbFile: string
 }
 
-function resolveAppPaths(): AppPaths {
+export function getDefaultAppPaths(): AppPaths {
+  if (!app) {
+    throw new Error('Electron app is not available in this context')
+  }
+
+  if (!app.isReady()) {
+    throw new Error('Electron app is not ready yet')
+  }
+
   const base = path.join(app.getPath('documents'), 'STLOrganizer')
+
   return {
     outputDir: path.join(base, 'output'),
     tempDir: path.join(base, 'temp'),
@@ -20,5 +29,3 @@ function resolveAppPaths(): AppPaths {
     dbFile: path.join(base, 'stl-organizer.sqlite')
   }
 }
-
-export const appPaths = resolveAppPaths()

@@ -5,6 +5,12 @@ type Request<Type extends string, Payload> = {
   payload: Payload
 }
 
+type RequestWithId<Type extends string, Payload> = {
+  requestId: number
+  type: Type
+  payload: Payload
+}
+
 type Response<Type extends string, Payload> = {
   requestId: number
   type: Type
@@ -26,11 +32,17 @@ type RequestByType = {
   [K in keyof Operations]: Request<K & string, Operations[K]['request']>
 }[keyof Operations]
 
+type RequestWithIdByType = {
+  [K in keyof Operations]: RequestWithId<K & string, Operations[K]['request']>
+}[keyof Operations]
+
 type ResponseByType = {
   [K in keyof Operations]: Response<K & string, Operations[K]['response']>
 }[keyof Operations]
 
 export type TaskWorkerRequest = RequestByType
+
+export type TaskWorkerRequestWithId = RequestWithIdByType
 
 export type TaskWorkerErrorResponse = Response<'error', { message: string }>
 

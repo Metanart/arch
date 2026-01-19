@@ -5,7 +5,7 @@ import { AppError, createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
 
-import { AppDataSource } from '@domains/App/Root'
+import { getDataSource } from '@domains/App/Root'
 
 import { z } from 'zod'
 
@@ -26,7 +26,7 @@ export async function findEntity<TEntity extends BaseEntity, TOutputDto>(
   outputSchema: z.ZodType<TOutputDto>,
   entityWhere: FindOptionsWhere<TEntity> = {}
 ): Promise<TOutputDto> {
-  const repo = AppDataSource.getRepository<TEntity>(entityTarget)
+  const repo = getDataSource().getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start, entityWhere)

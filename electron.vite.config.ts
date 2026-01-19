@@ -32,10 +32,13 @@ const main: UserConfig = {
     rollupOptions: {
       input: {
         index: resolve(__dirname, 'apps/server/index.ts'),
-        'workers/task-worker': resolve(__dirname, 'apps/server/domains/Tasks/workers/TaskWorker.ts')
+        'workers/task-worker': resolve(__dirname, 'apps/server/domains/Tasks/workers/taskWorker.ts')
       },
       output: {
-        entryFileNames: '[name].js',
+        entryFileNames: (chunkInfo) => {
+          if (chunkInfo.name.startsWith('workers/')) return '[name].js'
+          return '[name].js'
+        },
         chunkFileNames: 'chunks/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash][extname]',
         format: 'cjs'
@@ -48,10 +51,6 @@ const main: UserConfig = {
       {
         find: /^@domains\/(.+)$/,
         replacement: resolve(__dirname, 'apps/server/domains/$1/public-api.ts')
-      },
-      {
-        find: /^@appPaths$/,
-        replacement: resolve(__dirname, 'apps/server/appPaths.ts')
       }
     ]
   },

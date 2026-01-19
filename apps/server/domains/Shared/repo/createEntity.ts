@@ -3,7 +3,7 @@ import { createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
 
-import { AppDataSource } from '@domains/App/Root'
+import { getDataSource } from '@domains/App/Root'
 
 import type { DeepPartial, EntityTarget, ObjectLiteral } from 'typeorm'
 import type { z } from 'zod'
@@ -23,7 +23,7 @@ export async function createEntity<TEntity extends ObjectLiteral, TOutputDto>(
   outputSchema: z.ZodType<TOutputDto>,
   inputDto: DeepPartial<TEntity>
 ): Promise<TOutputDto> {
-  const repo = AppDataSource.getRepository<TEntity>(entityTarget)
+  const repo = getDataSource().getRepository<TEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start, inputDto)

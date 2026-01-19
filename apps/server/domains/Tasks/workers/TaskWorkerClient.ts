@@ -1,4 +1,4 @@
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { Worker } from 'node:worker_threads'
 
 import { AppContext } from '@arch/types'
@@ -6,14 +6,17 @@ import { AppError, createLogger, isNumber, isObject, isString } from '@arch/util
 
 import { createDeferredPromise } from '@domains/Shared'
 
-import { TaskWorkerRequest, TaskWorkerResponse } from '../workers/types'
+import { TaskWorkerRequest, TaskWorkerRequestWithId, TaskWorkerResponse } from './types'
 
 const appContext: AppContext = { domain: 'Tasks', layer: 'Worker', origin: 'TaskWorkerClient' }
 
 const logger = createLogger(appContext)
 
 function resolveTaskWorkerEntryPath(): string {
-  return resolve(__dirname, 'workers', 'task-worker.js')
+  const mainEntryFile = require.main?.filename
+  const mainDir = mainEntryFile ? dirname(mainEntryFile) : process.cwd()
+
+  return resolve(mainDir, 'build', 'main', 'workers', 'task-worker.js')
 }
 
 const DEFAULT_REQUEST_TIMEOUT_MS = 5_000
@@ -110,7 +113,7 @@ class TaskWorkerClient {
       timeoutId
     }
 
-    const message = { ...request, requestId }
+    const message: TaskWorkerRequestWithId = { ...request, requestId }
 
     try {
       this.setRequest(requestId, newPendingRequest)

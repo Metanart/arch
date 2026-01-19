@@ -1,17 +1,13 @@
 import { Column, Entity } from 'typeorm'
 
-import { appPaths } from '@appPaths'
-
 import { BaseEntity } from '@domains/Shared'
-
-const { outputDir, tempDir } = appPaths
 
 @Entity({ name: 'settings' })
 export class SettingsEntity extends BaseEntity {
-  @Column({ type: 'varchar', default: outputDir })
+  @Column({ type: 'varchar' })
   outputDir!: string
 
-  @Column({ type: 'varchar', default: tempDir })
+  @Column({ type: 'varchar' })
   tempDir!: string
 
   @Column({ type: 'int', default: 4 })
@@ -28,4 +24,16 @@ export class SettingsEntity extends BaseEntity {
 
   @Column({ type: 'boolean', default: false })
   debugMode!: boolean
+}
+
+export function createDefaultSettings(outputDir: string, tempDir: string): Partial<SettingsEntity> {
+  return {
+    outputDir,
+    tempDir,
+    maxThreads: 4,
+    autoProcessOnScan: false,
+    autoArchiveOnComplete: false,
+    useMultithreading: true,
+    debugMode: false
+  }
 }
