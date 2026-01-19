@@ -4,11 +4,11 @@ import { getMessageFromError } from '@arch/utils'
 
 import { getAllSources } from './getAllSources'
 
-import { SourcesRepository } from '../repository/SourcesRepository'
+import { SourcesRepo } from '../repository/SourcesRepo'
 
 async function create(source: CreateSourceClientDTO): Promise<IpcResponse<SourceServerDTO>> {
   try {
-    const sourceDto = await SourcesRepository.create(source)
+    const sourceDto = await SourcesRepo.create(source)
     return { status: 'success', data: sourceDto }
   } catch (error: unknown) {
     return { status: 'error', error: { message: getMessageFromError(error) } }
@@ -21,7 +21,7 @@ async function update(source: UpdateSourceClientDTO): Promise<IpcResponse<Source
   }
 
   try {
-    const sourceDto = await SourcesRepository.update(source)
+    const sourceDto = await SourcesRepo.update(source)
     return { status: 'success', data: sourceDto }
   } catch (error: unknown) {
     return { status: 'error', error: { message: getMessageFromError(error) } }
@@ -30,7 +30,7 @@ async function update(source: UpdateSourceClientDTO): Promise<IpcResponse<Source
 
 async function remove(sourceId: string): Promise<IpcResponse<boolean>> {
   try {
-    const result = await SourcesRepository.remove(sourceId)
+    const result = await SourcesRepo.remove(sourceId)
     return { status: 'success', data: result }
   } catch (error: unknown) {
     return { status: 'error', error: { message: getMessageFromError(error) } }
