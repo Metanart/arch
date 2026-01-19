@@ -4,7 +4,7 @@ import { getMessageFromError } from '@arch/utils'
 
 import { getAllSources } from './getAllSources'
 
-import { SourcesRepo } from '../repository/SourcesRepo'
+import { SourcesRepo } from '../repo/SourcesRepo'
 
 async function create(source: CreateSourceClientDTO): Promise<IpcResponse<SourceServerDTO>> {
   try {

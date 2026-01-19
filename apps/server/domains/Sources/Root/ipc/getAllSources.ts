@@ -4,7 +4,7 @@ import { createLogger, getMessageFromError } from '@arch/utils'
 
 import { FileSystemAdapter } from '@domains/Shared'
 
-import { SourcesRepo } from '../repository/SourcesRepo'
+import { SourcesRepo } from '../repo/SourcesRepo'
 
 const appContext: AppContext = { domain: 'Sources', layer: 'IPC', origin: 'getAllSources' }
 
