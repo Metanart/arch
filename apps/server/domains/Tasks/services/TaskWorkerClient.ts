@@ -6,7 +6,7 @@ import { AppError, createLogger, isObject, isString } from '@arch/utils'
 
 import { createDeferredPromise } from 'domains/Shared/utils/createDeferredPromise'
 
-import { TaskWorkerRequest, TaskWorkerResponse } from './types'
+import { TaskWorkerRequest, TaskWorkerResponse } from '../workers/types'
 
 const appContext: AppContext = { domain: 'Tasks', layer: 'Worker', origin: 'TaskWorkerClient' }
 
