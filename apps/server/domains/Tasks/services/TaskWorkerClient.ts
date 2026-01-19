@@ -2,9 +2,9 @@ import { resolve } from 'node:path'
 import { Worker } from 'node:worker_threads'
 
 import { AppContext } from '@arch/types'
-import { AppError, createLogger, isObject, isString } from '@arch/utils'
+import { AppError, createLogger, isNumber, isObject, isString } from '@arch/utils'
 
-import { createDeferredPromise } from 'domains/Shared/utils/createDeferredPromise'
+import { createDeferredPromise } from '@domains/Shared'
 
 import { TaskWorkerRequest, TaskWorkerResponse } from '../workers/types'
 
@@ -16,7 +16,7 @@ function resolveTaskWorkerEntryPath(): string {
   return resolve(__dirname, 'workers', 'task-worker.js')
 }
 
-const DEFAULT_REQUEST_TIMEOUT_MS = 1_000
+const DEFAULT_REQUEST_TIMEOUT_MS = 5_000
 
 type PendingRequest = {
   request: TaskWorkerRequest
@@ -26,9 +26,11 @@ type PendingRequest = {
   timeoutId: NodeJS.Timeout
 }
 
-export class TaskWorkerClient {
+class TaskWorkerClient {
   private worker: Worker
-  private pendingRequests = new Map<string, PendingRequest>()
+  private isTerminated: boolean = false
+  private pendingRequests = new Map<number, PendingRequest>()
+  private lastRequestId: number = 0
 
   constructor() {
     this.worker = new Worker(resolveTaskWorkerEntryPath())
@@ -37,55 +39,58 @@ export class TaskWorkerClient {
     this.worker.on('exit', this.handleWorkerExit.bind(this))
   }
 
-  private getRequest(id: string): PendingRequest | undefined {
-    return this.pendingRequests.get(id)
+  private getRequest(requestId: number): PendingRequest | undefined {
+    return this.pendingRequests.get(requestId)
   }
 
-  private deleteRequest(id: string) {
-    const pendingRequest = this.getRequest(id)
+  private deleteRequest(requestId: number) {
+    const pendingRequest = this.getRequest(requestId)
 
     if (!pendingRequest) {
-      logger.error('Worker request not found to delete', id)
+      logger.error('Worker request not found to delete', requestId)
       return
     }
 
     clearTimeout(pendingRequest.timeoutId)
-    return this.pendingRequests.delete(id)
+    return this.pendingRequests.delete(requestId)
   }
 
-  private setRequest(id: string, request: PendingRequest) {
-    if (this.pendingRequests.has(id)) {
+  private setRequest(requestId: number, request: PendingRequest) {
+    if (this.pendingRequests.has(requestId)) {
       throw new AppError({
         ...appContext,
         code: 'WORKER_REQUEST_ALREADY_SET',
-        message: `Worker request already set with id ${id}`,
-        details: { id }
+        message: `Worker request already set with id ${requestId}`,
+        details: { requestId }
       })
     }
 
-    this.pendingRequests.set(id, request)
+    this.pendingRequests.set(requestId, request)
 
     return this
   }
 
-  public sendWorkerRequest(
+  public sendRequest(
     request: TaskWorkerRequest,
     timeoutMs: number = DEFAULT_REQUEST_TIMEOUT_MS
   ): Promise<TaskWorkerResponse> {
-    const existingRequest = this.getRequest(request.id)
-
-    if (existingRequest) {
-      return existingRequest.promise
+    if (this.isTerminated) {
+      throw new AppError({
+        ...appContext,
+        code: 'WORKER_TERMINATED',
+        message: 'Worker terminated'
+      })
     }
 
     const deferredPromise = createDeferredPromise<TaskWorkerResponse>()
 
     const { promise, resolve, reject } = deferredPromise
 
-    const rejectOnTimeout = () => {
-      this.deleteRequest(request.id)
+    const requestId = this.lastRequestId++
 
-      reject(
+    const rejectOnTimeout = () => {
+      this.failPendingRequest(
+        requestId,
         new AppError({
           ...appContext,
           code: 'WORKER_REQUEST_TIMEOUT',
@@ -105,11 +110,13 @@ export class TaskWorkerClient {
       timeoutId
     }
 
+    const message = { ...request, requestId }
+
     try {
-      this.setRequest(request.id, newPendingRequest)
-      this.worker.postMessage(request)
+      this.setRequest(requestId, newPendingRequest)
+      this.worker.postMessage(message)
     } catch (error) {
-      this.deleteRequest(request.id)
+      this.deleteRequest(requestId)
       reject(
         new AppError({
           ...appContext,
@@ -127,7 +134,7 @@ export class TaskWorkerClient {
     return (
       isObject(message) &&
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      isString((message as any).id) &&
+      isNumber((message as any).requestId) &&
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       isString((message as any).type) &&
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -135,18 +142,20 @@ export class TaskWorkerClient {
     )
   }
 
-  private handleWorkerResponse(response: TaskWorkerResponse) {
+  private handleWorkerResponse(message: unknown) {
     // @TODO: Add ZOD schema validation for the response
 
-    if (!this.isValidResponse(response)) {
-      logger.error('Worker response is not valid', response)
+    if (!this.isValidResponse(message)) {
+      logger.error('Worker response is not valid', message)
       return
     }
 
+    const response: TaskWorkerResponse = message
+
     if (response.type === 'error') {
-      logger.error('Worker response received an error for request with id', response.id)
+      logger.error('Worker response received an error for request with id', response.requestId)
       this.failPendingRequest(
-        response.id,
+        response.requestId,
         new AppError({
           ...appContext,
           code: 'WORKER_RESPONSE_ERROR',
@@ -157,46 +166,45 @@ export class TaskWorkerClient {
       return
     }
 
-    const pendingRequest = this.getRequest(response.id)
+    const pendingRequest = this.getRequest(response.requestId)
 
     if (!pendingRequest) {
       logger.error('Worker response received for unknown request', response)
       return
     }
 
-    this.deleteRequest(response.id)
+    this.deleteRequest(response.requestId)
     pendingRequest.resolve(response)
   }
 
   private failAllPendingRequests(code: number) {
-    this.pendingRequests.forEach((pendingRequest) => {
-      this.failPendingRequest(
-        pendingRequest.request.id,
-        new AppError({
-          ...appContext,
-          code: 'WORKER_EXITED',
-          message: 'Worker exited',
-          details: { code }
-        })
-      )
+    const error = new AppError({
+      ...appContext,
+      code: 'WORKER_EXITED',
+      message: 'Worker exited',
+      details: { code }
     })
+
+    for (const requestId of Array.from(this.pendingRequests.keys())) {
+      this.failPendingRequest(requestId, error)
+    }
   }
 
-  private failPendingRequest(id: string, error: Error) {
-    const pendingRequest = this.getRequest(id)
+  private failPendingRequest(requestId: number, error: Error) {
+    const pendingRequest = this.getRequest(requestId)
 
     if (!pendingRequest) {
-      logger.error('Worker request not found to fail', id)
+      logger.error('Worker request not found to fail', requestId)
       return
     }
 
-    this.deleteRequest(id)
+    this.deleteRequest(requestId)
     pendingRequest.reject(error)
   }
 
   private handleWorkerError(error: Error) {
-    this.failAllPendingRequests(1)
     logger.error('Worker error', error)
+    this.failAllPendingRequests(1)
   }
 
   private handleWorkerExit(code: number) {
@@ -204,9 +212,12 @@ export class TaskWorkerClient {
     this.failAllPendingRequests(code)
   }
 
-  public async terminateWorker() {
+  public async terminate() {
     this.failAllPendingRequests(0)
     const terminated = await this.worker.terminate()
+    this.isTerminated = true
     logger.log('Worker terminated with code', terminated)
   }
 }
+
+export const taskWorkerClient = new TaskWorkerClient()

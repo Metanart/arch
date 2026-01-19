@@ -1,10 +1,12 @@
 import { TASK_TYPE } from '@arch/contracts'
 
-type BaseMessage = {
-  id: string
+type Request<Type extends string, Payload> = {
+  type: Type
+  payload: Payload
 }
 
-type Message<Type extends string, Payload> = BaseMessage & {
+type Response<Type extends string, Payload> = {
+  requestId: number
   type: Type
   payload: Payload
 }
@@ -21,15 +23,15 @@ type Operations = {
 }
 
 type RequestByType = {
-  [K in keyof Operations]: Message<K & string, Operations[K]['request']>
+  [K in keyof Operations]: Request<K & string, Operations[K]['request']>
 }[keyof Operations]
 
 type ResponseByType = {
-  [K in keyof Operations]: Message<K & string, Operations[K]['response']>
+  [K in keyof Operations]: Response<K & string, Operations[K]['response']>
 }[keyof Operations]
 
 export type TaskWorkerRequest = RequestByType
 
-export type TaskWorkerErrorResponse = Message<'error', { message: string }>
+export type TaskWorkerErrorResponse = Response<'error', { message: string }>
 
 export type TaskWorkerResponse = TaskWorkerErrorResponse | ResponseByType
