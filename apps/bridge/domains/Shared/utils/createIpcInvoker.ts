@@ -16,9 +16,9 @@ export function createIpcInvoker<Data>(channel: IpcChannel): () => Promise<IpcRe
   }
 }
 
-export function createIpcInvokerWithPayload<Data, Payload = void>(
+export function createIpcInvokerWithPayload<TData, TPayload = void>(
   channel: IpcChannel
-): (payload: Payload) => Promise<IpcResponse<Data>> {
+): (payload: TPayload) => Promise<IpcResponse<TData>> {
   return async function invokeIpcWithPayload(payload) {
     logger.info(`Invoking ${channel} with payload`, payload)
 
