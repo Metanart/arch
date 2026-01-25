@@ -3,12 +3,13 @@ import { Worker } from 'node:worker_threads'
 
 import { app } from 'electron'
 
+import { TaskType } from '@arch/contracts'
 import { AppContext } from '@arch/types'
 import { AppError, createLogger, isNumber, isObject, isString } from '@arch/utils'
 
 import { createDeferredPromise } from '@domains/Shared'
 
-import { TaskWorkerRequest, TaskWorkerRequestWithId, TaskWorkerResponse } from './types'
+import { TaskWorkerRequestByType, TaskWorkerResponse, TaskWorkerResponseByType } from './types'
 
 const appContext: AppContext = { domain: 'Tasks', layer: 'Worker', origin: 'TaskWorkerClient' }
 
@@ -24,17 +25,17 @@ function resolveTaskWorkerEntryPath(): string {
 
 const DEFAULT_REQUEST_TIMEOUT_MS = 5_000
 
-type PendingRequest = {
-  request: TaskWorkerRequest
-  promise: Promise<TaskWorkerResponse>
-  resolve: (response: TaskWorkerResponse) => void
+type PendingRequest<TaskType> = {
+  request: TaskWorkerRequestByType<TaskType>
+  promise: Promise<TaskWorkerResponseByType<TaskType>>
+  resolve: (value: TaskWorkerResponseByType<TaskType>) => void
   reject: (error: Error) => void
   timeoutId: NodeJS.Timeout
 }
 
 class TaskWorkerClient {
   private isTerminated: boolean = false
-  private pendingRequests = new Map<number, PendingRequest>()
+  private pendingRequests = new Map<number, PendingRequest<TaskType>>()
   private lastRequestId: number = 0
   private worker: Worker | null = null
 
@@ -62,7 +63,7 @@ class TaskWorkerClient {
     return worker
   }
 
-  private getRequest(requestId: number): PendingRequest | undefined {
+  private getRequest(requestId: number): PendingRequest<TaskType> | undefined {
     return this.pendingRequests.get(requestId)
   }
 
@@ -78,7 +79,7 @@ class TaskWorkerClient {
     return this.pendingRequests.delete(requestId)
   }
 
-  private setRequest(requestId: number, request: PendingRequest) {
+  private setRequest(requestId: number, pendingRequest: PendingRequest<TaskType>) {
     if (this.pendingRequests.has(requestId)) {
       throw new AppError({
         ...appContext,
@@ -88,22 +89,31 @@ class TaskWorkerClient {
       })
     }
 
-    this.pendingRequests.set(requestId, request)
+    this.pendingRequests.set(requestId, pendingRequest)
 
     return this
   }
 
+  makeRequest<TType extends TaskType>(
+    requestId: number,
+    type: TType,
+    payload: TaskWorkerRequestByType<TType>['payload']
+  ): TaskWorkerRequestByType<TType> {
+    return { requestId, type, payload } as TaskWorkerRequestByType<TType>
+  }
+
   public sendRequest(
-    request: TaskWorkerRequest,
+    type: TaskType,
+    payload: TaskWorkerRequestByType<TaskType>['payload'],
     timeoutMs: number = DEFAULT_REQUEST_TIMEOUT_MS
-  ): Promise<TaskWorkerResponse> {
+  ): Promise<TaskWorkerResponseByType<TaskType>> {
     const worker = this.ensureWorker()
 
-    const deferredPromise = createDeferredPromise<TaskWorkerResponse>()
-
-    const { promise, resolve, reject } = deferredPromise
+    const { promise, resolve, reject } = createDeferredPromise<TaskWorkerResponseByType<TaskType>>()
 
     const requestId = this.lastRequestId++
+
+    const request = this.makeRequest(requestId, type, payload)
 
     const rejectOnTimeout = () => {
       this.failPendingRequest(
@@ -112,26 +122,24 @@ class TaskWorkerClient {
           ...appContext,
           code: 'WORKER_REQUEST_TIMEOUT',
           message: `Worker request timed out after ${timeoutMs}ms`,
-          details: { request, timeoutMs }
+          details: { request: request, timeoutMs }
         })
       )
     }
 
     const timeoutId = setTimeout(rejectOnTimeout, timeoutMs)
 
-    const newPendingRequest: PendingRequest = {
-      request,
+    const newPendingRequest: PendingRequest<TaskType> = {
+      request: request,
       promise,
       resolve,
       reject,
       timeoutId
     }
 
-    const message: TaskWorkerRequestWithId = { ...request, requestId }
-
     try {
       this.setRequest(requestId, newPendingRequest)
-      worker.postMessage(message)
+      worker.postMessage(request)
     } catch (error) {
       this.deleteRequest(requestId)
       reject(
