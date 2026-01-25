@@ -55,8 +55,8 @@ class TaskWorkerClient {
 
     const worker = new Worker(entryPath)
 
-    worker.on('message', (msg) => this.handleWorkerResponse(msg))
-    worker.on('error', (err) => this.handleWorkerError(err))
+    worker.on('message', (message) => this.handleWorkerResponse(message))
+    worker.on('error', (error) => this.handleWorkerError(error))
     worker.on('exit', (code) => this.handleWorkerExit(code))
 
     this.worker = worker
