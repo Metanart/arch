@@ -97,7 +97,7 @@ class TaskWorkerClient {
     return this
   }
 
-  makeRequest<TType extends TaskType>(
+  private makeRequest<TType extends TaskType>(
     requestId: number,
     type: TType,
     payload: TaskWorkerRequestByType<TType>['payload']
