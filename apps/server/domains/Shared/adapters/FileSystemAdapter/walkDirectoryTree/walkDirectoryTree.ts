@@ -6,12 +6,12 @@ import { getMessageFromError } from '@arch/utils'
 import { safeGetFileExtension } from './utils/safeGetFileExtension'
 import { defaultDirPredicate, defaultFilePredicate, defaultKeyFilePredicate } from './defaults'
 
-import { DirectoryNode, FileNode, WalkOptions, WalkResult } from './types'
+import { DirectoryNode, DirectoryTree, FileNode, WalkOptions } from './types'
 
 export async function walkDirectoryTree(
   root: string,
   options: WalkOptions = {}
-): Promise<WalkResult> {
+): Promise<DirectoryTree> {
   const {
     maxDepth,
     dirPredicate = defaultDirPredicate,

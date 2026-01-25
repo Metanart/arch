@@ -1,4 +1,4 @@
-import { TASK_TYPE } from '@arch/contracts'
+import { TaskWorkerContracts } from './contracts'
 
 type Request<Type extends string, Payload> = {
   type: Type
@@ -17,28 +17,17 @@ type Response<Type extends string, Payload> = {
   payload: Payload
 }
 
-type Operations = {
-  [TASK_TYPE.MULTIPLY]: {
-    request: { value: number }
-    response: { result: number }
-  }
-  [TASK_TYPE.SCAN_SOURCE]: {
-    request: { dirPath: string }
-    response: { dirTree: string }
-  }
-}
-
 type RequestByType = {
-  [K in keyof Operations]: Request<K & string, Operations[K]['request']>
-}[keyof Operations]
+  [K in keyof TaskWorkerContracts]: Request<K & string, TaskWorkerContracts[K]['request']>
+}[keyof TaskWorkerContracts]
 
 type RequestWithIdByType = {
-  [K in keyof Operations]: RequestWithId<K & string, Operations[K]['request']>
-}[keyof Operations]
+  [K in keyof TaskWorkerContracts]: RequestWithId<K & string, TaskWorkerContracts[K]['request']>
+}[keyof TaskWorkerContracts]
 
 type ResponseByType = {
-  [K in keyof Operations]: Response<K & string, Operations[K]['response']>
-}[keyof Operations]
+  [K in keyof TaskWorkerContracts]: Response<K & string, TaskWorkerContracts[K]['response']>
+}[keyof TaskWorkerContracts]
 
 export type TaskWorkerRequest = RequestByType
 

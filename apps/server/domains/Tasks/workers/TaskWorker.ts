@@ -41,7 +41,7 @@ MESSAGE_PORT.on('message', async (message: TaskWorkerRequestWithId) => {
         response = {
           ...message,
           payload: {
-            dirTree: JSON.stringify(dirTree)
+            dirTree
           }
         }
         break

@@ -1,4 +1,5 @@
 export { FileSystemAdapter } from './adapters/FileSystemAdapter/FileSystemAdapter'
+export { type DirectoryTree } from './adapters/FileSystemAdapter/walkDirectoryTree/types'
 export { UnrarAdapter } from './adapters/UnrarAdapter/UnrarAdapter'
 export { ZipAdapter } from './adapters/ZipAdapter/ZipAdapter'
 export { BaseEntity } from './entities/BaseEntity'

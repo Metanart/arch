@@ -27,7 +27,7 @@ export type WalkOptions = {
   maxRecursionDepth?: number
 }
 
-export type WalkResult = {
+export type DirectoryTree = {
   tree: DirectoryNode
   totalFiles: number // total number of included files
   keyFiles: number // total number of included key files
