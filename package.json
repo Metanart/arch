@@ -19,6 +19,7 @@
     "typecheck": "npm run typecheck:server && npm run typecheck:client && npm run typecheck:bridge",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
+    "dev:watch": "electron-vite dev --watch",
     "build": "electron-vite build",
     "build:typecheck": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
