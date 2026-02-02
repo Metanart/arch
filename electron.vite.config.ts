@@ -28,7 +28,7 @@ const main: UserConfig = {
   build: {
     outDir: 'build/main',
 
-    // ВАЖНО: для worker'а нужен multi-entry => выходим из lib-mode
+    // IMPORTANT: worker requires multi-entry => exit lib-mode
     rollupOptions: {
       input: {
         index: resolve(__dirname, 'apps/server/index.ts'),
