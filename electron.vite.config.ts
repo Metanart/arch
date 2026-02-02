@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
