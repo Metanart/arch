@@ -15,7 +15,7 @@ export const defaultFilePredicate = makeFilePredicate(
   BLOCKED_FILE_NAMES,
   BLOCKED_FILE_PATTERNS,
   1,
-  200 * 1024 * 1024
+  10 * 1_000_000_000
 )
 
 export const defaultKeyFilePredicate = (fileName: string): boolean => {
