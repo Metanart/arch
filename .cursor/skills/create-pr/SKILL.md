@@ -28,4 +28,4 @@ disable-model-invocation: true
 
 ## Preferred command
 
-- Use `gh pr create --base main --title "<branch>" --body-file ".cursor/temp/PR_BODY.md"`
+- Use `gh pr create --base main --title "<branch>" --body-file ".cursor/temp/PR_BODY.md" --assignee @me`
