@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+
+- Task scheduling logic must be deterministic.
+- Avoid hidden shared mutable state.
+- Task execution must support cancellation.
+- Weight-based balancing must be explicit and testable.
+- No task execution logic inside UI layer.

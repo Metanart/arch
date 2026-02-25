@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+
+- Database access only via repository layer.
+- No raw SQL inside UI or worker layers.
+- Entities must not contain business logic.
+- Domain services operate on repositories.
