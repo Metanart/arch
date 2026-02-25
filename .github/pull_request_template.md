@@ -15,6 +15,16 @@ Types:
 
 Scope examples:
 scanner | task-queue | worker | db | ui | main | preload | ipc | config | build
+
+1. Use only information present in the git diff.
+2. Do not invent motivations or performance claims.
+3. Do not describe code that is not visible in the diff.
+4. Keep sentences short and factual.
+5. Avoid speculative language.
+6. Do not use marketing phrases.
+7. If unsure — omit.
+
+Output markdown only.
 -->
 
 ---
@@ -172,19 +182,3 @@ Describe specific scenarios tested.
 - [ ] DB migrations verified (if applicable)
 - [ ] IPC contracts aligned
 - [ ] No hidden breaking changes
-
----
-
-## Notes for AI Agent
-
-When generating this PR:
-
-1. Use only information present in the git diff.
-2. Do not invent motivations or performance claims.
-3. Do not describe code that is not visible in the diff.
-4. Keep sentences short and factual.
-5. Avoid speculative language.
-6. Do not use marketing phrases.
-7. If unsure — omit.
-
-Output markdown only.
