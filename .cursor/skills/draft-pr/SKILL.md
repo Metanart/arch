@@ -1,6 +1,6 @@
 ---
 name: draft-pr
-description: Draft a GitHub pull request body by analyzing the git diff against main and writing a structured markdown description to .cursor/pr/PR_BODY.md for later use by create-pr. Use when the user asks to draft or improve a PR description from the current branch changes.
+description: Draft a GitHub pull request body by analyzing the git diff against main and writing a structured markdown description to .cursor/temp/PR_BODY.md for later use by create-pr. Use when the user asks to draft or improve a PR description from the current branch changes.
 disable-model-invocation: true
 ---
 
@@ -44,9 +44,9 @@ disable-model-invocation: true
    - Use present tense ("Add X", "Refactor Y") and consistent formatting (markdown lists, code spans for identifiers).
 
 6. **Write output file**
-   - Ensure the `.cursor/pr` directory exists; create it if needed.
-   - Write the markdown body to `.cursor/pr/PR_BODY.md`, overwriting any previous contents.
+   - Ensure the `.cursor/temp` directory exists; create it if needed.
+   - Write the markdown body to `.cursor/temp/PR_BODY.md`, overwriting any previous contents.
 
 7. **Return information to the user**
-   - Print the absolute or repo-relative path to `.cursor/pr/PR_BODY.md`.
+   - Print the absolute or repo-relative path to `.cursor/temp/PR_BODY.md`.
    - Tell the user they can open and edit this file before running `/create-pr`, and that rerunning `/draft-pr` will regenerate it from the latest diff.
