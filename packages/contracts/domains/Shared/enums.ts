@@ -1,0 +1,7 @@
+export const STATUS = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED'
+} as const
