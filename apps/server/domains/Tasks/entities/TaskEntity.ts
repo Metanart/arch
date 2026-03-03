@@ -1,23 +1,72 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 
-import { TASK_STATUS, TASK_TYPE, type TaskStatus, type TaskType } from '@arch/contracts'
+import { STATUS, TASK_TYPE, type TaskStatus, type TaskType } from '@arch/contracts'
 
 import { BaseEntity } from '@domains/Shared'
 
-import { TasksQueueEntity } from './TasksQueueEntity'
+import { TaskDependencyEntity } from './TaskDependancyEntity'
+import { TasksWorkflowEntity } from './TasksWorkflowEntity'
 
 @Entity({ name: 'tasks' })
+@Index(['status', 'priority'])
+@Index(['leaseUntil'])
+@Index(['takenBy'])
+@Index(['nextRunAt'])
 export class TaskEntity extends BaseEntity {
+  @Column()
+  workflowId!: string
+
+  @ManyToOne(() => TasksWorkflowEntity, (workflow) => workflow.tasks, {
+    onDelete: 'CASCADE'
+  })
+  @JoinColumn({ name: 'workflowId' })
+  workflow!: TasksWorkflowEntity
+
   @Column({ type: 'enum', enum: TASK_TYPE })
   type!: TaskType
 
-  @Column({ type: 'enum', enum: TASK_STATUS })
+  @Column({ type: 'enum', enum: STATUS })
   status!: TaskStatus
 
   @Column({ type: 'text' })
-  payload!: string
+  payload!: string // JSON.stringify(payload)
 
-  @ManyToOne(() => TasksQueueEntity, (queue) => queue.tasks, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'queueId' })
-  queue!: TasksQueueEntity
+  @Column({ type: 'int', default: 0 })
+  priority!: number
+
+  @Column({ type: 'float', default: 0 })
+  predictedWeight!: number
+
+  @Column({ type: 'varchar', nullable: true })
+  takenBy!: string | null
+
+  @Column({ type: 'datetime', nullable: true })
+  leaseUntil!: Date | null
+
+  @Column({ type: 'int', default: 0 })
+  attempts!: number
+
+  @Column({ type: 'int', default: 3 })
+  maxAttempts!: number
+
+  @Column({ type: 'datetime', nullable: true })
+  nextRunAt!: Date | null
+
+  @Column({ type: 'varchar', nullable: true })
+  step!: string | null
+
+  @Column({ type: 'int', default: 0 })
+  progressCurrent!: number
+
+  @Column({ type: 'int', default: 0 })
+  progressTotal!: number
+
+  @Column({ type: 'text', nullable: true })
+  error!: string | null
+
+  @OneToMany(() => TaskDependencyEntity, (dependency) => dependency.task)
+  dependencies!: TaskDependencyEntity[]
+
+  @OneToMany(() => TaskDependencyEntity, (dependency) => dependency.dependsOnTask)
+  dependents!: TaskDependencyEntity[]
 }
