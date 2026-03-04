@@ -3,11 +3,10 @@ import { DeleteResult, EntityTarget, FindOptionsWhere } from 'typeorm'
 import { AppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
-import { normalizeError } from '@domains/Shared'
-
-import { getDataSource } from '@domains/App/Root'
+import { getDataSource } from '@domains/App'
 
 import { BaseEntity } from '../entities/BaseEntity'
+import { normalizeError } from '../utils/normalize-error/normalizeError'
 
 const messages = {
   start: 'Remove requested entity from database',

@@ -5,7 +5,7 @@ import { AppError, createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
 
-import { getDataSource } from '@domains/App/Root'
+import { getDataSource } from '@domains/App'
 
 import { z } from 'zod'
 

@@ -4,7 +4,7 @@ import { BaseEntity } from '@domains/Shared'
 
 import { TaskEntity } from './TaskEntity'
 
-@Entity({ name: 'task_dependencies' })
+@Entity({ name: 'tasks_dependencies' })
 @Index(['taskId', 'dependsOnTaskId'], { unique: true })
 export class TaskDependencyEntity extends BaseEntity {
   @Column()

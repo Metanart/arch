@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm'
 
-import { SettingsEntity } from '@domains/Settings/Root'
-import { SourceEntity } from '@domains/Sources/Root'
+import { SettingsEntity } from '@domains/Settings'
+import { SourceEntity } from '@domains/Sources'
 
 const isTest = process.env.NODE_ENV === 'test'
 

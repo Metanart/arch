@@ -3,7 +3,7 @@ import { createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
 
-import { getDataSource } from '@domains/App/Root'
+import { getDataSource } from '@domains/App'
 
 import type { DeepPartial, EntityTarget, ObjectLiteral } from 'typeorm'
 import type { z } from 'zod'

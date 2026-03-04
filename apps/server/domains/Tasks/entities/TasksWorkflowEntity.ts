@@ -1,10 +1,12 @@
-import { BaseEntity, Column, Entity, OneToMany } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
 
 import { STATUS, type TasksWorkflowStatus } from '@arch/contracts'
 
+import { BaseEntity } from '@domains/Shared'
+
 import { TaskEntity } from './TaskEntity'
 
-@Entity({ name: 'workflows' })
+@Entity({ name: 'tasks_workflows' })
 export class TasksWorkflowEntity extends BaseEntity {
   @Column()
   name!: string

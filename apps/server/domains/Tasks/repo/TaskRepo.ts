@@ -5,7 +5,7 @@ import {
   UpdateTaskServerDTO
 } from '@arch/contracts'
 
-import { createEntity, findEntities, findEntity, removeEntity, updateEntity } from '@domains/Shared'
+import { createEntity, findEntity, removeEntity, updateEntity } from '@domains/Shared'
 
 import { TaskEntity } from '../entities/TaskEntity'
 
@@ -15,12 +15,6 @@ async function createTask(taskQueueDto: CreateTaskServerDTO): Promise<TaskServer
 
 async function getTaskById(id: string): Promise<TaskServerDTO> {
   return findEntity<TaskEntity, TaskServerDTO>(TaskEntity, TaskServerSchema, { id })
-}
-
-async function getTasksByQueueId(queueId: string): Promise<TaskServerDTO[]> {
-  return findEntities<TaskEntity, TaskServerDTO>(TaskEntity, TaskServerSchema, {
-    queue: { id: queueId }
-  })
 }
 
 async function updateTask(taskQueueDto: UpdateTaskServerDTO): Promise<TaskServerDTO> {
@@ -39,7 +33,6 @@ async function removeTask(id: string): Promise<boolean> {
 export const TaskRepo = {
   create: createTask,
   getById: getTaskById,
-  getByQueueId: getTasksByQueueId,
   update: updateTask,
   remove: removeTask
 }

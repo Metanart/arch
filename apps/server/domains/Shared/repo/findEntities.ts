@@ -3,7 +3,7 @@ import { createLogger } from '@arch/utils'
 
 import { BaseEntity, normalizeError } from '@domains/Shared'
 
-import { getDataSource } from '@domains/App/Root'
+import { getDataSource } from '@domains/App'
 
 import type { EntityTarget, FindOptionsWhere } from 'typeorm'
 import type { z } from 'zod'
