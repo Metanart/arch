@@ -1,6 +1,6 @@
 import { TaskType } from '@arch/contracts'
 
-import { TaskEntity } from '../../entities/TaskEntity'
+import { TaskEntity } from '../entities/TaskEntity'
 
 export interface ITaskService {
   /**

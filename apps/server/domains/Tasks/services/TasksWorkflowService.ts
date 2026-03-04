@@ -1,6 +1,6 @@
 import { TasksWorkflowStatus } from '@arch/contracts'
 
-import { TasksWorkflowEntity } from '../../entities/TasksWorkflowEntity'
+import { TasksWorkflowEntity } from '../entities/TasksWorkflowEntity'
 
 export interface ITasksWorkflowService {
   /**
