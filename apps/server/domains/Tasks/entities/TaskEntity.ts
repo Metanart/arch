@@ -28,8 +28,8 @@ export class TaskEntity extends BaseEntity {
   @Column({ type: 'enum', enum: STATUS })
   status!: TaskStatus
 
-  @Column({ type: 'text' })
-  payload!: string // JSON.stringify(payload)
+  @Column({ type: 'json' })
+  payload!: string
 
   @Column({ type: 'int', default: 0 })
   priority!: number
