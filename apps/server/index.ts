@@ -6,7 +6,7 @@ import { createLogger } from '@arch/utils'
 
 import { getDefaultAppPaths, setupSharedIpcHandlers } from '@domains/Shared'
 
-import { createDataSource } from '@domains/App'
+import { createAppDataSource } from '@domains/App'
 import { createDefaultSettings, SettingsRepo, setupSettingsIpcListeners } from '@domains/Settings'
 import { setupSourcesIpcListeners } from '@domains/Sources'
 
@@ -66,7 +66,7 @@ async function bootstrap(): Promise<void> {
   })
 
   logger.log('Initializing database...')
-  const appDataSource = createDataSource(getDefaultAppPaths().dbFile)
+  const appDataSource = createAppDataSource(getDefaultAppPaths().dbFile)
   await appDataSource.initialize()
   logger.log('Database connected at', appDataSource.options.database)
 

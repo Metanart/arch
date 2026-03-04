@@ -1,1 +1,1 @@
-export { createDataSource, getDataSource } from './database/AppDataSource'
+export { createAppDataSource, createTestDataSource, getDataSource } from './database/DataSource'
