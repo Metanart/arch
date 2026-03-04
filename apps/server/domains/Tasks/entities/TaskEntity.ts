@@ -4,7 +4,7 @@ import { STATUS, TASK_TYPE, type TaskStatus, type TaskType } from '@arch/contrac
 
 import { BaseEntity } from '@domains/Shared'
 
-import { TaskDependencyEntity } from './TaskDependancyEntity'
+import { TaskDependencyEntity } from './TaskDependencyEntity'
 import { TasksWorkflowEntity } from './TasksWorkflowEntity'
 
 @Entity({ name: 'tasks' })

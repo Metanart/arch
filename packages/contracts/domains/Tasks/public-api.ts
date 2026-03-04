@@ -1,4 +1,5 @@
 export * from './enums'
 export * from './Task.schemes'
+export * from './TaskDependency.schemes'
 export * from './TasksWorkflow.schemes'
 export * from './types'
