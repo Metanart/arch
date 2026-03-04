@@ -1,13 +1,13 @@
 import { EntityTarget, FindOptionsWhere } from 'typeorm'
 
+import { z } from 'zod'
+
 import { AppContext } from '@arch/types'
 import { AppError, createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
 
 import { getDataSource } from '@domains/App'
-
-import { z } from 'zod'
 
 import { BaseEntity } from '../entities/BaseEntity'
 

@@ -1,3 +1,5 @@
+import type { z } from 'zod'
+
 import { AppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
@@ -6,7 +8,6 @@ import { BaseEntity, normalizeError } from '@domains/Shared'
 import { getDataSource } from '@domains/App'
 
 import type { EntityTarget, FindOptionsWhere } from 'typeorm'
-import type { z } from 'zod'
 
 const messages = {
   start: 'Get all entities from database',

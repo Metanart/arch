@@ -1,7 +1,7 @@
+import { z, ZodError } from 'zod'
+
 import { AppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
-
-import { z, ZodError } from 'zod'
 
 export type ZodErrorCode = 'ZOD_VALIDATION_ERROR'
 

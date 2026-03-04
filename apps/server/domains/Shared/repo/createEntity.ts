@@ -1,3 +1,5 @@
+import type { z } from 'zod'
+
 import { AppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
@@ -6,7 +8,6 @@ import { normalizeError } from '@domains/Shared'
 import { getDataSource } from '@domains/App'
 
 import type { DeepPartial, EntityTarget, ObjectLiteral } from 'typeorm'
-import type { z } from 'zod'
 
 const messages = {
   start: 'Create new entity with payload',

@@ -33,6 +33,7 @@ const SERVER_GROUPS = [
   ['^fs', '^crypto'],
   ['^electron'],
   ['^typeorm$'],
+  ['^zod'],
   ['^@arch'],
   ['^@appPaths'],
   ['^@domains/Shared'],
