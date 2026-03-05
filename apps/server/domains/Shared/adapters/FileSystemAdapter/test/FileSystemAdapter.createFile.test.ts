@@ -4,7 +4,7 @@ import { tmpdir } from 'os'
 import { join } from 'path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import { FileSystemAdapter } from './FileSystemAdapter'
+import { FileSystemAdapter } from '../FileSystemAdapter'
 
 describe('FileSystemAdapter.createFile', () => {
   let tempDir: string
