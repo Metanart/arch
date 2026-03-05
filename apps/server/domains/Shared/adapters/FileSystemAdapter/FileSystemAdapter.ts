@@ -1,8 +1,10 @@
 import { constants } from 'fs'
-import { access, copyFile, lstat, mkdir, rename, stat, unlink } from 'fs/promises'
+import { access, copyFile, lstat, mkdir, rename, stat, unlink, writeFile } from 'fs/promises'
 
 import { AppContext } from '@arch/types'
 import { AppError, getMessageFromError } from '@arch/utils'
+
+import { join } from 'path'
 
 import { walkDirectoryTree } from './walkDirectoryTree/walkDirectoryTree'
 import { calculateFileHash } from './calculateFileHash'
@@ -82,6 +84,24 @@ async function createDir(dirPath: string, recursive = true): Promise<boolean> {
   }
 }
 
+async function createFile(
+  fileName: string,
+  fileExtension: string,
+  outputDir: string
+): Promise<boolean> {
+  const normalizedExtension = fileExtension.startsWith('.') ? fileExtension.slice(1) : fileExtension
+  const fullFileName = normalizedExtension ? `${fileName}.${normalizedExtension}` : fileName
+  const filePath = join(outputDir, fullFileName)
+
+  try {
+    await mkdir(outputDir, { recursive: true })
+    await writeFile(filePath, '')
+    return true
+  } catch {
+    return false
+  }
+}
+
 async function copyFileSafe(
   source: string,
   destination: string,
@@ -155,6 +175,7 @@ export const FileSystemAdapter = {
   walkDirectoryTree,
   copyFileSafe,
   createDir,
+  createFile,
   deleteFile,
   moveFile
 }
