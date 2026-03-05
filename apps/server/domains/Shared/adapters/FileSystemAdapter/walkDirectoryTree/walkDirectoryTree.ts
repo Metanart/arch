@@ -8,6 +8,28 @@ import { defaultDirPredicate, defaultFilePredicate, defaultKeyFilePredicate } fr
 
 import { DirectoryNode, DirectoryTree, FileNode, WalkOptions } from './types'
 
+/** Default max number of files to traverse; prevents memory overflow. */
+export const DEFAULT_MAX_FILES = 100_000
+
+/** Default max recursion depth; prevents stack overflow. */
+export const DEFAULT_MAX_RECURSION_DEPTH = 1000
+
+/**
+ * Recursively walks a directory and builds a tree of included files and subdirs.
+ *
+ * Non-fatal issues (e.g. unreadable entries, stat failures, limits exceeded) are
+ * collected in the returned `errors` array; the walk continues where possible.
+ *
+ * When `maxFiles` is exceeded, the walk stops but `totalFiles` in the result
+ * may be greater than `maxFiles` (by up to one subtree), since the limit is
+ * checked after processing each directory.
+ *
+ * Symlinks are not followed; entries that are neither directory nor file are skipped.
+ *
+ * @param root - Absolute or relative path to the directory to walk
+ * @param options - Optional depth limit, predicates, and safety limits
+ * @returns Tree, file counts, and any non-fatal errors encountered
+ */
 export async function walkDirectoryTree(
   root: string,
   options: WalkOptions = {}
@@ -17,8 +39,8 @@ export async function walkDirectoryTree(
     dirPredicate = defaultDirPredicate,
     filePredicate = defaultFilePredicate,
     keyFilePredicate = defaultKeyFilePredicate,
-    maxFiles = 100000, // Reasonable default limit
-    maxRecursionDepth = 1000 // Protection against stack overflow
+    maxFiles = DEFAULT_MAX_FILES,
+    maxRecursionDepth = DEFAULT_MAX_RECURSION_DEPTH
   } = options
 
   const errors: string[] = []

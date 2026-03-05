@@ -21,9 +21,9 @@ export type WalkOptions = {
   filePredicate?: (fileName: string, fileSize: number) => boolean
   /** true — count file as key for further processing (keyFiles counter) */
   keyFilePredicate?: (fileName: string, fileSize: number) => boolean
-  /** Max number of files to prevent memory overflow */
+  /** Max number of files to prevent memory overflow. Default: 100_000 */
   maxFiles?: number
-  /** Max recursion depth to prevent stack overflow */
+  /** Max recursion depth to prevent stack overflow. Default: 1000 */
   maxRecursionDepth?: number
 }
 
