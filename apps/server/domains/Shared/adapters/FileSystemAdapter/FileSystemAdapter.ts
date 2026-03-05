@@ -112,8 +112,7 @@ async function copyFileSafe(
   try {
     await copyFile(source, destination, flags)
     return true
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error: unknown) {
     const message = `Failed to copy "${source}" → "${destination}": ${getMessageFromError(error)}`
     throw new AppError<FileSystemErrorCode, { source: string; destination: string }>({
       ...appContext,
