@@ -144,12 +144,30 @@ async function moveFile(source: string, destination: string): Promise<boolean> {
       })
     }
 
-    // EXDEV: fallback copy + delete
+    // EXDEV: fallback copy + delete (unlink throws so we don't report success if delete fails)
     try {
       await copyFile(source, destination)
-      await deleteFile(source)
+      try {
+        await unlink(source)
+      } catch (deleteError: unknown) {
+        const message = `Failed to remove source after copy "${source}" → "${destination}": ${getMessageFromError(
+          deleteError
+        )}`
+
+        throw new AppError<FileSystemErrorCode, { source: string; destination: string }>({
+          ...appContext,
+          code: 'FILE_MOVE_FALLBACK_FAILED',
+          message,
+          cause: deleteError,
+          details: { source, destination }
+        })
+      }
       return true
     } catch (fallbackError: unknown) {
+      if (fallbackError instanceof AppError) {
+        throw fallbackError
+      }
+
       const message = `Failed to move "${source}" → "${destination}" via copy+delete: ${getMessageFromError(
         fallbackError
       )}`
