@@ -1,7 +1,7 @@
 import type { Stats } from 'node:fs'
 import { createWriteStream } from 'node:fs'
 import { stat } from 'node:fs/promises'
-import { dirname, join, posix as pathPosix, relative, resolve } from 'node:path'
+import { dirname, join, posix as pathPosix } from 'node:path'
 
 import { AppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
@@ -9,7 +9,6 @@ import { AppError } from '@arch/utils'
 import * as yazl from 'yazl'
 
 import { FileSystemAdapter } from '../FileSystemAdapter/FileSystemAdapter'
-import type { DirectoryNode } from '../FileSystemAdapter/walkDirectoryTree/types'
 
 import { ZipServiceErrorCode } from './types'
 
@@ -67,8 +66,6 @@ export async function archive(
   // Collect directories and files via FileSystemAdapter.walkDirectoryTree (depth/cycle limits, consistent errors).
   // Symlinks are ignored on purpose for now — walkDirectoryTree does not follow or include them.
   const { dirs, files } = await collectEntriesFromWalk(inputDirectory)
-  dirs.sort()
-  files.sort()
 
   const zip = new yazl.ZipFile()
   const out = createWriteStream(outputZipPath)
@@ -148,32 +145,7 @@ async function collectEntriesFromWalk(rootDir: string): Promise<{
     })
   }
 
-  return flattenTreeToEntries(rootDir, result.tree)
-}
-
-/** Converts a directory tree into flat lists of relative paths (POSIX-style for ZIP). */
-function flattenTreeToEntries(
-  rootDir: string,
-  tree: DirectoryNode
-): { dirs: string[]; files: string[] } {
-  const dirs: string[] = []
-  const files: string[] = []
-
-  const rootResolved = resolve(rootDir)
-  function visit(node: DirectoryNode): void {
-    if (resolve(node.path) !== rootResolved) {
-      dirs.push(relative(rootDir, node.path).replace(/\\/g, '/'))
-    }
-    for (const f of node.files) {
-      files.push(relative(rootDir, f.path).replace(/\\/g, '/'))
-    }
-    for (const sub of node.subdirs) {
-      visit(sub)
-    }
-  }
-
-  visit(tree)
-  return { dirs, files }
+  return FileSystemAdapter.flattenDirectoryTree(rootDir, result.tree)
 }
 
 /** Normalize the path for ZIP: always "/" and add "/" for directories */

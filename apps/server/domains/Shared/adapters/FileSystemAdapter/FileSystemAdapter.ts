@@ -8,6 +8,7 @@ import { join } from 'path'
 
 import { walkDirectoryTree } from './walkDirectoryTree/walkDirectoryTree'
 import { calculateFileHash } from './calculateFileHash'
+import { flattenDirectoryTree } from './flattenDirectoryTree'
 
 import { FileSystemErrorCode, NodeJsErrnoException } from './types'
 
@@ -190,6 +191,7 @@ export const FileSystemAdapter = {
   checkDirectoryWritable,
   calculateFileHash,
   walkDirectoryTree,
+  flattenDirectoryTree,
   copyFileSafe,
   createDir,
   createFile,
