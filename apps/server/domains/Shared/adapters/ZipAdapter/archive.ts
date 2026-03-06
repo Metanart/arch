@@ -1,12 +1,15 @@
-import type { Dirent, Stats } from 'node:fs'
+import type { Stats } from 'node:fs'
 import { createWriteStream } from 'node:fs'
-import { mkdir, readdir, stat, unlink } from 'node:fs/promises'
-import { dirname, join, posix as pathPosix } from 'node:path'
+import { stat } from 'node:fs/promises'
+import { dirname, join, posix as pathPosix, relative, resolve } from 'node:path'
 
 import { AppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
 
 import * as yazl from 'yazl'
+
+import { FileSystemAdapter } from '../FileSystemAdapter/FileSystemAdapter'
+import type { DirectoryNode } from '../FileSystemAdapter/walkDirectoryTree/types'
 
 import { ZipServiceErrorCode } from './types'
 
@@ -40,7 +43,6 @@ export async function archive(
 ): Promise<void> {
   const compression = options.compression ?? 'deflate'
   const fixedMtime = options.mtime ?? new Date('2000-01-01T00:00:00Z')
-  const ignoreSymlinks = options.ignoreSymlinks ?? true
 
   if (options.signal?.aborted)
     throw new AppError<ZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
@@ -51,13 +53,20 @@ export async function archive(
       details: { inputDirectory, outputZipPath }
     })
 
-  await mkdir(dirname(outputZipPath), { recursive: true })
+  const outputDirCreated = await FileSystemAdapter.createDir(dirname(outputZipPath), true)
+  if (!outputDirCreated) {
+    throw new AppError<ZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
+      ...appContext,
+      code: 'ZIP_ARCHIVE_FAILED',
+      message: 'ZIP archive failed',
+      cause: new Error('Failed to create output directory for archive'),
+      details: { inputDirectory, outputZipPath }
+    })
+  }
 
-  // Collect a list of directories and files (relative paths), lexicographically
-  const { dirs, files } = await collectEntries(inputDirectory, {
-    ignoreSymlinks,
-    filter: options.filter
-  })
+  // Collect directories and files via FileSystemAdapter.walkDirectoryTree (depth/cycle limits, consistent errors).
+  // Symlinks are ignored on purpose for now — walkDirectoryTree does not follow or include them.
+  const { dirs, files } = await collectEntriesFromWalk(inputDirectory)
   dirs.sort()
   files.sort()
 
@@ -96,7 +105,7 @@ export async function archive(
       const entryName = toZipEntryName(f, false)
       const absPath = join(inputDirectory, f)
       const s = await stat(absPath)
-      // compress: true -> deflate, false -> store
+      if (options.filter && !options.filter(f, s)) continue
       zip.addFile(absPath, entryName, {
         mtime: fixedMtime,
         mode: s.mode,
@@ -107,56 +116,63 @@ export async function archive(
     zip.end()
     await completion
   } catch (err) {
-    // If we fail, try to delete the partially created archive
-    try {
-      await unlink(outputZipPath)
-    } catch {
-      // ignore
-    }
+    // Best-effort cleanup of partially created archive
+    await FileSystemAdapter.deleteFile(outputZipPath)
     throw err
   } finally {
     options.signal?.removeEventListener('abort', abortHandler)
   }
 }
 
-/** Recursive collection of relative paths of directories and files */
-// @TODO: use FileSystemService.walkDirectoryTree instead
-async function collectEntries(
+/**
+ * Collects relative paths of directories and files using FileSystemAdapter.walkDirectoryTree.
+ * Uses accept-all predicates so the archive can apply its own filter when adding files.
+ */
+async function collectEntriesFromWalk(rootDir: string): Promise<{
+  dirs: string[]
+  files: string[]
+}> {
+  const result = await FileSystemAdapter.walkDirectoryTree(rootDir, {
+    dirPredicate: () => true,
+    filePredicate: () => true,
+    keyFilePredicate: () => false
+  })
+
+  if (result.errors.length > 0) {
+    throw new AppError<ZipServiceErrorCode, { inputDirectory: string }>({
+      ...appContext,
+      code: 'ZIP_ARCHIVE_FAILED',
+      message: 'ZIP archive failed',
+      cause: new Error(result.errors[0]),
+      details: { inputDirectory: rootDir }
+    })
+  }
+
+  return flattenTreeToEntries(rootDir, result.tree)
+}
+
+/** Converts a directory tree into flat lists of relative paths (POSIX-style for ZIP). */
+function flattenTreeToEntries(
   rootDir: string,
-  opts: { ignoreSymlinks: boolean; filter?: (rel: string, s: Stats) => boolean }
-): Promise<{ dirs: string[]; files: string[] }> {
+  tree: DirectoryNode
+): { dirs: string[]; files: string[] } {
   const dirs: string[] = []
   const files: string[] = []
 
-  async function walk(currentRel: string): Promise<void> {
-    const currentAbs = join(rootDir, currentRel)
-    const dirents: Dirent[] = await readdir(currentAbs, { withFileTypes: true })
-
-    // If there are no elements and this is not the root — save an empty directory
-    if (dirents.length === 0 && currentRel !== '') {
-      dirs.push(currentRel)
-      return
+  const rootResolved = resolve(rootDir)
+  function visit(node: DirectoryNode): void {
+    if (resolve(node.path) !== rootResolved) {
+      dirs.push(relative(rootDir, node.path).replace(/\\/g, '/'))
     }
-
-    // First directories (to save them even if they are empty)
-    for (const d of dirents.filter((d) => d.isDirectory())) {
-      const rel = pathJoinRel(currentRel, d.name)
-      // Save the directory, even if it is not empty (for compatibility with some unpackers)
-      dirs.push(rel)
-      await walk(rel)
+    for (const f of node.files) {
+      files.push(relative(rootDir, f.path).replace(/\\/g, '/'))
     }
-
-    // Files
-    for (const f of dirents.filter((d) => d.isFile() || d.isSymbolicLink())) {
-      if (f.isSymbolicLink() && opts.ignoreSymlinks) continue
-      const rel = pathJoinRel(currentRel, f.name)
-      const s = await stat(join(rootDir, rel))
-      if (opts.filter && !opts.filter(rel, s)) continue
-      files.push(rel)
+    for (const sub of node.subdirs) {
+      visit(sub)
     }
   }
 
-  await walk('')
+  visit(tree)
   return { dirs, files }
 }
 
@@ -164,9 +180,4 @@ async function collectEntries(
 function toZipEntryName(relPath: string, isDir: boolean): string {
   const normalized = pathPosix.normalize(relPath).replace(/^\.?\//, '')
   return isDir ? (normalized.endsWith('/') ? normalized : normalized + '/') : normalized
-}
-
-/** POSIX join for relative paths (independent of OS) */
-function pathJoinRel(baseRel: string, name: string): string {
-  return baseRel ? pathPosix.join(baseRel.replace(/\\/g, '/'), name) : name
 }
