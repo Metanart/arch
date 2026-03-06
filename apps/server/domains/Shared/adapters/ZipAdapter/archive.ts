@@ -1,10 +1,10 @@
-import type { Stats } from 'node:fs'
+import type { Stats, WriteStream } from 'node:fs'
 import { createWriteStream } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import { dirname, join, posix as pathPosix } from 'node:path'
 
 import { AppContext } from '@arch/types'
-import { AppError } from '@arch/utils'
+import { AppError, createLogger } from '@arch/utils'
 
 import * as yazl from 'yazl'
 
@@ -19,8 +19,6 @@ type ArchiveOptions = {
   mtime?: Date
   /** Skip/include files by your own rule */
   filter?: (relativePath: string, stats: Stats) => boolean
-  /** Ignore symbolic links (default true) */
-  ignoreSymlinks?: boolean
   /** Abort operation */
   signal?: AbortSignal
 }
@@ -30,6 +28,8 @@ const appContext: AppContext = {
   layer: 'FileSystem',
   origin: 'ZipService.archive'
 }
+
+const logger = createLogger(appContext)
 
 /**
  * Archives a directory entirely in ZIP using yazl.
@@ -63,38 +63,57 @@ export async function archive(
     })
   }
 
-  // Collect directories and files via FileSystemAdapter.walkDirectoryTree (depth/cycle limits, consistent errors).
-  // Symlinks are ignored on purpose for now — walkDirectoryTree does not follow or include them.
-  const { dirs, files } = await collectEntriesFromWalk(inputDirectory)
-
-  const zip = new yazl.ZipFile()
-  const out = createWriteStream(outputZipPath)
+  // Abort listener attached before the walk so the whole operation (including walk) can be cancelled.
+  let zip: yazl.ZipFile | undefined
+  let out: WriteStream | undefined
+  let abortReject: (reason: Error) => void
+  const abortPromise = new Promise<never>((_, rej) => {
+    abortReject = rej
+  })
 
   const abortHandler = (): void => {
+    abortReject(
+      new AppError<ZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
+        ...appContext,
+        code: 'ZIP_ARCHIVE_FAILED',
+        message: 'ZIP archive failed',
+        cause: new Error('Aborted'),
+        details: { inputDirectory, outputZipPath }
+      })
+    )
     try {
-      out.destroy(new Error('Aborted'))
-      // Close the zip (end() is idempotent); file will be deleted in finally if we abort
-      zip.end()
-    } catch {
-      // ignore
+      if (out) out.destroy(new Error('Aborted'))
+      if (zip) zip.end()
+    } catch (e) {
+      // Do not rethrow: avoid double-handling when the main flow also fails.
+      logger.warn('Abort cleanup failed', e instanceof Error ? e.message : String(e))
     }
   }
   options.signal?.addEventListener('abort', abortHandler, { once: true })
 
-  const completion = new Promise<void>((resolve, reject) => {
-    out.once('error', reject)
-    zip.outputStream.once('error', reject)
-    out.once('close', () => resolve())
-  })
-
-  // Start the pipeline
-  zip.outputStream.pipe(out)
-
   try {
+    // Collect directories and files via FileSystemAdapter.walkDirectoryTree (depth/cycle limits, consistent errors).
+    // Symlinks are ignored on purpose for now — walkDirectoryTree does not follow or include them.
+    const { dirs, files } = await Promise.race([
+      collectEntriesFromWalk(inputDirectory),
+      abortPromise
+    ])
+
+    zip = new yazl.ZipFile()
+    out = createWriteStream(outputZipPath)
+
+    const completion = new Promise<void>((resolve, reject) => {
+      out!.once('error', reject)
+      zip!.outputStream.once('error', reject)
+      out!.once('close', () => resolve())
+    })
+
+    zip.outputStream.pipe(out)
+
     // Empty directories — to be saved in the archive
     for (const d of dirs) {
       const entryName = toZipEntryName(d, true)
-      zip.addEmptyDirectory(entryName, { mtime: fixedMtime })
+      zip!.addEmptyDirectory(entryName, { mtime: fixedMtime })
     }
 
     // Files
@@ -103,7 +122,7 @@ export async function archive(
       const absPath = join(inputDirectory, f)
       const s = await stat(absPath)
       if (options.filter && !options.filter(f, s)) continue
-      zip.addFile(absPath, entryName, {
+      zip!.addFile(absPath, entryName, {
         mtime: fixedMtime,
         mode: s.mode,
         compress: compression === 'deflate'
@@ -112,10 +131,21 @@ export async function archive(
 
     zip.end()
     await completion
-  } catch (err) {
+  } catch (error) {
     // Best-effort cleanup of partially created archive
     await FileSystemAdapter.deleteFile(outputZipPath)
-    throw err
+
+    if (error instanceof AppError) {
+      throw error
+    }
+
+    throw new AppError<ZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
+      ...appContext,
+      code: 'ZIP_ARCHIVE_FAILED',
+      message: 'ZIP archive failed',
+      cause: error,
+      details: { inputDirectory, outputZipPath }
+    })
   } finally {
     options.signal?.removeEventListener('abort', abortHandler)
   }
@@ -136,12 +166,13 @@ async function collectEntriesFromWalk(rootDir: string): Promise<{
   })
 
   if (result.errors.length > 0) {
-    throw new AppError<ZipServiceErrorCode, { inputDirectory: string }>({
+    const allErrors = result.errors.join('; ')
+    throw new AppError<ZipServiceErrorCode, { inputDirectory: string; walkErrors: string[] }>({
       ...appContext,
       code: 'ZIP_ARCHIVE_FAILED',
       message: 'ZIP archive failed',
-      cause: new Error(result.errors[0]),
-      details: { inputDirectory: rootDir }
+      cause: new Error(allErrors),
+      details: { inputDirectory: rootDir, walkErrors: result.errors }
     })
   }
 
