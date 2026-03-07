@@ -1,8 +1,0 @@
----
-alwaysApply: true
----
-
-- Avoid race conditions.
-- Avoid global mutable state.
-- Explicit error propagation.
-- No silent failures.

@@ -1,7 +1,0 @@
----
-alwaysApply: true
----
-
-- Do not introduce new libraries unless explicitly requested.
-- Do not mix layers for convenience.
-- Prefer long-term correctness over quick fixes.

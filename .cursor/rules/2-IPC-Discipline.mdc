@@ -1,8 +1,0 @@
----
-alwaysApply: true
----
-
-- All IPC communication must be fully typed.
-- No untyped channel names.
-- IPC contracts must be defined centrally.
-- Avoid bidirectional implicit coupling.

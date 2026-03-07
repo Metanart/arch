@@ -1,7 +1,0 @@
----
-alwaysApply: true
----
-
-- Pure functions preferred for scheduling logic.
-- Complex orchestration must be decomposed into testable units.
-- Side effects isolated.

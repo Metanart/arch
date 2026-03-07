@@ -1,9 +1,0 @@
----
-alwaysApply: true
----
-
-- Renderer must never access database directly.
-- Renderer must not contain business logic.
-- Main process coordinates orchestration only.
-- Workers execute isolated tasks only.
-- Domain logic must be independent of Electron APIs.

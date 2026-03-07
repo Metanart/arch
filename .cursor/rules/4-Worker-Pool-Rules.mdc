@@ -1,7 +1,0 @@
----
-alwaysApply: true
----
-
-- Workers must not depend on renderer state.
-- Workers must not access UI modules.
-- Communication between workers must go through coordinator.
