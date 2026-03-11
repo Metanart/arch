@@ -4,16 +4,21 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { AppError } from '@arch/utils'
+
 import { describe, expect, it } from 'vitest'
 
 import { extract } from '../extract'
 import { listContents } from '../listContents'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
+import { UnrarServiceErrorCode } from '../types'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const fixturePath = join(__dirname, 'fixtures', 'valid.rar')
 const nestedFixturePath = join(__dirname, 'fixtures', 'nested.rar')
+const protectedFixturePath = join(__dirname, 'fixtures', 'protected.rar')
+const protectedArchivePassword = '666666'
 
 const unrarAvailable = ((): boolean => {
   try {
@@ -102,6 +107,50 @@ describe('extract (integration)', () => {
           const fullPath = join(outputDir, entry)
           await expect(stat(fullPath)).resolves.toBeDefined()
         }
+      } finally {
+        await rm(outputDir, { recursive: true, force: true })
+      }
+    })
+
+    it.runIf(unrarAvailable)(
+      'extracts protected.rar with correct password and creates expected files',
+      async () => {
+        if (!existsSync(protectedFixturePath)) {
+          return
+        }
+
+        const outputDir = await mkdtemp(join(tmpdir(), 'unrar-extract-test-'))
+        try {
+          const entriesBefore = await listContents(protectedFixturePath, {
+            password: protectedArchivePassword
+          })
+          await extract(protectedFixturePath, outputDir, {
+            password: protectedArchivePassword
+          })
+
+          await expect(stat(outputDir)).resolves.toBeDefined()
+          for (const entry of entriesBefore) {
+            const fullPath = join(outputDir, entry)
+            await expect(stat(fullPath)).resolves.toBeDefined()
+          }
+        } finally {
+          await rm(outputDir, { recursive: true, force: true })
+        }
+      }
+    )
+
+    it.runIf(unrarAvailable)('rejects when extracting protected.rar without password', async () => {
+      if (!existsSync(protectedFixturePath)) {
+        return
+      }
+
+      const outputDir = await mkdtemp(join(tmpdir(), 'unrar-extract-test-'))
+      try {
+        await expect(extract(protectedFixturePath, outputDir)).rejects.toMatchObject({
+          code: 'UNRAR_EXECUTABLE_RUN_FAILED',
+          kind: 'AppError',
+          details: expect.objectContaining({ exitCode: expect.any(Number) })
+        } as Partial<AppError<UnrarServiceErrorCode, { exitCode: number }>>)
       } finally {
         await rm(outputDir, { recursive: true, force: true })
       }
