@@ -1,0 +1,95 @@
+import { existsSync } from 'node:fs'
+import { mkdtemp, rm, stat } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { describe, expect, it } from 'vitest'
+
+import { extract } from '../extract'
+import { listContents } from '../listContents'
+import { resolvePathToExecutable } from '../resolvePathToExecutable'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+const fixturePath = join(__dirname, 'fixtures', 'valid.rar')
+
+const unrarAvailable = ((): boolean => {
+  try {
+    resolvePathToExecutable()
+    return true
+  } catch {
+    return false
+  }
+})()
+
+describe('extract (integration)', () => {
+  describe('when unrar executable is available', () => {
+    it.runIf(unrarAvailable)(
+      'extracts valid.rar to output directory and creates expected files',
+      async () => {
+        if (!existsSync(fixturePath)) {
+          return
+        }
+
+        const outputDir = await mkdtemp(join(tmpdir(), 'unrar-extract-test-'))
+        try {
+          const entriesBefore = await listContents(fixturePath)
+          await extract(fixturePath, outputDir)
+
+          await expect(stat(outputDir)).resolves.toBeDefined()
+          for (const entry of entriesBefore) {
+            const fullPath = join(outputDir, entry)
+            await expect(stat(fullPath)).resolves.toBeDefined()
+          }
+        } finally {
+          await rm(outputDir, { recursive: true, force: true })
+        }
+      }
+    )
+
+    it.runIf(unrarAvailable)('creates output directory when it does not exist', async () => {
+      if (!existsSync(fixturePath)) {
+        return
+      }
+
+      const baseDir = await mkdtemp(join(tmpdir(), 'unrar-extract-test-'))
+      const outputDir = join(baseDir, 'nested', 'output')
+      try {
+        await extract(fixturePath, outputDir)
+        await expect(stat(outputDir)).resolves.toBeDefined()
+      } finally {
+        await rm(baseDir, { recursive: true, force: true })
+      }
+    })
+
+    it.runIf(unrarAvailable)('extracts again with overwrite: true without failing', async () => {
+      if (!existsSync(fixturePath)) {
+        return
+      }
+
+      const outputDir = await mkdtemp(join(tmpdir(), 'unrar-extract-test-'))
+      try {
+        await extract(fixturePath, outputDir)
+        await extract(fixturePath, outputDir, { overwrite: true })
+        const entries = await listContents(fixturePath)
+
+        for (const entry of entries) {
+          const fullPath = join(outputDir, entry)
+          await expect(stat(fullPath)).resolves.toBeDefined()
+        }
+      } finally {
+        await rm(outputDir, { recursive: true, force: true })
+      }
+    })
+  })
+
+  describe('when unrar executable is not available', () => {
+    it.runIf(!unrarAvailable)(
+      'extract is not testable (resolvePathToExecutable would throw)',
+      () => {
+        expect(() => resolvePathToExecutable()).toThrow()
+      }
+    )
+  })
+})
