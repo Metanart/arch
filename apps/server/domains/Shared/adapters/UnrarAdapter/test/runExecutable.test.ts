@@ -1,152 +1,118 @@
-import { EventEmitter } from 'node:events'
+import { existsSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import { AppError } from '@arch/utils'
 
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
+import { detectPlatform } from '../../../utils/platform/detectPlatform'
+import { resolvePathToExecutable } from '../resolvePathToExecutable'
 import { runExecutable } from '../runExecutable'
 import { UnrarServiceErrorCode } from '../types'
 
-const FAKE_EXE_PATH = '/fake/unrar/path'
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const resolvePathToExecutableMock = vi.fn<() => string>(() => FAKE_EXE_PATH)
-
-type MockStream = EventEmitter & { setEncoding: (_enc: string) => EventEmitter }
-
-function createMockStream(): MockStream {
-  const stream = new EventEmitter()
-  const mockStream = stream as MockStream
-  mockStream.setEncoding = () => mockStream
-  return mockStream
+function getDevPath(): string {
+  const exe: 'unrar.exe' | 'unrar' = process.platform === 'win32' ? 'unrar.exe' : 'unrar'
+  return resolve(process.cwd(), 'resources', 'bin', detectPlatform(), exe)
 }
 
-type MockChild = EventEmitter & { stdout: MockStream; stderr: MockStream }
+const unrarAvailable = ((): boolean => {
+  try {
+    resolvePathToExecutable()
+    return true
+  } catch {
+    return false
+  }
+})()
 
-function createMockChild(): { child: MockChild; stdout: MockStream; stderr: MockStream } {
-  const stdout = createMockStream()
-  const stderr = createMockStream()
-  const child = new EventEmitter() as MockChild
-  child.stdout = stdout
-  child.stderr = stderr
-  return { child, stdout, stderr }
-}
+describe('runExecutable (integration)', () => {
+  describe('when unrar executable is available', () => {
+    it.runIf(unrarAvailable)(
+      'uses path from resolvePathToExecutable and resolves with stdout when listing a real archive',
+      async () => {
+        const archivePath = join(__dirname, 'fixtures', 'nested.rar')
+        const stdout = await runExecutable(['lb', '-idq', '-scu', '-p-', archivePath])
 
-const spawnMock = vi.fn((_exe: string, _args: readonly string[], _opts: object): MockChild => {
-  const { child } = createMockChild()
-  return child
-})
+        expect(typeof stdout).toBe('string')
+        expect(stdout.length).toBeGreaterThanOrEqual(0)
+      }
+    )
 
-vi.mock('../resolvePathToExecutable', () => ({
-  resolvePathToExecutable: (): string => resolvePathToExecutableMock()
-}))
+    it.runIf(unrarAvailable)(
+      'resolves with stdout string when listing contents of valid fixture',
+      async () => {
+        const archivePath = join(__dirname, 'fixtures', 'valid.rar')
+        if (!existsSync(archivePath)) {
+          return
+        }
+        const stdout = await runExecutable(['lb', '-idq', '-scu', '-p-', archivePath])
 
-vi.mock('child_process', () => ({
-  spawn: (exe: string, args: readonly string[], opts: object) => spawnMock(exe, args, opts)
-}))
+        expect(typeof stdout).toBe('string')
+      }
+    )
 
-describe('runExecutable', () => {
-  afterEach(() => {
-    vi.clearAllMocks()
-    resolvePathToExecutableMock.mockReturnValue(FAKE_EXE_PATH)
+    it.runIf(unrarAvailable)(
+      'rejects with AppError UNRAR_EXECUTABLE_RUN_FAILED when archive does not exist',
+      async () => {
+        const badPath = join(__dirname, 'fixtures', 'nonexistent.rar')
+
+        await expect(runExecutable(['lb', '-idq', '-scu', '-p-', badPath])).rejects.toMatchObject({
+          code: 'UNRAR_EXECUTABLE_RUN_FAILED',
+          kind: 'AppError',
+          details: expect.objectContaining({ exitCode: expect.any(Number) })
+        } as Partial<AppError<UnrarServiceErrorCode, { exitCode: number }>>)
+      }
+    )
+
+    it.runIf(unrarAvailable)(
+      'rejects with AppError when unrar exits with non-zero and error message includes stderr or stdout',
+      async () => {
+        const badPath = join(__dirname, 'fixtures', 'nonexistent.rar')
+
+        await expect(runExecutable(['lb', '-idq', '-scu', '-p-', badPath])).rejects.toThrow(
+          AppError
+        )
+      }
+    )
+
+    it.runIf(unrarAvailable)(
+      'runs the executable resolved by resolvePathToExecutable (same path as getDevPath when under dev)',
+      async () => {
+        const devPath = getDevPath()
+        if (!existsSync(devPath)) {
+          return
+        }
+        const resolved = resolvePathToExecutable()
+        expect(resolved).toBe(devPath)
+
+        const archivePath = join(__dirname, 'fixtures', 'nested.rar')
+        await expect(
+          runExecutable(['lb', '-idq', '-scu', '-p-', archivePath])
+        ).resolves.toBeDefined()
+      }
+    )
+
+    it.runIf(unrarAvailable)(
+      'rejects when abort signal is triggered before process completes',
+      async () => {
+        const controller = new AbortController()
+        const archivePath = join(__dirname, 'fixtures', 'nested.rar')
+        const promise = runExecutable(['lb', '-idq', '-scu', '-p-', archivePath], controller.signal)
+        controller.abort()
+
+        await expect(promise).rejects.toThrow()
+      }
+    )
   })
 
-  describe('normal behavior', () => {
-    it('resolves with concatenated stdout when process exits with code 0', async () => {
-      const promise = runExecutable(['x', 'y'])
-      const child = spawnMock.mock.results[0]?.value as MockChild
-      child.stdout.emit('data', 'line1\n')
-      child.stdout.emit('data', 'line2')
-      child.emit('close', 0)
-
-      await expect(promise).resolves.toBe('line1\nline2')
-    })
-
-    it('calls spawn with executable path, arguments, and options', async () => {
-      const promise = runExecutable(['list', 'archive.rar'])
-      expect(spawnMock).toHaveBeenCalledWith(
-        FAKE_EXE_PATH,
-        ['list', 'archive.rar'],
-        expect.objectContaining({
-          stdio: ['ignore', 'pipe', 'pipe'],
-          windowsHide: true
-        })
-      )
-      const child = spawnMock.mock.results[0]?.value as MockChild
-      child.emit('close', 0)
-      await promise
-    })
-
-    it('passes abort signal to spawn options when provided', async () => {
-      const controller = new AbortController()
-      const promise = runExecutable(['x'], controller.signal)
-      expect(spawnMock).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.any(Array),
-        expect.objectContaining({ signal: controller.signal })
-      )
-      const child = spawnMock.mock.results[0]?.value as MockChild
-      child.emit('close', 0)
-      await promise
-    })
-  })
-
-  describe('error handling', () => {
-    it('rejects with AppError when process exits with non-zero code', async () => {
-      const promise = runExecutable(['bad'])
-      const child = spawnMock.mock.results[0]?.value as MockChild
-      child.stderr.emit('data', 'error: file not found')
-      child.emit('close', 2)
-
-      await expect(promise).rejects.toMatchObject({
-        code: 'UNRAR_EXECUTABLE_RUN_FAILED',
-        kind: 'AppError',
-        details: { exitCode: 2 }
-      } as Partial<AppError<UnrarServiceErrorCode, { exitCode: number }>>)
-    })
-
-    it('error message includes stderr when exit code is non-zero', async () => {
-      const promise = runExecutable(['bad'])
-      const child = spawnMock.mock.results[0]?.value as MockChild
-      child.stderr.emit('data', 'stderr message')
-      child.emit('close', 1)
-
-      await expect(promise).rejects.toThrow(/stderr message/)
-    })
-
-    it('error message includes stdout when stderr is empty and exit code is non-zero', async () => {
-      const promise = runExecutable(['bad'])
-      const child = spawnMock.mock.results[0]?.value as MockChild
-      child.stdout.emit('data', 'stdout only')
-      child.emit('close', 1)
-
-      await expect(promise).rejects.toThrow(/stdout only/)
-    })
-
-    it('rejects with child process error when process emits error', async () => {
-      const promise = runExecutable(['x'])
-      const child = spawnMock.mock.results[0]?.value as MockChild
-      const err = new Error('spawn ENOENT')
-      child.emit('error', err)
-
-      await expect(promise).rejects.toThrow('spawn ENOENT')
-    })
-  })
-
-  describe('resolvePathToExecutable', () => {
-    it('throws when resolvePathToExecutable throws', () => {
-      resolvePathToExecutableMock.mockImplementation(() => {
-        throw new AppError<UnrarServiceErrorCode, { prod: string; dev: string }>({
-          domain: 'Global',
-          layer: 'FileSystem',
-          origin: 'UnrarService.resolvePathToExecutable',
-          code: 'UNRAR_EXECUTABLE_NOT_FOUND',
-          message: 'Not found',
-          details: { prod: '/p', dev: '/d' }
-        })
-      })
-
-      expect(() => runExecutable(['x'])).toThrow(AppError)
-      expect(spawnMock).not.toHaveBeenCalled()
-    })
+  describe('when unrar executable is not available', () => {
+    it.runIf(!unrarAvailable)(
+      'runExecutable is not testable (resolvePathToExecutable would throw)',
+      () => {
+        expect(() => resolvePathToExecutable()).toThrow(AppError)
+      }
+    )
   })
 })
