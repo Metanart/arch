@@ -3,13 +3,20 @@ import { DataSource } from 'typeorm'
 import { SettingsEntity } from '@domains/Settings'
 import { SourceEntity } from '@domains/Sources'
 
+import { TestEntity } from './TestEntity'
+
 let dataSource: DataSource | null = null
 
 export const appEntities = [SettingsEntity, SourceEntity]
 
 export type AppEntities = typeof appEntities
 
-function createDataSource(database: string | ':memory:', entities: AppEntities): DataSource {
+export type TestEntities = [typeof TestEntity]
+
+function createDataSource(
+  database: string | ':memory:',
+  entities: AppEntities | TestEntities
+): DataSource {
   if (dataSource) return dataSource
 
   if (!entities || !Array.isArray(entities)) {
@@ -42,9 +49,11 @@ export function createAppDataSource(database: string) {
   return createDataSource(database, appEntities)
 }
 
-export function createTestDataSource(entities: AppEntities) {
+export function createTestDataSource(entities: AppEntities | TestEntities) {
   return createDataSource(':memory:', entities)
 }
+
+export { TestEntity }
 
 export function getDataSource(): DataSource {
   if (!dataSource) {
