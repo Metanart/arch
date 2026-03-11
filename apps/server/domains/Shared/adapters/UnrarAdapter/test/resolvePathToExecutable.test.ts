@@ -1,60 +1,74 @@
+import { resolve } from 'node:path'
+
 import { AppError } from '@arch/utils'
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import { detectPlatform } from '../../../utils/platform/detectPlatform'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
 import { UnrarServiceErrorCode } from '../types'
 
-const existsSyncMock = vi.fn<(path: string) => boolean>(() => false)
+const { realExistsSync } = vi.hoisted(() => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports -- need sync require for vi.hoisted before mock
+  const fs = require('node:fs') as typeof import('node:fs')
+  return { realExistsSync: fs.existsSync }
+})
+
+const existsSyncMock = vi.fn<(path: string) => boolean>((path: string) => realExistsSync(path))
 
 vi.mock('node:fs', () => ({
   existsSync: (path: string): boolean => existsSyncMock(path)
 }))
 
+function getDevPath(): string {
+  const exe: 'unrar.exe' | 'unrar' = process.platform === 'win32' ? 'unrar.exe' : 'unrar'
+  return resolve(process.cwd(), 'resources', 'bin', detectPlatform(), exe)
+}
+
 describe('resolvePathToExecutable', () => {
   afterEach(() => {
     vi.clearAllMocks()
-    existsSyncMock.mockReturnValue(false)
+    existsSyncMock.mockImplementation((path: string) => realExistsSync(path))
   })
 
-  describe('normal behavior', () => {
-    it('returns prod path when executable exists at prod location', () => {
-      let prod = ''
-      try {
-        resolvePathToExecutable()
-      } catch (e) {
-        const err = e as AppError<UnrarServiceErrorCode, { prod: string; dev: string }>
-        prod = err.details!.prod
+  describe('integration (real path resolution)', () => {
+    const devPath = getDevPath()
+
+    it.runIf(realExistsSync(devPath))(
+      'resolves to the real unrar executable under resources/bin for current platform',
+      () => {
+        const result = resolvePathToExecutable()
+
+        expect(result).toBe(devPath)
+        expect(realExistsSync(result)).toBe(true)
       }
-      existsSyncMock.mockImplementation((path: string) => path === prod)
+    )
 
-      const result = resolvePathToExecutable()
+    it.runIf(realExistsSync(devPath))(
+      'resolved path contains resources/bin and platform-specific segment',
+      () => {
+        const result = resolvePathToExecutable()
 
-      expect(result).toBe(prod)
-      expect(existsSyncMock).toHaveBeenCalledWith(prod)
-    })
-
-    it('returns dev path when executable exists at dev but not at prod', () => {
-      let prod = ''
-      let dev = ''
-      try {
-        resolvePathToExecutable()
-      } catch (e) {
-        const err = e as AppError<UnrarServiceErrorCode, { prod: string; dev: string }>
-        prod = err.details!.prod
-        dev = err.details!.dev
+        expect(result).toContain('resources')
+        expect(result).toContain('bin')
+        expect(result).toContain(detectPlatform())
+        const exe = process.platform === 'win32' ? 'unrar.exe' : 'unrar'
+        expect(result.endsWith(exe)).toBe(true)
       }
-      existsSyncMock.mockImplementation((path: string) => path === dev)
+    )
 
-      const result = resolvePathToExecutable()
+    it.runIf(realExistsSync(devPath))(
+      'uses correct executable name for current platform (unrar.exe on win32, unrar otherwise)',
+      () => {
+        const result = resolvePathToExecutable()
+        const expectedSuffix = process.platform === 'win32' ? 'unrar.exe' : 'unrar'
 
-      expect(result).toBe(dev)
-      expect(existsSyncMock).toHaveBeenCalledWith(prod)
-      expect(existsSyncMock).toHaveBeenCalledWith(dev)
-    })
+        expect(result.endsWith(expectedSuffix)).toBe(true)
+      }
+    )
   })
 
-  describe('error handling', () => {
+  describe('error handling (when executable not found)', () => {
     it('throws AppError with UNRAR_EXECUTABLE_NOT_FOUND when executable not at prod or dev', () => {
       existsSyncMock.mockReturnValue(false)
 
@@ -97,8 +111,8 @@ describe('resolvePathToExecutable', () => {
     })
   })
 
-  describe('platform', () => {
-    it('uses correct executable name for current platform', () => {
+  describe('platform (path shape)', () => {
+    it('prod and dev paths use correct executable name for current platform', () => {
       existsSyncMock.mockReturnValue(false)
 
       try {
