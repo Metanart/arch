@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -99,6 +99,34 @@ describe('archive', () => {
       const entries = await listContents(outputZipPath)
       expect(entries).toEqual(['keep.txt'])
     })
+
+    it('filter receives stats and can filter by size', async () => {
+      await writeFile(join(inputDir, 'small.txt'), 'x')
+      await writeFile(join(inputDir, 'large.txt'), 'large content here')
+
+      await archive(inputDir, outputZipPath, {
+        filter: (_path, stats) => stats.size <= 5
+      })
+
+      const entries = await listContents(outputZipPath)
+      expect(entries).toEqual(['small.txt'])
+    })
+
+    it('includes empty subdirectories and extract recreates them', async () => {
+      await mkdir(join(inputDir, 'emptySub'), { recursive: true })
+      await writeFile(join(inputDir, 'root.txt'), 'r')
+
+      await archive(inputDir, outputZipPath)
+
+      const extractDir = join(tempDir, 'extracted')
+      await extract(outputZipPath, extractDir)
+
+      const entries = await listContents(outputZipPath)
+      expect(entries.sort()).toEqual(['root.txt'])
+      const extractedDirs = await readdir(extractDir, { withFileTypes: true })
+      const subDir = extractedDirs.find((d) => d.isDirectory() && d.name === 'emptySub')
+      expect(subDir).toBeDefined()
+    })
   })
 
   describe('error handling', () => {
@@ -157,6 +185,16 @@ describe('archive', () => {
         err instanceof AppError && err.cause instanceof Error ? err.cause.message : ''
       expect(causeMessage).toContain('permission denied')
       expect(causeMessage).toContain('max depth exceeded')
+    })
+
+    it('throws AppError with ZIP_ARCHIVE_FAILED when input directory does not exist', async () => {
+      const nonExistentDir = join(tempDir, 'does-not-exist')
+
+      await expect(archive(nonExistentDir, outputZipPath)).rejects.toMatchObject({
+        name: 'AppError',
+        code: 'ZIP_ARCHIVE_FAILED',
+        details: { inputDirectory: nonExistentDir }
+      })
     })
   })
 })
