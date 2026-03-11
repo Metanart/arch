@@ -13,6 +13,7 @@ import { resolvePathToExecutable } from '../resolvePathToExecutable'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const fixturePath = join(__dirname, 'fixtures', 'valid.rar')
+const nestedFixturePath = join(__dirname, 'fixtures', 'nested.rar')
 
 const unrarAvailable = ((): boolean => {
   try {
@@ -62,6 +63,29 @@ describe('extract (integration)', () => {
         await rm(baseDir, { recursive: true, force: true })
       }
     })
+
+    it.runIf(unrarAvailable)(
+      'extracts nested.rar to output directory and creates expected files with paths',
+      async () => {
+        if (!existsSync(nestedFixturePath)) {
+          return
+        }
+
+        const outputDir = await mkdtemp(join(tmpdir(), 'unrar-extract-test-'))
+        try {
+          const entriesBefore = await listContents(nestedFixturePath)
+          await extract(nestedFixturePath, outputDir)
+
+          await expect(stat(outputDir)).resolves.toBeDefined()
+          for (const entry of entriesBefore) {
+            const fullPath = join(outputDir, entry)
+            await expect(stat(fullPath)).resolves.toBeDefined()
+          }
+        } finally {
+          await rm(outputDir, { recursive: true, force: true })
+        }
+      }
+    )
 
     it.runIf(unrarAvailable)('extracts again with overwrite: true without failing', async () => {
       if (!existsSync(fixturePath)) {
