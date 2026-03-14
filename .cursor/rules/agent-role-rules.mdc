@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # AI Role Rules
 
 Act as a repository-aware engineering assistant.

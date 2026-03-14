@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # JavaScript General Rules
 
 Write clear and predictable code.

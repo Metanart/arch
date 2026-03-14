@@ -1,3 +1,8 @@
+---
+globs: ./apps/server/**.ts,./apps/bridge/**.ts
+alwaysApply: false
+---
+
 # JavaScript Node.js Rules
 
 Follow general JavaScript rules.

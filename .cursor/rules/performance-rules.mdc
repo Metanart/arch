@@ -1,3 +1,7 @@
+---
+alwaysApply: false
+---
+
 # Performance Rules
 
 Prefer efficient algorithms and data structures.

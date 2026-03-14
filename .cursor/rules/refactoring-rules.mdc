@@ -1,3 +1,7 @@
+---
+alwaysApply: false
+---
+
 # Refactoring Rules
 
 Preserve observable behavior unless change is explicitly requested.

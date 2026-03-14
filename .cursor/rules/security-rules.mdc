@@ -1,3 +1,7 @@
+---
+alwaysApply: false
+---
+
 # Security Rules
 
 Treat all external input as untrusted.

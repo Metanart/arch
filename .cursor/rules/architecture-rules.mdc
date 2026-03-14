@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # Architecture Rules
 
 Maintain clear separation of concerns.

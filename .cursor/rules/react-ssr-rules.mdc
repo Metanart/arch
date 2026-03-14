@@ -1,3 +1,7 @@
+---
+alwaysApply: false
+---
+
 # React SSR Rules
 
 Keep server rendering deterministic.

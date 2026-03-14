@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # TypeScript General Rules
 
 Preserve type safety.

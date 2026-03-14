@@ -1,3 +1,7 @@
+---
+alwaysApply: false
+---
+
 # Testing Rules
 
 Each test must verify one behavior.

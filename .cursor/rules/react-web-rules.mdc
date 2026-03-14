@@ -1,3 +1,8 @@
+---
+globs: ./apps/client/**.ts,./apps/client/**.tsx
+alwaysApply: false
+---
+
 # React Web Rules
 
 Keep React browser code client-safe and hydration-safe.
