@@ -14,11 +14,14 @@ allowed-tools:
 ---
 
 # Collect Architecture Context
+
 Use this skill to gather repository evidence for later rule creation.
 
 ## Workflow
+
 1. Identify analysis scope.
-Determine which part of the repository must be analyzed:
+   Determine which part of the repository must be analyzed:
+
 - full repository
 - app
 - package
@@ -27,8 +30,9 @@ Determine which part of the repository must be analyzed:
 - layer
 - module group
 
-2. Find real entry points.
-Locate:
+1. Find real entry points.
+   Locate:
+
 - app entry points
 - renderer and main process entry points
 - routes
@@ -37,8 +41,9 @@ Locate:
 - IPC boundaries
 - persistence boundaries
 
-3. Map repository structure.
-Identify:
+1. Map repository structure.
+   Identify:
+
 - apps
 - packages
 - shared modules
@@ -46,9 +51,10 @@ Identify:
 - infrastructure modules
 - cross-cutting modules
 
-4. Identify architectural layers actually used.
-Determine which layers exist in the codebase.
-Examples:
+1. Identify architectural layers actually used.
+   Determine which layers exist in the codebase.
+   Examples:
+
 - UI
 - hooks
 - state
@@ -60,10 +66,11 @@ Examples:
 
 Do not assume layers without code evidence.
 
-5. Trace representative flows.
-Trace 3-5 real flows through the system.
-Prefer flows that show how the project is actually built.
-Examples:
+1. Trace representative flows.
+   Trace 3-5 real flows through the system.
+   Prefer flows that show how the project is actually built.
+   Examples:
+
 - UI -> hook -> state -> service -> repository
 - renderer -> IPC -> main -> service
 - form -> validation -> state -> persistence
@@ -71,14 +78,16 @@ Examples:
 - save flow
 
 For each flow identify:
+
 - entry point
 - layers crossed
 - key files
 - contracts passed between layers
 - side effects
 
-6. Find stable implementation patterns.
-Look for repeated patterns in:
+1. Find stable implementation patterns.
+   Look for repeated patterns in:
+
 - React components
 - hooks
 - state modules
@@ -93,8 +102,9 @@ Look for repeated patterns in:
 
 Only include patterns that appear repeated or clearly intentional.
 
-7. Identify boundaries and ownership.
-Determine:
+1. Identify boundaries and ownership.
+   Determine:
+
 - what each layer owns
 - what modules are allowed to access
 - where side effects happen
@@ -102,8 +112,9 @@ Determine:
 - where IPC boundaries exist
 - where business logic lives
 
-8. Extract conventions.
-Identify conventions for:
+1. Extract conventions.
+   Identify conventions for:
+
 - naming
 - file suffixes
 - folder naming
@@ -113,32 +124,39 @@ Identify conventions for:
 - test placement
 - co-location vs separation
 
-9. Separate inconsistencies.
-List patterns that should not become rules.
-Mark them as:
+1. Separate inconsistencies.
+   List patterns that should not become rules.
+   Mark them as:
+
 - inconsistent
 - legacy
 - transitional
 - unclear ownership
 - probable anti-pattern
 
-10. Stop at analysis.
-Do not write rules yet.
-Do not propose refactors unless required to explain inconsistency.
-Do not generate code.
+1. Stop at analysis.
+    Do not write rules yet.
+    Do not propose refactors unless required to explain inconsistency.
+    Do not generate code.
 
 ## Output
+
 ### Technology Stack
+
 Confirmed technologies and where they are used.
 
 ### Repository Structure
+
 Apps, packages, shared modules, and major directories.
 
 ### Architectural Layers
+
 Layers that actually exist and their roles.
 
 ### Representative Flows
+
 3-5 concrete flows with:
+
 - name
 - entry point
 - layers crossed
@@ -147,7 +165,9 @@ Layers that actually exist and their roles.
 - side effects
 
 ### Stable Patterns
+
 Repeated patterns grouped by area:
+
 - UI
 - hooks
 - state
@@ -159,6 +179,7 @@ Repeated patterns grouped by area:
 - file structure
 
 For each pattern include:
+
 - short name
 - description
 - evidence
@@ -166,22 +187,28 @@ For each pattern include:
 - whether it looks rule-worthy
 
 ### Boundaries and Ownership
+
 Layer ownership and important boundaries.
 
 ### Naming and Organization Conventions
+
 Actual naming and file organization conventions.
 
 ### Inconsistencies and Anti-Patterns
+
 Patterns that should not become rules.
 
 ### Candidate Rule Areas
+
 High-level areas that could later become rules.
 Do not write the rules yet.
 
 ### Open Questions
+
 Unclear areas that need more investigation.
 
 ## Quality Bar
+
 Base conclusions on repository evidence.
 Prefer concrete files and flows over generic statements.
 Mark uncertainty explicitly.

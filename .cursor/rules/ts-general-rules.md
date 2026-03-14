@@ -1,70 +1,86 @@
 # TypeScript General Rules
+
 Preserve type safety.
 Prefer explicit, predictable type design.
 Do not weaken types during changes.
 
 # Type Safety
+
 Do not use any.
 Prefer unknown when type is not known.
 Always narrow unknown before use.
 
 # Public Types
+
 Add explicit types for public APIs.
 Add explicit return types for exported functions.
 Export public types for shared structures.
 
 # Type Design
+
 Model domain concepts, not implementation details.
 Use descriptive type names.
 Avoid vague generic names.
 
 # Type vs Interface
+
 Use type by default.
 Use interface only when declaration merging or interface extension across modules is required.
 
 # Unions
+
 Prefer union types over broad generic types.
 Use discriminated unions for state machines.
 Always include a discriminator field.
 
 # Generics
+
 Use generics only when needed.
 Keep generics simple.
 Avoid deeply nested generic types.
 
 # Inference
+
 Prefer inference for obvious local values.
 Avoid redundant type annotations.
 
 # Immutability
+
 Prefer readonly data where possible.
 Use readonly fields for immutable structures.
 Use Readonly<T> when appropriate.
 
 # Enums
+
 Avoid enum unless required.
 Prefer union types for fixed value sets.
 
 # Utility Types
+
 Prefer built-in utility types.
 Do not recreate existing utility types.
 
 # Assertions
+
 Avoid unsafe type assertions.
 Do not use as any.
 Use assertions only when runtime guarantees exist.
 
 # Nullability
+
 Handle null and undefined explicitly.
 Guard optional values before use.
 
 # API Contracts
+
 Define explicit request and response types.
 Avoid loosely typed objects in public APIs.
 
 # Narrowing
+
 Use type guards for safe narrowing.
 
 # Code Changes
+
 Preserve existing type safety.
 Update related types when data structures change.

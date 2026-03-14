@@ -1,8 +1,10 @@
 # JavaScript General Rules
+
 Write clear and predictable code.
 Prefer readability over cleverness.
 
 # Functions
+
 Prefer small, focused functions.
 Each function should have a single responsibility.
 Avoid large multi-purpose functions.
@@ -10,6 +12,7 @@ Prefer pure functions where possible.
 Avoid hidden side effects.
 
 # Variables
+
 Use descriptive variable names.
 Avoid single-letter variables except in small scopes.
 Prefer `const` over `let`.
@@ -17,50 +20,60 @@ Avoid `var`.
 Do not reassign function parameters.
 
 # Data Handling
+
 Validate inputs at the start of functions.
 Avoid mutating input arguments.
 Prefer immutable data patterns.
 Avoid implicit data transformations.
 
 # Control Flow
+
 Keep control flow simple and predictable.
 Avoid deeply nested conditionals.
 Prefer early returns over nested logic.
 Avoid complex boolean expressions.
 
 # Error Handling
+
 Handle errors explicitly.
 Do not swallow errors silently.
 Throw meaningful error messages.
 
 # Asynchronous Code
+
 Use `async/await` instead of promise chains where possible.
 Always handle promise rejections.
 Avoid unhandled asynchronous errors.
 
 # Side Effects
+
 Isolate side effects.
 Avoid modifying external state inside utility functions.
 Keep business logic deterministic where possible.
 
 # Collections
+
 Prefer built-in array methods:
+
 - map
 - filter
 - reduce
 - some
 - every
-Avoid manual loops when a declarative method improves readability.
+  Avoid manual loops when a declarative method improves readability.
 
 # Equality
+
 Use strict equality: === !==
 Avoid loose equality.
 
 # Type Safety
+
 Avoid relying on implicit type coercion.
 Perform explicit type checks when necessary.
 Prefer predictable type conversions.
 
 # Code Style
+
 Follow repository linting and formatting rules.
 Keep code consistent with the existing codebase.

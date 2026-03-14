@@ -1,47 +1,57 @@
 # React SSR Rules
+
 Keep server rendering deterministic.
 Server output must match client expectations.
 Do not rely on browser-only APIs during server render.
 
 # Rendering
+
 Render must remain pure.
 Do not perform side effects during server render.
 Do not access mutable global state during render.
 Avoid non-deterministic values in rendered output.
 
 # Browser APIs
+
 Do not access window, document, localStorage, sessionStorage, or navigator during server render.
 Guard browser-only code behind runtime checks.
 
 # Data Fetching
+
 Fetch required data before render when architecture requires it.
 Handle loading, empty, and error states explicitly.
 Avoid hidden data dependencies in components.
 
 # Hydration
+
 Ensure server and client markup stay consistent.
 Do not render different output on server and client without explicit handling.
 Avoid hydration mismatches.
 
 # State
+
 Initialize state deterministically.
 Do not depend on client-only values for initial render.
 Keep initial state serializable when required.
 
 # Effects
+
 Do not rely on effects for required server-rendered content.
 Keep client-only side effects outside server render paths.
 
 # Component Boundaries
+
 Separate server-safe logic from client-only logic.
 Isolate browser-dependent components.
 Keep SSR-sensitive code paths explicit.
 
 # Errors
+
 Handle server render errors explicitly.
 Do not leak sensitive server details to the client.
 
 # Performance
+
 Keep server render work minimal.
 Avoid expensive computations in render paths.
 Avoid unnecessary serialization cost.
