@@ -9,7 +9,9 @@ const UpdateTaskDependencyBaseSchema = z.object({
 })
 
 const CreateTaskDependencyBaseSchema = z.object({
-  id: z.string()
+  id: z.string().optional(),
+  taskId: z.string(),
+  dependsOnTaskId: z.string()
 })
 
 export const TaskDependencyServerSchema = TaskDependencySchema

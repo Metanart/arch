@@ -5,6 +5,7 @@ import {
   UpdateTaskDependencyServerDTO
 } from '@arch/contracts'
 
+import { getDataSource } from '@domains/App'
 import { createEntity, findEntities, findEntity, removeEntity, updateEntity } from '@domains/Shared'
 
 import { TaskDependencyEntity } from '../entities/TaskDependencyEntity'
@@ -49,10 +50,17 @@ async function removeTaskDependency(id: string): Promise<boolean> {
   return removeEntity<TaskDependencyEntity>(TaskDependencyEntity, { id })
 }
 
+async function getDependencyTaskIdsByTaskId(taskId: string): Promise<string[]> {
+  const repo = getDataSource().getRepository(TaskDependencyEntity)
+  const rows = await repo.find({ where: { taskId } })
+  return rows.map((r) => r.dependsOnTaskId)
+}
+
 export const TaskDependencyRepo = {
   create: createTaskDependency,
   getAll: getAllTaskDependencys,
   getById: getTaskDependencyById,
+  getDependencyTaskIdsByTaskId,
   update: updateTaskDependency,
   remove: removeTaskDependency
 }

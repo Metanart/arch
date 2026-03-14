@@ -9,19 +9,28 @@ const TaskSchema = z.object({
   type: z.enum(TASK_TYPE),
   status: z.enum(STATUS),
   payload: z.string(),
-  queueId: z.string()
+  workflowId: z.string()
 })
 
 const UpdateTaskBaseSchema = z.object({
   id: z.string(),
-  status: z.enum(STATUS)
+  status: z.enum(STATUS),
+  leaseUntil: z.date().nullable().optional(),
+  takenBy: z.string().nullable().optional(),
+  attempts: z.number().optional(),
+  nextRunAt: z.date().nullable().optional(),
+  error: z.string().nullable().optional()
 })
 
 const CreateTaskBaseSchema = z.object({
   type: z.enum(TASK_TYPE),
   status: z.enum(STATUS),
   payload: z.string(),
-  queueId: z.string()
+  workflowId: z.string(),
+  priority: z.number().optional(),
+  predictedWeight: z.number().optional(),
+  maxAttempts: z.number().optional(),
+  nextRunAt: z.date().optional()
 })
 
 export const TaskServerSchema = TaskSchema
