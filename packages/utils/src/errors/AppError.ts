@@ -2,24 +2,24 @@ import { AppDomain, AppLayer } from '@arch/types'
 
 type AppErrorCode = 'UNKNOWN' | 'EMPTY_ARGUMENTS'
 
-export class AppError<TErrorCode, TErrorDetails = Record<string, unknown>> extends Error {
+export class AppError<GErrorCode, GErrorDetails = Record<string, unknown>> extends Error {
   readonly kind = 'AppError' as const
 
   readonly layer: AppLayer
   readonly domain: AppDomain
   readonly origin?: string
 
-  readonly code: TErrorCode | AppErrorCode
-  readonly details?: TErrorDetails
+  readonly code: GErrorCode | AppErrorCode
+  readonly details?: GErrorDetails
   readonly cause?: unknown
 
   constructor(params: {
     layer: AppLayer
     domain: AppDomain
     origin?: string
-    code: TErrorCode | AppErrorCode
+    code: GErrorCode | AppErrorCode
     message: string
-    details?: TErrorDetails
+    details?: GErrorDetails
     cause?: unknown
   }) {
     super(params.message)

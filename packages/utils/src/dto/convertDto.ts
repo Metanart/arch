@@ -5,19 +5,19 @@ export const OMIT = Symbol('OMIT')
 type Key = string | number | symbol
 
 export function convertDto<
-  SourceObject extends Record<Key, any>,
-  TargetObject extends Record<Key, any>
+  GSourceObject extends Record<Key, any>,
+  GTargetObject extends Record<Key, any>
 >(
-  sourceObject: SourceObject,
+  sourceObject: GSourceObject,
   options?: {
-    includeKeys?: readonly (keyof SourceObject | string)[]
-    excludeKeys?: readonly (keyof SourceObject | string)[]
+    includeKeys?: readonly (keyof GSourceObject | string)[]
+    excludeKeys?: readonly (keyof GSourceObject | string)[]
     transforms?: Partial<
-      Record<keyof SourceObject & string, (value: any, key: string, source: SourceObject) => any>
+      Record<keyof GSourceObject & string, (value: any, key: string, source: GSourceObject) => any>
     >
-    defaultTransform?: (value: any, key: string, source: SourceObject) => any
+    defaultTransform?: (value: any, key: string, source: GSourceObject) => any
   }
-): TargetObject {
+): GTargetObject {
   const { includeKeys, excludeKeys, transforms, defaultTransform } = options ?? {}
 
   const includeSet =
@@ -32,7 +32,7 @@ export function convertDto<
 
     const value = (sourceObject as Record<string, any>)[key]
 
-    const fieldTransformer = transforms && transforms[key as keyof SourceObject & string]
+    const fieldTransformer = transforms && transforms[key as keyof GSourceObject & string]
 
     let transformedValue = value
 
@@ -47,5 +47,5 @@ export function convertDto<
     return acc
   }, {})
 
-  return targetObject as any as TargetObject
+  return targetObject as any as GTargetObject
 }

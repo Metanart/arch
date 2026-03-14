@@ -3,13 +3,13 @@ import { SETTINGS_IPC_CHANNELS, SHARED_IPC_CHANNELS, SOURCES_IPC_CHANNELS } from
 export type IpcError = {
   message: string
 }
-export type IpcResponse<TData> =
-  | { status: 'success'; data: TData }
+export type IpcResponse<GData> =
+  | { status: 'success'; data: GData }
   | { status: 'error'; error: IpcError }
 
 export type IpcChannel = SETTINGS_IPC_CHANNELS | SHARED_IPC_CHANNELS | SOURCES_IPC_CHANNELS
 
-export type IpcQuery<TPayload = void> = {
+export type IpcQuery<GPayload = void> = {
   channel: IpcChannel
-  payload?: TPayload
+  payload?: GPayload
 }

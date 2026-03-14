@@ -2,24 +2,24 @@ import { AppContext } from '@arch/types'
 
 import { AppError } from './AppError'
 
-type ErrorAdapter<ErrorCode, ErrorDetails> = (
+type ErrorAdapter<GErrorCode, GErrorDetails> = (
   error: unknown,
   context: AppContext
-) => AppError<ErrorCode, ErrorDetails> | null
+) => AppError<GErrorCode, GErrorDetails> | null
 
-export function createErrorNormalizer<ErrorCode, ErrorDetails>(
-  adapters: ErrorAdapter<ErrorCode, ErrorDetails>[]
+export function createErrorNormalizer<GErrorCode, GErrorDetails>(
+  adapters: ErrorAdapter<GErrorCode, GErrorDetails>[]
 ) {
   return function normalizeError(
     error: unknown,
     context: AppContext
-  ): AppError<ErrorCode, ErrorDetails> {
+  ): AppError<GErrorCode, GErrorDetails> {
     for (const adapter of adapters) {
       const mappedAppError = adapter(error, context)
       if (mappedAppError) return mappedAppError
     }
 
-    return new AppError<ErrorCode, ErrorDetails>({
+    return new AppError<GErrorCode, GErrorDetails>({
       code: 'UNKNOWN',
       message: 'Something went wrong.',
       cause: error,
