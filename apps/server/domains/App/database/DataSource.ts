@@ -2,12 +2,19 @@ import { DataSource } from 'typeorm'
 
 import { SettingsEntity } from '@domains/Settings'
 import { SourceEntity } from '@domains/Sources'
+import { TaskDependencyEntity, TaskEntity, TasksWorkflowEntity } from '@domains/Tasks'
 
 import { TestEntity } from './TestEntity'
 
 let dataSource: DataSource | null = null
 
-export const appEntities = [SettingsEntity, SourceEntity]
+export const appEntities = [
+  SettingsEntity,
+  SourceEntity,
+  TaskEntity,
+  TasksWorkflowEntity,
+  TaskDependencyEntity
+]
 
 export type TAppEntities = typeof appEntities
 

@@ -1,3 +1,6 @@
+export { TaskDependencyEntity } from './entities/TaskDependencyEntity'
+export { TaskEntity } from './entities/TaskEntity'
+export { TasksWorkflowEntity } from './entities/TasksWorkflowEntity'
 export type { ITaskService } from './services/TaskService'
 export { TaskService } from './services/TaskService'
 export { TaskWorkerClient, taskWorkerClient } from './workers/TaskWorkerClient'

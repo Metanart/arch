@@ -4,16 +4,22 @@ import { STATUS } from '../Shared/enums'
 
 const TasksWorkflowSchema = z.object({
   id: z.string(),
+  name: z.string(),
+  sourceId: z.string().nullable(),
   status: z.enum(STATUS)
 })
 
 const UpdateTasksWorkflowBaseSchema = z.object({
   id: z.string(),
-  status: z.enum(STATUS)
+  status: z.enum(STATUS),
+  name: z.string().optional(),
+  sourceId: z.string().nullable().optional()
 })
 
 const CreateTasksWorkflowBaseSchema = z.object({
-  status: z.enum(STATUS)
+  status: z.enum(STATUS),
+  name: z.string(),
+  sourceId: z.string().nullable().optional()
 })
 
 export const TasksWorkflowServerSchema = TasksWorkflowSchema

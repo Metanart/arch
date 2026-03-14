@@ -4,10 +4,25 @@ import {
   TTasksWorkflowServerDTO,
   TUpdateTasksWorkflowServerDTO
 } from '@arch/contracts'
+import { AppError } from '@arch/utils'
 
-import { createEntity, findEntities, findEntity, removeEntity, updateEntity } from '@domains/Shared'
+import { createEntity, removeEntity, updateEntity } from '@domains/Shared'
+
+import { getDataSource } from '@domains/App'
 
 import { TasksWorkflowEntity } from '../entities/TasksWorkflowEntity'
+
+function mapCreateDtoToEntityPayload(dto: TCreateTasksWorkflowServerDTO): {
+  name: string
+  status: TCreateTasksWorkflowServerDTO['status']
+  source?: { id: string }
+} {
+  const { sourceId, ...rest } = dto
+  return {
+    ...rest,
+    ...(sourceId != null ? { source: { id: sourceId } } : {})
+  }
+}
 
 async function createTasksWorkflow(
   tasksWorkflowDto: TCreateTasksWorkflowServerDTO
@@ -15,23 +30,41 @@ async function createTasksWorkflow(
   return createEntity<TasksWorkflowEntity, TTasksWorkflowServerDTO>(
     TasksWorkflowEntity,
     TasksWorkflowServerSchema,
-    tasksWorkflowDto
+    mapCreateDtoToEntityPayload(tasksWorkflowDto)
   )
 }
 
 async function getAllTasksWorkflows(): Promise<TTasksWorkflowServerDTO[]> {
-  return findEntities<TasksWorkflowEntity, TTasksWorkflowServerDTO>(
-    TasksWorkflowEntity,
-    TasksWorkflowServerSchema
-  )
+  const repo = getDataSource().getRepository(TasksWorkflowEntity)
+  const entities = await repo.find({ relations: ['source'] })
+  return entities.map((e) => TasksWorkflowServerSchema.parse(e))
 }
 
 async function getTasksWorkflowById(id: string): Promise<TTasksWorkflowServerDTO> {
-  return findEntity<TasksWorkflowEntity, TTasksWorkflowServerDTO>(
-    TasksWorkflowEntity,
-    TasksWorkflowServerSchema,
-    { id }
-  )
+  const repo = getDataSource().getRepository(TasksWorkflowEntity)
+  const entity = await repo.findOne({ where: { id }, relations: ['source'] })
+  if (!entity) {
+    throw new AppError({
+      domain: 'Tasks',
+      layer: 'Database',
+      origin: 'getTasksWorkflowById',
+      message: 'Workflow not found',
+      code: 'DB_ENTITY_NOT_FOUND'
+    })
+  }
+  return TasksWorkflowServerSchema.parse(entity)
+}
+
+function mapUpdateDtoToEntityPayload(dto: TUpdateTasksWorkflowServerDTO): {
+  status: TUpdateTasksWorkflowServerDTO['status']
+  name?: string
+  source?: { id: string } | null
+} {
+  const { sourceId, ...rest } = dto
+  return {
+    ...rest,
+    ...(sourceId !== undefined ? { source: sourceId != null ? { id: sourceId } : null } : {})
+  }
 }
 
 async function updateTasksWorkflow(
@@ -41,7 +74,7 @@ async function updateTasksWorkflow(
     TasksWorkflowEntity,
     TasksWorkflowServerSchema,
     { id: tasksWorkflowDto.id },
-    tasksWorkflowDto
+    mapUpdateDtoToEntityPayload(tasksWorkflowDto)
   )
 }
 
