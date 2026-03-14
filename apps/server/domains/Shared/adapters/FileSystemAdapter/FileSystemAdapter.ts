@@ -10,7 +10,7 @@ import { walkDirectoryTree } from './walkDirectoryTree/walkDirectoryTree'
 import { calculateFileHash } from './calculateFileHash'
 import { flattenDirectoryTree } from './flattenDirectoryTree'
 
-import { FileSystemErrorCode, NodeJsErrnoException } from './types'
+import { TFileSystemErrorCode, TNodeJsErrnoException } from './types'
 
 const appContext: AppContext = {
   domain: 'Global',
@@ -18,7 +18,7 @@ const appContext: AppContext = {
   origin: 'FileSystemService'
 }
 
-function isErrnoException(error: unknown): error is NodeJsErrnoException {
+function isErrnoException(error: unknown): error is TNodeJsErrnoException {
   return typeof error === 'object' && error !== null
 }
 
@@ -115,7 +115,7 @@ async function copyFileSafe(
     return true
   } catch (error: unknown) {
     const message = `Failed to copy "${source}" → "${destination}": ${getMessageFromError(error)}`
-    throw new AppError<FileSystemErrorCode, { source: string; destination: string }>({
+    throw new AppError<TFileSystemErrorCode, { source: string; destination: string }>({
       ...appContext,
       code: 'FILE_COPY_FAILED',
       message,
@@ -135,7 +135,7 @@ async function moveFile(source: string, destination: string): Promise<boolean> {
     if (errorCode !== 'EXDEV') {
       const message = `Failed to move "${source}" → "${destination}": ${getMessageFromError(error)}`
 
-      throw new AppError<FileSystemErrorCode, { source: string; destination: string }>({
+      throw new AppError<TFileSystemErrorCode, { source: string; destination: string }>({
         ...appContext,
         code: 'FILE_MOVE_FAILED',
         message,
@@ -154,7 +154,7 @@ async function moveFile(source: string, destination: string): Promise<boolean> {
           deleteError
         )}`
 
-        throw new AppError<FileSystemErrorCode, { source: string; destination: string }>({
+        throw new AppError<TFileSystemErrorCode, { source: string; destination: string }>({
           ...appContext,
           code: 'FILE_MOVE_FALLBACK_FAILED',
           message,
@@ -172,7 +172,7 @@ async function moveFile(source: string, destination: string): Promise<boolean> {
         fallbackError
       )}`
 
-      throw new AppError<FileSystemErrorCode, { source: string; destination: string }>({
+      throw new AppError<TFileSystemErrorCode, { source: string; destination: string }>({
         ...appContext,
         code: 'FILE_MOVE_FALLBACK_FAILED',
         message,

@@ -5,7 +5,7 @@ import { AppError } from '@arch/utils'
 
 import { resolvePathToExecutable } from './resolvePathToExecutable'
 
-import { UnrarServiceErrorCode } from './types'
+import { TTUnrarServiceErrorCode } from './types'
 
 const appContext: AppContext = {
   domain: 'Global',
@@ -50,7 +50,7 @@ export function runExecutable(
         resolveOutput(stdoutText)
       } else {
         rejectError(
-          new AppError<UnrarServiceErrorCode, { exitCode: number }>({
+          new AppError<TUnrarServiceErrorCode, { exitCode: number }>({
             ...appContext,
             code: 'UNRAR_EXECUTABLE_RUN_FAILED',
             message: `Unrar executable exited with code ${exitCode}: ${stderrText || stdoutText}`,

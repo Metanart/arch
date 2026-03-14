@@ -1,6 +1,6 @@
 import { relative, resolve } from 'node:path'
 
-import type { DirectoryNode } from './walkDirectoryTree/types'
+import type { TDirectoryNode } from './walkDirectoryTree/types'
 
 /**
  * Converts a directory tree into flat lists of relative paths (POSIX-style, "/" separators).
@@ -8,13 +8,13 @@ import type { DirectoryNode } from './walkDirectoryTree/types'
  */
 export function flattenDirectoryTree(
   rootDir: string,
-  tree: DirectoryNode
+  tree: TDirectoryNode
 ): { dirs: string[]; files: string[] } {
   const dirs: string[] = []
   const files: string[] = []
   const rootResolved = resolve(rootDir)
 
-  function visit(node: DirectoryNode): void {
+  function visit(node: TDirectoryNode): void {
     if (resolve(node.path) !== rootResolved) {
       dirs.push(relative(rootDir, node.path).replace(/\\/g, '/'))
     }

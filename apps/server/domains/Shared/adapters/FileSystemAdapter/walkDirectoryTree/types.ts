@@ -1,18 +1,18 @@
-export type FileNode = {
+export type TFileNode = {
   path: string
   name: string
   size: number
   ext: string
 }
 
-export type DirectoryNode = {
+export type TDirectoryNode = {
   path: string
   name: string
-  files: FileNode[]
-  subdirs: DirectoryNode[]
+  files: TFileNode[]
+  subdirs: TDirectoryNode[]
 }
 
-export type WalkOptions = {
+export type TWalkOptions = {
   /** Max depth (0 — only root, 1 — root + its children, etc.). Absent — no limit */
   maxDepth?: number
   /** true — enter directory; false — skip completely */
@@ -27,8 +27,8 @@ export type WalkOptions = {
   maxRecursionDepth?: number
 }
 
-export type DirectoryTree = {
-  tree: DirectoryNode
+export type TDirectoryTree = {
+  tree: TDirectoryNode
   totalFiles: number // total number of included files
   keyFiles: number // total number of included key files
   nonKeyFiles: number // totalFiles - keyFiles

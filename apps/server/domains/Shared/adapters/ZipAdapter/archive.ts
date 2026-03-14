@@ -10,9 +10,9 @@ import * as yazl from 'yazl'
 
 import { FileSystemAdapter } from '../FileSystemAdapter/FileSystemAdapter'
 
-import { ZipServiceErrorCode } from './types'
+import { TZipServiceErrorCode } from './types'
 
-type ArchiveOptions = {
+type TArchiveOptions = {
   /** 'deflate' (default) or 'store' (no compression) */
   compression?: 'deflate' | 'store'
   /** Fixed mtime for deterministic ZIP (default 2000-01-01) */
@@ -38,13 +38,13 @@ const logger = createLogger(appContext)
 export async function archive(
   inputDirectory: string,
   outputZipPath: string,
-  options: ArchiveOptions = {}
+  options: TArchiveOptions = {}
 ): Promise<void> {
   const compression = options.compression ?? 'deflate'
   const fixedMtime = options.mtime ?? new Date('2000-01-01T00:00:00Z')
 
   if (options.signal?.aborted)
-    throw new AppError<ZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
+    throw new AppError<TZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
       ...appContext,
       code: 'ZIP_ARCHIVE_FAILED',
       message: 'ZIP archive failed',
@@ -54,7 +54,7 @@ export async function archive(
 
   const outputDirCreated = await FileSystemAdapter.createDir(dirname(outputZipPath), true)
   if (!outputDirCreated) {
-    throw new AppError<ZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
+    throw new AppError<TZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
       ...appContext,
       code: 'ZIP_ARCHIVE_FAILED',
       message: 'ZIP archive failed',
@@ -73,7 +73,7 @@ export async function archive(
 
   const abortHandler = (): void => {
     abortReject(
-      new AppError<ZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
+      new AppError<TZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
         ...appContext,
         code: 'ZIP_ARCHIVE_FAILED',
         message: 'ZIP archive failed',
@@ -139,7 +139,7 @@ export async function archive(
       throw error
     }
 
-    throw new AppError<ZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
+    throw new AppError<TZipServiceErrorCode, { inputDirectory: string; outputZipPath: string }>({
       ...appContext,
       code: 'ZIP_ARCHIVE_FAILED',
       message: 'ZIP archive failed',
@@ -167,7 +167,7 @@ async function collectEntriesFromWalk(rootDir: string): Promise<{
 
   if (result.errors.length > 0) {
     const allErrors = result.errors.join('; ')
-    throw new AppError<ZipServiceErrorCode, { inputDirectory: string; walkErrors: string[] }>({
+    throw new AppError<TZipServiceErrorCode, { inputDirectory: string; walkErrors: string[] }>({
       ...appContext,
       code: 'ZIP_ARCHIVE_FAILED',
       message: 'ZIP archive failed',

@@ -4,7 +4,7 @@ import { tmpdir } from 'os'
 import { join } from 'path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import type { WalkOptions } from '../../types'
+import type { TWalkOptions } from '../../types'
 import {
   DEFAULT_MAX_FILES,
   DEFAULT_MAX_RECURSION_DEPTH,
@@ -23,7 +23,7 @@ describe('walkDirectoryTree', () => {
   })
 
   /** Allow all dirs and all files so tests control structure via options. */
-  const allowAllOptions: WalkOptions = {
+  const allowAllOptions: TWalkOptions = {
     dirPredicate: () => true,
     filePredicate: () => true,
     keyFilePredicate: () => false

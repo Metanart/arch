@@ -6,7 +6,7 @@ import { AppError } from '@arch/utils'
 
 import { detectPlatform } from '../../utils/platform/detectPlatform'
 
-import { UnrarServiceErrorCode } from './types'
+import { TTUnrarServiceErrorCode } from './types'
 
 const appContext: AppContext = {
   domain: 'Global',
@@ -36,7 +36,7 @@ export function resolvePathToExecutable(): string {
 
   if (existsSync(dev)) return dev
 
-  throw new AppError<UnrarServiceErrorCode, { prod: string; dev: string }>({
+  throw new AppError<TUnrarServiceErrorCode, { prod: string; dev: string }>({
     ...appContext,
     code: 'UNRAR_EXECUTABLE_NOT_FOUND',
     message: `Unrar executable not found: ${prod} | ${dev}`,

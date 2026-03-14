@@ -1,8 +1,8 @@
 import { TASK_TYPE, TaskType } from '@arch/contracts'
 
-import type { DirectoryTree } from '@domains/Shared'
+import type { TDirectoryTree } from '@domains/Shared'
 
-type ErrorResponse = {
+type TErrorResponse = {
   requestId: number
   type: 'error'
   payload: {
@@ -24,19 +24,19 @@ type BaseRequest<GType extends TaskType, GRequestPayload> = {
 
 type BaseContract<GType extends TaskType, GRequestPayload, GResponsePayload> = {
   request: BaseRequest<GType, GRequestPayload>
-  response: BaseResponse<GType, GResponsePayload> | ErrorResponse
+  response: BaseResponse<GType, GResponsePayload> | TErrorResponse
 }
 
-type MultiplyContract = BaseContract<
+type TMultiplyContract = BaseContract<
   typeof TASK_TYPE.MULTIPLY,
   { value: number },
   { result: number }
 >
 
-type ScanSourceContract = BaseContract<
+type TScanSourceContract = BaseContract<
   typeof TASK_TYPE.SCAN_SOURCE,
   { dirPath: string },
-  { dirTree: DirectoryTree }
+  { dirTree: TDirectoryTree }
 >
 
-export type TaskWorkerContracts = MultiplyContract | ScanSourceContract
+export type TTaskWorkerContracts = TMultiplyContract | TScanSourceContract

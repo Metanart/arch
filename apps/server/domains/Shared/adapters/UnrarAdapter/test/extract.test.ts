@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest'
 import { extract } from '../extract'
 import { listContents } from '../listContents'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
-import { UnrarServiceErrorCode } from '../types'
+import { TTUnrarServiceErrorCode } from '../types'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -150,7 +150,7 @@ describe('extract (integration)', () => {
           code: 'UNRAR_EXECUTABLE_RUN_FAILED',
           kind: 'AppError',
           details: expect.objectContaining({ exitCode: expect.any(Number) })
-        } as Partial<AppError<UnrarServiceErrorCode, { exitCode: number }>>)
+        } as Partial<AppError<TUnrarServiceErrorCode, { exitCode: number }>>)
       } finally {
         await rm(outputDir, { recursive: true, force: true })
       }

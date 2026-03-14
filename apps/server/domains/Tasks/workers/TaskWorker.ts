@@ -4,7 +4,7 @@ import { TASK_TYPE } from '@arch/contracts'
 
 import { FileSystemAdapter } from '@domains/Shared'
 
-import type { TaskWorkerRequest, TaskWorkerResponse } from './types'
+import type { TTaskWorkerRequest, TTaskWorkerResponse } from './types'
 
 if (parentPort === null) {
   throw new Error('This file must be run as a worker thread')
@@ -20,8 +20,8 @@ function multiply(num: number): number {
   return num * 2
 }
 
-MESSAGE_PORT.on('message', async (message: TaskWorkerRequest) => {
-  let response: TaskWorkerResponse | null = null
+MESSAGE_PORT.on('message', async (message: TTaskWorkerRequest) => {
+  let response: TTaskWorkerResponse | null = null
 
   try {
     switch (message.type) {

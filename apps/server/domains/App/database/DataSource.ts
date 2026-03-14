@@ -9,13 +9,13 @@ let dataSource: DataSource | null = null
 
 export const appEntities = [SettingsEntity, SourceEntity]
 
-export type AppEntities = typeof appEntities
+export type TAppEntities = typeof appEntities
 
-export type TestEntities = [typeof TestEntity]
+export type TTestEntities = [typeof TestEntity]
 
 function createDataSource(
   database: string | ':memory:',
-  entities: AppEntities | TestEntities
+  entities: TAppEntities | TTestEntities
 ): DataSource {
   if (dataSource) return dataSource
 
@@ -49,7 +49,7 @@ export function createAppDataSource(database: string) {
   return createDataSource(database, appEntities)
 }
 
-export function createTestDataSource(entities: AppEntities | TestEntities) {
+export function createTestDataSource(entities: TAppEntities | TTestEntities) {
   return createDataSource(':memory:', entities)
 }
 

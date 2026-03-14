@@ -9,7 +9,7 @@ import { AppError, createLogger, isNumber, isObject, isString } from '@arch/util
 
 import { createDeferredPromise } from '@domains/Shared'
 
-import { TaskWorkerRequestByType, TaskWorkerResponse, TaskWorkerResponseByType } from './types'
+import { TaskWorkerRequestByType, TTaskWorkerResponse, TaskWorkerResponseByType } from './types'
 
 const appContext: AppContext = { domain: 'Tasks', layer: 'Worker', origin: 'TaskWorkerClient' }
 
@@ -160,7 +160,7 @@ export class TaskWorkerClient {
     return promise
   }
 
-  private isValidResponse(message: unknown): message is TaskWorkerResponse {
+  private isValidResponse(message: unknown): message is TTaskWorkerResponse {
     return (
       isObject(message) &&
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -180,7 +180,7 @@ export class TaskWorkerClient {
       return
     }
 
-    const response: TaskWorkerResponse = message
+    const response: TTaskWorkerResponse = message
 
     if (response.type === 'error') {
       logger.error('Worker response received an error for request with id', response.requestId)

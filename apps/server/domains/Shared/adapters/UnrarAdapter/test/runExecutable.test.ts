@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest'
 import { detectPlatform } from '../../../utils/platform/detectPlatform'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
 import { runExecutable } from '../runExecutable'
-import { UnrarServiceErrorCode } from '../types'
+import { TTUnrarServiceErrorCode } from '../types'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -62,7 +62,7 @@ describe('runExecutable (integration)', () => {
           code: 'UNRAR_EXECUTABLE_RUN_FAILED',
           kind: 'AppError',
           details: expect.objectContaining({ exitCode: expect.any(Number) })
-        } as Partial<AppError<UnrarServiceErrorCode, { exitCode: number }>>)
+        } as Partial<AppError<TUnrarServiceErrorCode, { exitCode: number }>>)
       }
     )
 

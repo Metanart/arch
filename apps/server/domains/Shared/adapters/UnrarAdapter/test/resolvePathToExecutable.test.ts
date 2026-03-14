@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { detectPlatform } from '../../../utils/platform/detectPlatform'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
-import { UnrarServiceErrorCode } from '../types'
+import { TTUnrarServiceErrorCode } from '../types'
 
 const { realExistsSync } = vi.hoisted(() => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports -- need sync require for vi.hoisted before mock
@@ -76,7 +76,7 @@ describe('resolvePathToExecutable', () => {
       try {
         resolvePathToExecutable()
       } catch (e) {
-        const err = e as AppError<UnrarServiceErrorCode, { prod: string; dev: string }>
+        const err = e as AppError<TUnrarServiceErrorCode, { prod: string; dev: string }>
         expect(err.code).toBe('UNRAR_EXECUTABLE_NOT_FOUND')
         expect(err.kind).toBe('AppError')
       }
@@ -88,7 +88,7 @@ describe('resolvePathToExecutable', () => {
       try {
         resolvePathToExecutable()
       } catch (e) {
-        const err = e as AppError<UnrarServiceErrorCode, { prod: string; dev: string }>
+        const err = e as AppError<TUnrarServiceErrorCode, { prod: string; dev: string }>
         expect(err.details).toBeDefined()
         expect(typeof err.details!.prod).toBe('string')
         expect(typeof err.details!.dev).toBe('string')
@@ -105,7 +105,7 @@ describe('resolvePathToExecutable', () => {
       try {
         resolvePathToExecutable()
       } catch (e) {
-        const err = e as AppError<UnrarServiceErrorCode, { prod: string; dev: string }>
+        const err = e as AppError<TUnrarServiceErrorCode, { prod: string; dev: string }>
         expect(err.cause).toBeInstanceOf(Error)
       }
     })
@@ -118,7 +118,7 @@ describe('resolvePathToExecutable', () => {
       try {
         resolvePathToExecutable()
       } catch (e) {
-        const err = e as AppError<UnrarServiceErrorCode, { prod: string; dev: string }>
+        const err = e as AppError<TUnrarServiceErrorCode, { prod: string; dev: string }>
         const prod = err.details!.prod
         const dev = err.details!.dev
         const expectedSuffix = process.platform === 'win32' ? 'unrar.exe' : 'unrar'

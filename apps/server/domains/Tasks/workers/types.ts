@@ -1,8 +1,8 @@
-import { TaskWorkerContracts } from './contracts'
+import { TTaskWorkerContracts } from './contracts'
 
-export type TaskWorkerRequest = TaskWorkerContracts['request']
-export type TaskWorkerResponse = TaskWorkerContracts['response']
+export type TTaskWorkerRequest = TTaskWorkerContracts['request']
+export type TTaskWorkerResponse = TTaskWorkerContracts['response']
 
-export type TaskWorkerRequestByType<GTaskType> = Extract<TaskWorkerRequest, { type: GTaskType }>
+export type TaskWorkerRequestByType<GTaskType> = Extract<TTaskWorkerRequest, { type: GTaskType }>
 
-export type TaskWorkerResponseByType<GTaskType> = Extract<TaskWorkerResponse, { type: GTaskType }>
+export type TaskWorkerResponseByType<GTaskType> = Extract<TTaskWorkerResponse, { type: GTaskType }>

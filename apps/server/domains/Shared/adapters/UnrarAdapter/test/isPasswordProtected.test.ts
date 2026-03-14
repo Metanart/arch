@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest'
 
 import { isPasswordProtected } from '../isPasswordProtected'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
-import { UnrarServiceErrorCode } from '../types'
+import { TTUnrarServiceErrorCode } from '../types'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -59,7 +59,7 @@ describe('isPasswordProtected (integration)', () => {
           code: 'UNRAR_PASSWORD_PROTECTTION_CHECK_FAILED',
           kind: 'AppError',
           details: expect.objectContaining({ archivePath: nonexistentPath })
-        } as Partial<AppError<UnrarServiceErrorCode, { archivePath: string }>>)
+        } as Partial<AppError<TUnrarServiceErrorCode, { archivePath: string }>>)
       }
     )
   })

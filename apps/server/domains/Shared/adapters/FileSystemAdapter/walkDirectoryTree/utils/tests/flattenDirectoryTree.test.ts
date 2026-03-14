@@ -1,18 +1,18 @@
 import { describe, expect, it } from 'vitest'
 
 import { flattenDirectoryTree } from '../../../flattenDirectoryTree'
-import type { DirectoryNode, FileNode } from '../../types'
+import type { TDirectoryNode, TFileNode } from '../../types'
 
 function dir(
   path: string,
   name: string,
-  files: FileNode[] = [],
-  subdirs: DirectoryNode[] = []
-): DirectoryNode {
+  files: TFileNode[] = [],
+  subdirs: TDirectoryNode[] = []
+): TDirectoryNode {
   return { path, name, files, subdirs }
 }
 
-function file(path: string, name: string, size = 0, ext = ''): FileNode {
+function file(path: string, name: string, size = 0, ext = ''): TFileNode {
   return { path, name, size, ext }
 }
 

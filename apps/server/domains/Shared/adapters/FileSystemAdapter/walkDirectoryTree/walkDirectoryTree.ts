@@ -6,7 +6,7 @@ import { getMessageFromError } from '@arch/utils'
 import { safeGetFileExtension } from './utils/safeGetFileExtension'
 import { defaultDirPredicate, defaultFilePredicate, defaultKeyFilePredicate } from './defaults'
 
-import { DirectoryNode, DirectoryTree, FileNode, WalkOptions } from './types'
+import { TDirectoryNode, TDirectoryTree, TFileNode, TWalkOptions } from './types'
 
 /** Default max number of files to traverse; prevents memory overflow. */
 export const DEFAULT_MAX_FILES = 100_000
@@ -32,8 +32,8 @@ export const DEFAULT_MAX_RECURSION_DEPTH = 1000
  */
 export async function walkDirectoryTree(
   root: string,
-  options: WalkOptions = {}
-): Promise<DirectoryTree> {
+  options: TWalkOptions = {}
+): Promise<TDirectoryTree> {
   const {
     maxDepth,
     dirPredicate = defaultDirPredicate,
@@ -74,7 +74,7 @@ export async function walkDirectoryTree(
     errors: string[],
     maxFiles: number,
     maxRecursionDepth: number
-  ): Promise<{ tree: DirectoryNode; totalFiles: number; keyFiles: number }> {
+  ): Promise<{ tree: TDirectoryNode; totalFiles: number; keyFiles: number }> {
     // Protection against stack overflow
     if (depth > maxRecursionDepth) {
       errors.push(`Maximum recursion depth exceeded at: ${currentDir}`)
@@ -99,8 +99,8 @@ export async function walkDirectoryTree(
 
     try {
       const entries = await readdir(currentDir, { withFileTypes: true })
-      const files: FileNode[] = []
-      const subdirs: DirectoryNode[] = []
+      const files: TFileNode[] = []
+      const subdirs: TDirectoryNode[] = []
 
       let total = 0
       let key = 0

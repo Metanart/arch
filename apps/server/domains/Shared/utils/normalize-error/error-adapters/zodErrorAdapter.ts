@@ -3,21 +3,21 @@ import { z, ZodError } from 'zod'
 import { AppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
 
-export type ZodErrorCode = 'ZOD_VALIDATION_ERROR'
+export type TZodErrorCode = 'ZOD_VALIDATION_ERROR'
 
-type ZodIssueDTO = {
+type TZodIssueDTO = {
   path: string
   message: string
   code: z.core.$ZodIssue['code']
 }
 
-type ZodValidationDetails = {
+type TZodValidationDetails = {
   schema?: string
-  issues: ZodIssueDTO[]
+  issues: TZodIssueDTO[]
   issuesCount: number
 }
 
-type ZodAdapterOptions = {
+type TZodAdapterOptions = {
   schema?: string
   maxIssues?: number
   includeSummaryInMessage?: boolean
@@ -28,7 +28,7 @@ function formatZodPath(path: Array<symbol | string | number>): string {
   return path.map((segment) => (typeof segment === 'number' ? String(segment) : segment)).join('.')
 }
 
-function mapIssue(issue: z.core.$ZodIssue): ZodIssueDTO {
+function mapIssue(issue: z.core.$ZodIssue): TZodIssueDTO {
   return {
     path: formatZodPath(issue.path),
     message: issue.message,
@@ -36,7 +36,7 @@ function mapIssue(issue: z.core.$ZodIssue): ZodIssueDTO {
   }
 }
 
-function buildMessage(issues: ZodIssueDTO[], includeSummary: boolean): string {
+function buildMessage(issues: TZodIssueDTO[], includeSummary: boolean): string {
   if (issues.length === 0) return 'Validation failed.'
 
   const first = issues[0]
@@ -51,8 +51,8 @@ function buildMessage(issues: ZodIssueDTO[], includeSummary: boolean): string {
 export function zodErrorAdapter(
   error: unknown,
   context: AppContext,
-  options: ZodAdapterOptions = {}
-): AppError<ZodErrorCode> | null {
+  options: TZodAdapterOptions = {}
+): AppError<TZodErrorCode> | null {
   if (!(error instanceof ZodError)) return null
 
   const maxIssues = options.maxIssues ?? 25
@@ -61,13 +61,13 @@ export function zodErrorAdapter(
   const mappedIssues = error.issues.slice(0, maxIssues).map(mapIssue)
   const message = buildMessage(mappedIssues, includeSummaryInMessage)
 
-  const details: ZodValidationDetails = {
+  const details: TZodValidationDetails = {
     schema: options.schema,
     issues: mappedIssues,
     issuesCount: error.issues.length
   }
 
-  return new AppError<ZodErrorCode>({
+  return new AppError<TZodErrorCode>({
     code: 'ZOD_VALIDATION_ERROR',
     message,
     cause: error,

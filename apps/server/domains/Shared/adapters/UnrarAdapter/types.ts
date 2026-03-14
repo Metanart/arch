@@ -1,4 +1,4 @@
-export type UnrarServiceErrorCode =
+export type TUnrarServiceErrorCode =
   | 'UNRAR_EXECUTABLE_NOT_FOUND'
   | 'UNRAR_EXECUTABLE_RUN_FAILED'
   | 'UNRAR_PASSWORD_PROTECTTION_CHECK_FAILED'

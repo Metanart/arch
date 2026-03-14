@@ -2,7 +2,7 @@ import { app } from 'electron'
 
 import path from 'path'
 
-export type AppPaths = {
+export type TAppPaths = {
   outputDir: string
   tempDir: string
   cacheDir: string
@@ -10,7 +10,7 @@ export type AppPaths = {
   dbFile: string
 }
 
-export function getDefaultAppPaths(): AppPaths {
+export function getDefaultAppPaths(): TAppPaths {
   if (!app) {
     throw new Error('Electron app is not available in this context')
   }

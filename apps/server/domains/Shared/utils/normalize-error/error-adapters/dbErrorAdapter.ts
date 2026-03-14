@@ -3,7 +3,7 @@ import { QueryFailedError } from 'typeorm'
 import { AppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
 
-export type DBErrorCode =
+export type TDBErrorCode =
   | 'UNIQUE_VIOLATION'
   | 'FOREIGN_KEY_VIOLATION'
   | 'NOT_NULL_VIOLATION'
@@ -11,7 +11,7 @@ export type DBErrorCode =
   | 'CONSTRAINT_VIOLATION'
   | 'DB_ENTITY_NOT_FOUND'
 
-export type DBErrorDetails = {
+export type TDBErrorDetails = {
   table?: string
   columns?: string[]
 }
@@ -19,7 +19,7 @@ export type DBErrorDetails = {
 export function dbErrorAdapter(
   error: unknown,
   context: AppContext
-): AppError<DBErrorCode, DBErrorDetails> | null {
+): AppError<TDBErrorCode, TDBErrorDetails> | null {
   if (!(error instanceof QueryFailedError)) return null
 
   const driverError = error.driverError as { message: string; errno: number }
@@ -28,13 +28,13 @@ export function dbErrorAdapter(
 
   if (errorNumber === 19) {
     if (message.includes('UNIQUE constraint failed')) {
-      const code: DBErrorCode = 'UNIQUE_VIOLATION'
+      const code: TDBErrorCode = 'UNIQUE_VIOLATION'
       const match = message.match(/UNIQUE constraint failed:\s*(.+)$/)
       const columns =
         match && match[1] ? match[1].split(',').map((f) => f.trim().split('.')[1] || f.trim()) : []
       const table = match && match[1] ? match[1].split('.')[0] : undefined
 
-      return new AppError<DBErrorCode, DBErrorDetails>({
+      return new AppError<TDBErrorCode, TDBErrorDetails>({
         code,
         message,
         cause: error,
@@ -48,7 +48,7 @@ export function dbErrorAdapter(
   }
 
   if (message.includes('FOREIGN KEY constraint failed')) {
-    return new AppError<DBErrorCode, DBErrorDetails>({
+    return new AppError<TDBErrorCode, TDBErrorDetails>({
       code: 'FOREIGN_KEY_VIOLATION',
       message,
       cause: error,
@@ -60,7 +60,7 @@ export function dbErrorAdapter(
     const regex = /NOT NULL constraint failed:\s*(.+)$/
     const match = message.match(regex)
 
-    return new AppError<DBErrorCode, DBErrorDetails>({
+    return new AppError<TDBErrorCode, TDBErrorDetails>({
       code: 'NOT_NULL_VIOLATION',
       message,
       cause: error,
@@ -73,7 +73,7 @@ export function dbErrorAdapter(
   }
 
   if (message.includes('CHECK constraint failed')) {
-    return new AppError<DBErrorCode, DBErrorDetails>({
+    return new AppError<TDBErrorCode, TDBErrorDetails>({
       code: 'CHECK_VIOLATION',
       message,
       cause: error,
@@ -81,7 +81,7 @@ export function dbErrorAdapter(
     })
   }
 
-  return new AppError<DBErrorCode, DBErrorDetails>({
+  return new AppError<TDBErrorCode, TDBErrorDetails>({
     code: 'CONSTRAINT_VIOLATION',
     message,
     cause: error,

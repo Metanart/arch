@@ -3,7 +3,7 @@ import { AppError } from '@arch/utils'
 
 import StreamZip from 'node-stream-zip'
 
-import { ZipServiceErrorCode } from './types'
+import { TTZipServiceErrorCode } from './types'
 
 const appContext: AppContext = {
   domain: 'Global',
@@ -23,7 +23,7 @@ export async function listContents(
   } = {}
 ): Promise<string[]> {
   if (options.signal?.aborted)
-    throw new AppError<ZipServiceErrorCode, { archivePath: string }>({
+    throw new AppError<TZipServiceErrorCode, { archivePath: string }>({
       ...appContext,
       code: 'ZIP_LIST_CONTENTS_ABORTED',
       message: 'ZIP list contents aborted',

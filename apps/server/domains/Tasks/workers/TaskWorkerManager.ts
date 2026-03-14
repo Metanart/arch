@@ -2,8 +2,8 @@ import { TaskType } from '@arch/contracts'
 
 import { TaskWorkerClient } from './TaskWorkerClient'
 
-type QueuedTask = { taskId: string; type: TaskType; payload: unknown }
-type BusyEntry = { taskId: string; startMs: number }
+type TQueuedTask = { taskId: string; type: TaskType; payload: unknown }
+type TBusyEntry = { taskId: string; startMs: number }
 
 export interface ITaskWorkerManager {
   /**
@@ -65,17 +65,17 @@ export interface ITaskWorkerManager {
 
 const DEFAULT_MAX_WORKERS = 4
 
-type CompletedHandler = (event: {
+type TCompletedHandler = (event: {
   taskId: string
   result?: unknown
   durationMs: number
 }) => Promise<void>
-type FailedHandler = (event: {
+type TFailedHandler = (event: {
   taskId: string
   error: Error
   durationMs: number
 }) => Promise<void>
-type ProgressHandler = (event: {
+type TProgressHandler = (event: {
   taskId: string
   step?: string
   progressCurrent?: number
@@ -85,11 +85,11 @@ type ProgressHandler = (event: {
 export class TaskWorkerManager implements ITaskWorkerManager {
   private readonly maxWorkers: number
   private workers: TaskWorkerClient[] = []
-  private busy = new Map<TaskWorkerClient, BusyEntry>()
-  private taskQueue: QueuedTask[] = []
-  private completedHandlers: CompletedHandler[] = []
-  private failedHandlers: FailedHandler[] = []
-  private progressHandlers: ProgressHandler[] = []
+  private busy = new Map<TaskWorkerClient, TBusyEntry>()
+  private taskQueue: TQueuedTask[] = []
+  private completedHandlers: TCompletedHandler[] = []
+  private failedHandlers: TFailedHandler[] = []
+  private progressHandlers: TProgressHandler[] = []
   private started = false
 
   constructor(options: { maxWorkers?: number } = {}) {
@@ -162,7 +162,7 @@ export class TaskWorkerManager implements ITaskWorkerManager {
     return this.workers.find((w) => !this.busy.has(w))
   }
 
-  private runOnIdleWorker(input: QueuedTask): void {
+  private runOnIdleWorker(input: TQueuedTask): void {
     const worker = this.getIdleWorker()
     if (!worker) return
     const startMs = Date.now()

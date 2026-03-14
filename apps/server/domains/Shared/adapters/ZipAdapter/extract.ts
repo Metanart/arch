@@ -5,7 +5,7 @@ import { AppError } from '@arch/utils'
 
 import StreamZip from 'node-stream-zip'
 
-import { ZipServiceErrorCode } from './types'
+import { TTZipServiceErrorCode } from './types'
 
 const appContext: AppContext = {
   domain: 'Global',
@@ -20,7 +20,7 @@ export async function extract(
   options: { signal?: AbortSignal } = {}
 ): Promise<void> {
   if (options.signal?.aborted)
-    throw new AppError<ZipServiceErrorCode, { archivePath: string; outputDirectory: string }>({
+    throw new AppError<TZipServiceErrorCode, { archivePath: string; outputDirectory: string }>({
       ...appContext,
       code: 'ZIP_EXTRACT_ABORTED',
       message: 'ZIP extract aborted',
@@ -48,7 +48,7 @@ export async function extract(
     await zip.extract(null, outputDirectory) // null → extract everything
   } catch (error) {
     if (error instanceof AppError) throw error
-    throw new AppError<ZipServiceErrorCode, { archivePath: string; outputDirectory: string }>({
+    throw new AppError<TZipServiceErrorCode, { archivePath: string; outputDirectory: string }>({
       ...appContext,
       code: 'ZIP_EXTRACT_FAILED',
       message: 'ZIP extract failed',

@@ -28,7 +28,7 @@ const outputSchema = z.object({
   name: z.string()
 })
 
-type OutputDto = z.infer<typeof outputSchema>
+type TOutputDto = z.infer<typeof outputSchema>
 
 describe('createEntity', () => {
   beforeAll(async () => {
@@ -52,7 +52,7 @@ describe('createEntity', () => {
     it('creates entity, saves to database, and returns DTO', async () => {
       const input = { name: 'first' }
 
-      const result = await createEntity<TestEntity, OutputDto>(TestEntity, outputSchema, input)
+      const result = await createEntity<TestEntity, TOutputDto>(TestEntity, outputSchema, input)
 
       expect(result).toMatchObject({ name: 'first' })
       expect(result.id).toBeDefined()
@@ -67,7 +67,7 @@ describe('createEntity', () => {
     it('persists entity so it can be read back', async () => {
       const input = { name: 'persisted' }
 
-      const dto = await createEntity<TestEntity, OutputDto>(TestEntity, outputSchema, input)
+      const dto = await createEntity<TestEntity, TOutputDto>(TestEntity, outputSchema, input)
 
       const repo = getDataSource().getRepository(TestEntity)
       const found = await repo.findOne({ where: { id: dto.id } })
@@ -77,10 +77,10 @@ describe('createEntity', () => {
 
   describe('failure paths', () => {
     it('throws when save fails (e.g. unique constraint)', async () => {
-      await createEntity<TestEntity, OutputDto>(TestEntity, outputSchema, { name: 'dupe' })
+      await createEntity<TestEntity, TOutputDto>(TestEntity, outputSchema, { name: 'dupe' })
 
       await expect(
-        createEntity<TestEntity, OutputDto>(TestEntity, outputSchema, { name: 'dupe' })
+        createEntity<TestEntity, TOutputDto>(TestEntity, outputSchema, { name: 'dupe' })
       ).rejects.toThrow()
     })
 

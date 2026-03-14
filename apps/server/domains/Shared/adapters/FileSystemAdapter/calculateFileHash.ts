@@ -4,7 +4,7 @@ import { createHash } from 'crypto'
 import { AppContext } from '@arch/types'
 import { AppError, getMessageFromError } from '@arch/utils'
 
-import { FileSystemErrorCode } from './types'
+import { TFileSystemErrorCode } from './types'
 
 const appContext: AppContext = {
   domain: 'Global',
@@ -34,7 +34,7 @@ export async function calculateFileHash(
     return hash.digest(encoding)
   } catch (error: unknown) {
     const message = `Failed to hash "${filePath}" with ${algorithm}: ${getMessageFromError(error)}`
-    throw new AppError<FileSystemErrorCode, { filePath: string; algorithm: string }>({
+    throw new AppError<TFileSystemErrorCode, { filePath: string; algorithm: string }>({
       ...appContext,
       code: 'FILE_HASH_FAILED',
       message,

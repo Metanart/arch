@@ -3,7 +3,7 @@ import { AppError } from '@arch/utils'
 
 import { runExecutable } from './runExecutable'
 
-import { UnrarServiceErrorCode } from './types'
+import { TTUnrarServiceErrorCode } from './types'
 
 const appContext: AppContext = {
   domain: 'Global',
@@ -42,7 +42,7 @@ export async function isPasswordProtected(
     }
 
     // other reason (corruption, missing file and etc.) — propagate upwards
-    throw new AppError<UnrarServiceErrorCode, { archivePath: string }>({
+    throw new AppError<TUnrarServiceErrorCode, { archivePath: string }>({
       ...appContext,
       code: 'UNRAR_PASSWORD_PROTECTTION_CHECK_FAILED',
       message: `Archive ${archivePath} is password protected`,

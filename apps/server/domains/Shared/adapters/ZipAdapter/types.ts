@@ -1,4 +1,4 @@
-export type ZipServiceErrorCode =
+export type TZipServiceErrorCode =
   | 'ZIP_LIST_CONTENTS_ABORTED'
   | 'ZIP_LIST_CONTENTS_FAILED'
   | 'ZIP_EXTRACT_ABORTED'
