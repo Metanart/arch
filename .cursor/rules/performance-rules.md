@@ -1,0 +1,46 @@
+# Performance Rules
+Prefer efficient algorithms and data structures.
+Avoid unnecessary computations.
+Avoid redundant data transformations.
+Cache expensive computations when results are reusable.
+
+# Memory Usage
+Avoid loading large datasets fully into memory.
+Prefer streaming or chunked processing.
+Release references to unused objects.
+Avoid unnecessary object allocations in hot paths.
+
+# Concurrency
+Limit concurrency when processing large collections.
+Avoid unbounded parallel operations.
+Control concurrency for network and I/O tasks.
+
+# Loops and Iteration
+Avoid nested loops over large datasets.
+Avoid repeated work inside loops.
+Move invariant computations outside loops.
+
+# Data Processing
+Process data incrementally when possible.
+Avoid copying large objects unnecessarily.
+Avoid repeated serialization and deserialization.
+
+# Rendering and UI Performance
+Avoid unnecessary DOM updates.
+Batch UI updates where possible.
+Avoid forced synchronous layout calculations.
+
+# Asynchronous Work
+Avoid blocking the event loop.
+Move heavy computation off the main thread when possible.
+Prefer asynchronous APIs for I/O operations.
+
+# Network Performance
+Avoid duplicate network requests.
+Cache repeated requests when possible.
+Limit request frequency.
+
+# Monitoring
+Measure performance before optimizing.
+Avoid premature optimization.
+Focus on real bottlenecks.

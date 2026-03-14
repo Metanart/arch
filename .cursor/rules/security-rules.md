@@ -1,0 +1,65 @@
+# Security Rules
+Treat all external input as untrusted.
+Validate inputs early.
+Reject invalid data.
+Sanitize data when required.
+
+# Input Validation
+Validate type, format, range, and required fields.
+Prefer schema validation or explicit validation functions.
+
+# Injection
+Do not build executable code from untrusted input.
+Avoid dynamic SQL, shell commands, and template injection.
+Prefer parameterized queries and safe APIs.
+Do not use eval with external input.
+
+# XSS
+Do not inject untrusted content into HTML.
+Avoid innerHTML with untrusted data.
+Escape user content.
+Prefer textContent or safe templating.
+
+# Authentication and Authorization
+Do not trust client input for authentication or authorization.
+Verify authentication and permissions server-side.
+Do not rely on client flags for access control.
+
+# Secrets
+Do not store secrets in source code.
+Use environment variables or secret managers.
+Do not commit credentials.
+Do not expose secrets to client code.
+
+# Sensitive Data
+Return only required fields.
+Redact sensitive data in logs.
+Do not expose stack traces in production responses.
+
+# File and Path Safety
+Validate file paths, file type, and file size.
+Prevent path traversal.
+Normalize paths.
+Restrict filesystem access when possible.
+Do not trust user-provided file names.
+
+# Command Execution
+Do not pass untrusted input to shell commands.
+Prefer safe APIs over shell execution.
+If command execution is required, validate arguments strictly.
+
+# Randomness
+Use cryptographically secure randomness for security-sensitive operations.
+Do not use Math.random for secrets, tokens, or identifiers.
+
+# Dependencies
+Avoid unnecessary dependencies.
+Prefer maintained libraries.
+Keep dependencies updated.
+
+# Errors and Logging
+Do not leak sensitive information in errors.
+Return safe error messages to clients.
+Log internal details securely.
+Do not log passwords, tokens, or personal data unless required.
+Redact sensitive values when logging.
