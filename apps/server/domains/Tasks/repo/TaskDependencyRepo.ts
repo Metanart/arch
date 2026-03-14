@@ -5,8 +5,9 @@ import {
   UpdateTaskDependencyServerDTO
 } from '@arch/contracts'
 
-import { getDataSource } from '@domains/App'
 import { createEntity, findEntities, findEntity, removeEntity, updateEntity } from '@domains/Shared'
+
+import { getDataSource } from '@domains/App'
 
 import { TaskDependencyEntity } from '../entities/TaskDependencyEntity'
 

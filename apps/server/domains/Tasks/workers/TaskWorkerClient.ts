@@ -25,10 +25,10 @@ function resolveTaskWorkerEntryPath(): string {
 
 const DEFAULT_REQUEST_TIMEOUT_MS = 5_000
 
-type PendingRequest<TType extends TaskType> = {
-  request: TaskWorkerRequestByType<TType>
-  promise: Promise<TaskWorkerResponseByType<TType>>
-  resolve: (value: TaskWorkerResponseByType<TType>) => void
+type PendingRequest<GType extends TaskType> = {
+  request: TaskWorkerRequestByType<GType>
+  promise: Promise<TaskWorkerResponseByType<GType>>
+  resolve: (value: TaskWorkerResponseByType<GType>) => void
   reject: (error: Error) => void
   timeoutId: NodeJS.Timeout
 }
@@ -79,9 +79,9 @@ export class TaskWorkerClient {
     return this.pendingRequests.delete(requestId)
   }
 
-  private setRequest<TType extends TaskType>(
+  private setRequest<GType extends TaskType>(
     requestId: number,
-    pendingRequest: PendingRequest<TType>
+    pendingRequest: PendingRequest<GType>
   ) {
     if (this.pendingRequests.has(requestId)) {
       throw new AppError({
@@ -97,24 +97,24 @@ export class TaskWorkerClient {
     return this
   }
 
-  private makeRequest<TType extends TaskType>(
+  private makeRequest<GType extends TaskType>(
     requestId: number,
-    type: TType,
-    payload: TaskWorkerRequestByType<TType>['payload']
-  ): TaskWorkerRequestByType<TType> {
+    type: GType,
+    payload: TaskWorkerRequestByType<GType>['payload']
+  ): TaskWorkerRequestByType<GType> {
     // @TODO: Fix later
     // Intentional casting - dont have time to deal with it now
-    return { requestId, type, payload } as TaskWorkerRequestByType<TType>
+    return { requestId, type, payload } as TaskWorkerRequestByType<GType>
   }
 
-  public sendRequest<TType extends TaskType>(
-    type: TType,
-    payload: TaskWorkerRequestByType<TType>['payload'],
+  public sendRequest<GType extends TaskType>(
+    type: GType,
+    payload: TaskWorkerRequestByType<GType>['payload'],
     timeoutMs: number = DEFAULT_REQUEST_TIMEOUT_MS
-  ): Promise<TaskWorkerResponseByType<TType>> {
+  ): Promise<TaskWorkerResponseByType<GType>> {
     const worker = this.ensureWorker()
 
-    const { promise, resolve, reject } = createDeferredPromise<TaskWorkerResponseByType<TType>>()
+    const { promise, resolve, reject } = createDeferredPromise<TaskWorkerResponseByType<GType>>()
 
     const requestId = this.lastRequestId++
 
@@ -134,7 +134,7 @@ export class TaskWorkerClient {
 
     const timeoutId = setTimeout(rejectOnTimeout, timeoutMs)
 
-    const newPendingRequest: PendingRequest<TType> = {
+    const newPendingRequest: PendingRequest<GType> = {
       request: request,
       promise,
       resolve,

@@ -10,21 +10,21 @@ type ErrorResponse = {
   }
 }
 
-type BaseResponse<TType extends TaskType, TResponsePayload> = {
+type BaseResponse<GType extends TaskType, GResponsePayload> = {
   requestId: number
-  type: TType
-  payload: TResponsePayload
+  type: GType
+  payload: GResponsePayload
 }
 
-type BaseRequest<TType extends TaskType, TRequestPayload> = {
+type BaseRequest<GType extends TaskType, GRequestPayload> = {
   requestId: number
-  type: TType
-  payload: TRequestPayload
+  type: GType
+  payload: GRequestPayload
 }
 
-type BaseContract<TType extends TaskType, TRequestPayload, TResponsePayload> = {
-  request: BaseRequest<TType, TRequestPayload>
-  response: BaseResponse<TType, TResponsePayload> | ErrorResponse
+type BaseContract<GType extends TaskType, GRequestPayload, GResponsePayload> = {
+  request: BaseRequest<GType, GRequestPayload>
+  response: BaseResponse<GType, GResponsePayload> | ErrorResponse
 }
 
 type MultiplyContract = BaseContract<

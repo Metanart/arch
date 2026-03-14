@@ -4,11 +4,11 @@ import { IpcMainInvokeEvent } from 'electron/main'
 import { IpcChannel, IpcResponse } from '@arch/types'
 import { getMessageFromError } from '@arch/utils'
 
-export function addIpcListener<TData>(
-  listener: () => Promise<IpcResponse<TData>>,
+export function addIpcListener<GData>(
+  listener: () => Promise<IpcResponse<GData>>,
   channel: IpcChannel
 ): void {
-  async function wrappedListener(_event: IpcMainInvokeEvent): Promise<IpcResponse<TData>> {
+  async function wrappedListener(_event: IpcMainInvokeEvent): Promise<IpcResponse<GData>> {
     try {
       return await listener()
     } catch (error) {
@@ -26,14 +26,14 @@ export function addIpcListener<TData>(
   ipcMain.handle(channel, wrappedListener)
 }
 
-export function addIpcListenerWithPayload<TData, TPayload>(
-  listener: (payload: TPayload) => Promise<IpcResponse<TData>>,
+export function addIpcListenerWithPayload<GData, GPayload>(
+  listener: (payload: GPayload) => Promise<IpcResponse<GData>>,
   channel: IpcChannel
 ): void {
   async function wrappedListener(
     _event: IpcMainInvokeEvent,
-    payload: TPayload
-  ): Promise<IpcResponse<TData>> {
+    payload: GPayload
+  ): Promise<IpcResponse<GData>> {
     try {
       return await listener(payload)
     } catch (error) {
