@@ -22,10 +22,10 @@ export class TaskEntity extends BaseEntity {
   @JoinColumn({ name: 'workflowId' })
   workflow!: TasksWorkflowEntity
 
-  @Column({ type: 'enum', enum: TASK_TYPE })
+  @Column({ type: 'varchar', enum: TASK_TYPE })
   type!: TTaskType
 
-  @Column({ type: 'enum', enum: STATUS })
+  @Column({ type: 'varchar', enum: STATUS })
   status!: TTaskStatus
 
   @Column({ type: 'json' })

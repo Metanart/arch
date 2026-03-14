@@ -17,7 +17,7 @@ export class TasksWorkflowEntity extends BaseEntity {
   @JoinColumn({ name: 'sourceId' })
   source!: SourceEntity | null
 
-  @Column({ type: 'enum', enum: STATUS })
+  @Column({ type: 'varchar', enum: STATUS })
   status!: TTasksWorkflowStatus
 
   @OneToMany(() => TaskEntity, (task) => task.workflow)
