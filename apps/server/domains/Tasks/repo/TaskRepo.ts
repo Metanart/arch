@@ -13,6 +13,7 @@ import {
   createEntity,
   createEntityBatch,
   findEntities,
+  getEntityById,
   removeEntity,
   updateEntity
 } from '@domains/Shared'
@@ -27,10 +28,7 @@ async function createTask(taskDto: TCreateTaskServerDTO): Promise<TTaskServerDTO
 }
 
 async function getByIdOrNull(id: string): Promise<TTaskServerDTO | null> {
-  const taskRepository = getDataSource().getRepository(TaskEntity)
-  const entity = await taskRepository.findOne({ where: { id } })
-  if (!entity) return null
-  return TaskServerSchema.parse(entity)
+  return getEntityById<TaskEntity, TTaskServerDTO>(TaskEntity, TaskServerSchema, id)
 }
 
 async function getByWorkflowId(workflowId: string): Promise<TTaskServerDTO[]> {
