@@ -1,4 +1,6 @@
 ---
+description: Security standards for input validation, injection prevention, authentication, secrets, file safety, and safe logging. Use when implementing or reviewing code that handles user input, authentication or authorization, file operations, shell commands, environment or config, or sensitive data.
+globs: **/api/**/*.ts,**/api/**/*.js,**/routes/**/*.ts,**/routes/**/*.js,**/server/**/*.ts,**/server/**/*.js,**/*.config.ts,**/*.config.js,**/middleware/**/*.ts,**/middleware/**/*.js,**/auth/**/*.ts,**/auth/**/*.js,**/services/**/*.ts,**/services/**/*.js
 alwaysApply: false
 ---
 

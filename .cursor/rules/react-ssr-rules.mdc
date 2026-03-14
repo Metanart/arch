@@ -1,4 +1,10 @@
 ---
+description: "Apply when working on React server-side rendering (SSR), hydration, isomorphic components, or any React code that runs on both server and client. Use for components, pages, app routes, or data-fetching that must stay SSR-safe and avoid hydration mismatches."
+globs:
+  - "**/*.tsx"
+  - "**/*.jsx"
+  - "**/pages/**"
+  - "**/app/**"
 alwaysApply: false
 ---
 

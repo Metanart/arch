@@ -1,4 +1,5 @@
 ---
+description: "Apply when the user asks to refactor, clean up, restructure, or improve code without changing behavior; when reducing duplication, simplifying functions, or improving naming and types."
 alwaysApply: false
 ---
 

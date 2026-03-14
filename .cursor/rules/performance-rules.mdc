@@ -1,4 +1,5 @@
 ---
+description: "Apply when implementing or changing code that affects performance: algorithms and data structures, memory or I/O (streaming, chunking, caching), concurrency or parallel work, loops and iteration over large data, data processing or serialization, DOM/UI updates and rendering, async work or event loop, or network requests. Also apply when optimizing, profiling, or reviewing performance."
 alwaysApply: false
 ---
 
