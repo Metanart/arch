@@ -6,7 +6,7 @@ import { addIpcListener, addIpcListenerWithPayload } from '@domains/Shared'
 import { SourcesIpcListeners } from './SourcesIpcListeners'
 
 export function setupSourcesIpcListeners(): void {
-  addIpcListener<SourceServerDTO[]>(SourcesIpcListeners.getAll, SOURCES_IPC_CHANNELS.GET_ALL)
+  addIpcListener<TSourceServerDTO[]>(SourcesIpcListeners.getAll, SOURCES_IPC_CHANNELS.GET_ALL)
 
   addIpcListenerWithPayload<TSourceServerDTO, TCreateSourceClientDTO>(
     SourcesIpcListeners.create,

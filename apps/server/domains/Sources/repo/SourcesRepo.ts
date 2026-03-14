@@ -1,24 +1,24 @@
 import {
-  CreateSourceServerDTO,
-  SourceServerDTO,
   SourceServerSchema,
-  UpdateSourceServerDTO
+  TCreateSourceServerDTO,
+  TSourceServerDTO,
+  TUpdateSourceServerDTO
 } from '@arch/contracts'
 
 import { createEntity, findEntities, removeEntity, updateEntity } from '@domains/Shared'
 
 import { SourceEntity } from '../entities/SourceEntity'
 
-export async function createSource(sourceDto: CreateSourceServerDTO): Promise<SourceServerDTO> {
-  return createEntity<SourceEntity, SourceServerDTO>(SourceEntity, SourceServerSchema, sourceDto)
+export async function createSource(sourceDto: TCreateSourceServerDTO): Promise<TSourceServerDTO> {
+  return createEntity<SourceEntity, TSourceServerDTO>(SourceEntity, SourceServerSchema, sourceDto)
 }
 
 export async function removeSource(id: string): Promise<boolean> {
   return removeEntity<SourceEntity>(SourceEntity, { id })
 }
 
-export async function updateSource(sourceDto: UpdateSourceServerDTO): Promise<SourceServerDTO> {
-  return updateEntity<SourceEntity, SourceServerDTO>(
+export async function updateSource(sourceDto: TUpdateSourceServerDTO): Promise<TSourceServerDTO> {
+  return updateEntity<SourceEntity, TSourceServerDTO>(
     SourceEntity,
     SourceServerSchema,
     { id: sourceDto.id },
@@ -26,8 +26,8 @@ export async function updateSource(sourceDto: UpdateSourceServerDTO): Promise<So
   )
 }
 
-export async function getAllSources(): Promise<SourceServerDTO[]> {
-  return findEntities<SourceEntity, SourceServerDTO>(SourceEntity, SourceServerSchema)
+export async function getAllSources(): Promise<TSourceServerDTO[]> {
+  return findEntities<SourceEntity, TSourceServerDTO>(SourceEntity, SourceServerSchema)
 }
 
 export const SourcesRepo = {

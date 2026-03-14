@@ -1,8 +1,8 @@
 import {
-  CreateSettingsServerDTO,
-  SettingsServerDTO,
   SettingsServerSchema,
-  UpdateSettingsServerDTO
+  TCreateSettingsServerDTO,
+  TSettingsServerDTO,
+  TUpdateSettingsServerDTO
 } from '@arch/contracts'
 
 import { createEntity, findEntity, updateEntity } from '@domains/Shared'
@@ -10,9 +10,9 @@ import { createEntity, findEntity, updateEntity } from '@domains/Shared'
 import { SettingsEntity } from '../entities/SettingsEntity'
 
 export async function createSettings(
-  settingsDto: CreateSettingsServerDTO
-): Promise<SettingsServerDTO> {
-  return createEntity<SettingsEntity, SettingsServerDTO>(
+  settingsDto: TCreateSettingsServerDTO
+): Promise<TSettingsServerDTO> {
+  return createEntity<SettingsEntity, TSettingsServerDTO>(
     SettingsEntity,
     SettingsServerSchema,
     settingsDto
@@ -20,9 +20,9 @@ export async function createSettings(
 }
 
 export async function updateSettings(
-  settingsDto: UpdateSettingsServerDTO
-): Promise<SettingsServerDTO> {
-  return updateEntity<SettingsEntity, SettingsServerDTO>(
+  settingsDto: TUpdateSettingsServerDTO
+): Promise<TSettingsServerDTO> {
+  return updateEntity<SettingsEntity, TSettingsServerDTO>(
     SettingsEntity,
     SettingsServerSchema,
     { id: settingsDto.id },
@@ -30,8 +30,8 @@ export async function updateSettings(
   )
 }
 
-export async function getSettings(): Promise<SettingsServerDTO> {
-  return findEntity<SettingsEntity, SettingsServerDTO>(SettingsEntity, SettingsServerSchema)
+export async function getSettings(): Promise<TSettingsServerDTO> {
+  return findEntity<SettingsEntity, TSettingsServerDTO>(SettingsEntity, SettingsServerSchema)
 }
 
 export const SettingsRepo = {

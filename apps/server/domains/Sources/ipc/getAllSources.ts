@@ -1,12 +1,12 @@
-import { SourceServerDTO } from '@arch/contracts'
+import { TSourceServerDTO } from '@arch/contracts'
 import { IpcResponse } from '@arch/types'
 import { getMessageFromError } from '@arch/utils'
 
 import { SourcesRepo } from '../repo/SourcesRepo'
 import { SourcesService } from '../services/SourcesService'
 
-export async function getAllSources(): Promise<IpcResponse<SourceServerDTO[]>> {
-  let sourcesDto: SourceServerDTO[] = []
+export async function getAllSources(): Promise<IpcResponse<TSourceServerDTO[]>> {
+  let sourcesDto: TSourceServerDTO[] = []
 
   try {
     sourcesDto = await SourcesRepo.getAll()
