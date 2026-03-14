@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "electron-vite dev",
     "rebuild:native": "electron-rebuild -f -w better-sqlite3",
-    "postinstall": "electron-rebuild -f -w better-sqlite3"
+    "postinstall": "electron-rebuild -f -w better-sqlite3",
+    "test:prepare": "npm rebuild better-sqlite3 --build-from-source",
+    "test": "pnpm run test:prepare && vitest run"
   },
   "dependencies": {
     "@arch/utils": "workspace:*",

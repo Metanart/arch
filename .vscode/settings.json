@@ -23,11 +23,7 @@
       "mode": "auto"
     }
   ],
-  "eslint.validate": [
-    "typescript",
-    "typescriptreact",
-    "javascript",
-    "javascriptreact"
-  ],
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "eslint.validate": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "chatgpt.commentCodeLensEnabled": false
 }
