@@ -33,7 +33,7 @@ type PendingRequest<TType extends TaskType> = {
   timeoutId: NodeJS.Timeout
 }
 
-class TaskWorkerClient {
+export class TaskWorkerClient {
   private isTerminated: boolean = false
   private pendingRequests = new Map<number, PendingRequest<TaskType>>()
   private lastRequestId: number = 0
