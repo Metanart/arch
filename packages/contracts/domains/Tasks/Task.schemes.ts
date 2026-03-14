@@ -9,7 +9,15 @@ const TaskSchema = z.object({
   type: z.enum(TASK_TYPE),
   status: z.enum(STATUS),
   payload: z.string(),
-  workflowId: z.string()
+  workflowId: z.string(),
+  priority: z.number().optional(),
+  predictedWeight: z.number().optional(),
+  maxAttempts: z.number().optional(),
+  takenBy: z.string().nullable().optional(),
+  leaseUntil: z.date().nullable().optional(),
+  attempts: z.number().optional(),
+  nextRunAt: z.date().nullable().optional(),
+  error: z.string().nullable().optional()
 })
 
 const UpdateTaskBaseSchema = z.object({

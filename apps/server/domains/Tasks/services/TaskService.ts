@@ -1,18 +1,15 @@
-import { LessThanOrEqual } from 'typeorm'
-
-import { STATUS, TTaskType } from '@arch/contracts'
+import { STATUS, TTaskServerDTO, TTaskType } from '@arch/contracts'
 import { AppError } from '@arch/utils'
 
-import { getDataSource } from '@domains/App'
-
-import { TaskDependencyEntity } from '../entities/TaskDependencyEntity'
-import { TaskEntity } from '../entities/TaskEntity'
 import { TaskDependencyRepo } from '../repo/TaskDependencyRepo'
 import { TaskRepo } from '../repo/TaskRepo'
 
 const appContext = { domain: 'Tasks' as const, layer: 'Service' as const, origin: 'TaskService' }
 
-function ensureTaskFound(task: TaskEntity | null, taskId: string): asserts task is TaskEntity {
+function ensureTaskFound(
+  task: TTaskServerDTO | null,
+  taskId: string
+): asserts task is TTaskServerDTO {
   if (!task) {
     throw new AppError({
       ...appContext,
@@ -22,7 +19,7 @@ function ensureTaskFound(task: TaskEntity | null, taskId: string): asserts task 
   }
 }
 
-function ensureTakenBy(task: TaskEntity, workerId: string): void {
+function ensureTakenBy(task: TTaskServerDTO, workerId: string): void {
   if (task.takenBy !== workerId) {
     throw new AppError({
       ...appContext,
@@ -41,7 +38,7 @@ export interface ITaskService {
     predictedWeight?: number
     maxAttempts?: number
     dependsOnTaskIds?: string[]
-  }): Promise<TaskEntity>
+  }): Promise<TTaskServerDTO>
 
   createTasksBatch(input: {
     workflowId: string
@@ -53,13 +50,13 @@ export interface ITaskService {
       maxAttempts?: number
       dependsOnTaskIds?: string[]
     }>
-  }): Promise<TaskEntity[]>
+  }): Promise<TTaskServerDTO[]>
 
   claimNextRunnableTask(input: {
     workerId: string
     now: Date
     leaseDurationMs: number
-  }): Promise<TaskEntity | null>
+  }): Promise<TTaskServerDTO | null>
 
   heartbeat(input: {
     taskId: string
@@ -78,9 +75,9 @@ export interface ITaskService {
 
   cancelTask(taskId: string): Promise<void>
 
-  getTaskById(taskId: string): Promise<TaskEntity | null>
+  getTaskById(taskId: string): Promise<TTaskServerDTO | null>
 
-  getTasksByWorkflow(workflowId: string): Promise<TaskEntity[]>
+  getTasksByWorkflow(workflowId: string): Promise<TTaskServerDTO[]>
 
   areDependenciesResolved(taskId: string): Promise<boolean>
 }
@@ -89,8 +86,8 @@ async function areDependenciesResolved(taskId: string): Promise<boolean> {
   const depIds = await TaskDependencyRepo.getDependencyTaskIdsByTaskId(taskId)
   if (depIds.length === 0) return true
   for (const id of depIds) {
-    const task = await TaskRepo.getByIdOrNull(id)
-    if (!task || task.status !== STATUS.COMPLETED) return false
+    const taskDto = await TaskRepo.getByIdOrNull(id)
+    if (!taskDto || taskDto.status !== STATUS.COMPLETED) return false
   }
   return true
 }
@@ -104,30 +101,16 @@ export class TaskService implements ITaskService {
     predictedWeight?: number
     maxAttempts?: number
     dependsOnTaskIds?: string[]
-  }): Promise<TaskEntity> {
+  }): Promise<TTaskServerDTO> {
     const payload = JSON.stringify(input.payload)
-    return getDataSource().transaction(async (manager) => {
-      const taskRepo = manager.getRepository(TaskEntity)
-      const depRepo = manager.getRepository(TaskDependencyEntity)
-      const taskPayload = {
-        workflowId: input.workflowId,
-        type: input.type,
-        status: STATUS.PENDING,
-        payload,
-        priority: input.priority ?? 0,
-        predictedWeight: input.predictedWeight ?? 0,
-        maxAttempts: input.maxAttempts ?? 3,
-        nextRunAt: new Date()
-      }
-      const savedTask = await taskRepo.save(taskRepo.create(taskPayload))
-      const depPayloads = (input.dependsOnTaskIds ?? []).map((dependsOnTaskId) => ({
-        taskId: savedTask.id,
-        dependsOnTaskId
-      }))
-      if (depPayloads.length > 0) {
-        await depRepo.save(depRepo.create(depPayloads))
-      }
-      return savedTask
+    return TaskRepo.createTaskWithDependencies({
+      workflowId: input.workflowId,
+      type: input.type,
+      payload,
+      priority: input.priority,
+      predictedWeight: input.predictedWeight,
+      maxAttempts: input.maxAttempts,
+      dependsOnTaskIds: input.dependsOnTaskIds
     })
   }
 
@@ -141,33 +124,17 @@ export class TaskService implements ITaskService {
       maxAttempts?: number
       dependsOnTaskIds?: string[]
     }>
-  }): Promise<TaskEntity[]> {
-    const now = new Date()
-    return getDataSource().transaction(async (manager) => {
-      const taskRepo = manager.getRepository(TaskEntity)
-      const depRepo = manager.getRepository(TaskDependencyEntity)
-      const taskRows: Array<Partial<TaskEntity>> = input.tasks.map((t) => ({
-        workflowId: input.workflowId,
+  }): Promise<TTaskServerDTO[]> {
+    return TaskRepo.createTasksBatch({
+      workflowId: input.workflowId,
+      tasks: input.tasks.map((t) => ({
         type: t.type,
-        status: STATUS.PENDING,
         payload: JSON.stringify(t.payload),
-        priority: t.priority ?? 0,
-        predictedWeight: t.predictedWeight ?? 0,
-        maxAttempts: t.maxAttempts ?? 3,
-        nextRunAt: now
+        priority: t.priority,
+        predictedWeight: t.predictedWeight,
+        maxAttempts: t.maxAttempts,
+        dependsOnTaskIds: t.dependsOnTaskIds
       }))
-      const savedTasks = await taskRepo.save(taskRepo.create(taskRows))
-      const deps: Array<{ taskId: string; dependsOnTaskId: string }> = []
-      input.tasks.forEach((t, i) => {
-        const taskId = savedTasks[i]!.id
-        for (const dependsOnTaskId of t.dependsOnTaskIds ?? []) {
-          deps.push({ taskId, dependsOnTaskId })
-        }
-      })
-      if (deps.length > 0) {
-        await depRepo.save(depRepo.create(deps))
-      }
-      return savedTasks
     })
   }
 
@@ -175,35 +142,21 @@ export class TaskService implements ITaskService {
     workerId: string
     now: Date
     leaseDurationMs: number
-  }): Promise<TaskEntity | null> {
-    const repo = getDataSource().getRepository(TaskEntity)
-    const allPending = await repo.find({
-      where: {
-        status: STATUS.PENDING,
-        nextRunAt: LessThanOrEqual(input.now)
-      },
-      order: { priority: 'DESC' }
-    })
-    const candidates = allPending.filter(
-      (t) => t.leaseUntil == null || t.leaseUntil.getTime() < input.now.getTime()
+  }): Promise<TTaskServerDTO | null> {
+    const candidates = await TaskRepo.getPendingRunnable(input.now)
+    const available = candidates.filter(
+      (dto) => dto.leaseUntil == null || dto.leaseUntil.getTime() < input.now.getTime()
     )
-    for (const task of candidates) {
-      const resolved = await areDependenciesResolved(task.id)
+    for (const dto of available) {
+      const resolved = await areDependenciesResolved(dto.id)
       if (!resolved) continue
-      const updated = await getDataSource().transaction(async (manager) => {
-        const em = manager.getRepository(TaskEntity)
-        const result = await em.update(
-          { id: task.id, status: STATUS.PENDING },
-          {
-            takenBy: input.workerId,
-            leaseUntil: new Date(input.now.getTime() + input.leaseDurationMs),
-            status: STATUS.RUNNING
-          }
-        )
-        if (result.affected !== 1) return null
-        return em.findOne({ where: { id: task.id } })
-      })
-      if (updated) return updated
+      const claimed = await TaskRepo.tryClaimTask(
+        dto.id,
+        input.workerId,
+        input.now,
+        input.leaseDurationMs
+      )
+      if (claimed) return claimed
     }
     return null
   }
@@ -214,16 +167,16 @@ export class TaskService implements ITaskService {
     now: Date
     leaseDurationMs: number
   }): Promise<void> {
-    const task = await TaskRepo.getByIdOrNull(input.taskId)
-    ensureTaskFound(task, input.taskId)
-    if (task.takenBy !== input.workerId) {
+    const taskDto = await TaskRepo.getByIdOrNull(input.taskId)
+    ensureTaskFound(taskDto, input.taskId)
+    if (taskDto.takenBy !== input.workerId) {
       throw new AppError({
         ...appContext,
         code: 'TASK_NOT_OWNED_BY_WORKER',
         message: `Task ${input.taskId} is not owned by worker ${input.workerId}`
       })
     }
-    if (task.status !== STATUS.RUNNING) {
+    if (taskDto.status !== STATUS.RUNNING) {
       throw new AppError({
         ...appContext,
         code: 'TASK_NOT_RUNNING',
@@ -232,15 +185,15 @@ export class TaskService implements ITaskService {
     }
     await TaskRepo.update({
       id: input.taskId,
-      status: task.status,
+      status: taskDto.status,
       leaseUntil: new Date(input.now.getTime() + input.leaseDurationMs)
     })
   }
 
   async completeTask(input: { taskId: string; workerId: string; finishedAt: Date }): Promise<void> {
-    const task = await TaskRepo.getByIdOrNull(input.taskId)
-    ensureTaskFound(task, input.taskId)
-    ensureTakenBy(task, input.workerId)
+    const taskDto = await TaskRepo.getByIdOrNull(input.taskId)
+    ensureTaskFound(taskDto, input.taskId)
+    ensureTakenBy(taskDto, input.workerId)
     await TaskRepo.update({
       id: input.taskId,
       status: STATUS.COMPLETED,
@@ -255,12 +208,13 @@ export class TaskService implements ITaskService {
     error: string
     now: Date
   }): Promise<void> {
-    const task = await TaskRepo.getByIdOrNull(input.taskId)
-    ensureTaskFound(task, input.taskId)
-    ensureTakenBy(task, input.workerId)
-    const attempts = task.attempts + 1
+    const taskDto = await TaskRepo.getByIdOrNull(input.taskId)
+    ensureTaskFound(taskDto, input.taskId)
+    ensureTakenBy(taskDto, input.workerId)
+    const attempts = (taskDto.attempts ?? 0) + 1
+    const maxAttempts = taskDto.maxAttempts ?? 3
     const nextRunAt = new Date(input.now.getTime() + 1000 * Math.pow(2, attempts))
-    if (attempts >= task.maxAttempts) {
+    if (attempts >= maxAttempts) {
       await TaskRepo.update({
         id: input.taskId,
         status: STATUS.FAILED,
@@ -284,22 +238,22 @@ export class TaskService implements ITaskService {
   }
 
   async pauseTask(taskId: string): Promise<void> {
-    const task = await TaskRepo.getByIdOrNull(taskId)
-    ensureTaskFound(task, taskId)
-    if (task.status !== STATUS.PENDING && task.status !== STATUS.RUNNING) {
+    const taskDto = await TaskRepo.getByIdOrNull(taskId)
+    ensureTaskFound(taskDto, taskId)
+    if (taskDto.status !== STATUS.PENDING && taskDto.status !== STATUS.RUNNING) {
       throw new AppError({
         ...appContext,
         code: 'INVALID_TASK_STATE',
-        message: `Task ${taskId} cannot be paused from status ${task.status}`
+        message: `Task ${taskId} cannot be paused from status ${taskDto.status}`
       })
     }
     await TaskRepo.update({ id: taskId, status: STATUS.PAUSED })
   }
 
   async resumeTask(taskId: string): Promise<void> {
-    const task = await TaskRepo.getByIdOrNull(taskId)
-    ensureTaskFound(task, taskId)
-    if (task.status !== STATUS.PAUSED) {
+    const taskDto = await TaskRepo.getByIdOrNull(taskId)
+    ensureTaskFound(taskDto, taskId)
+    if (taskDto.status !== STATUS.PAUSED) {
       throw new AppError({
         ...appContext,
         code: 'INVALID_TASK_STATE',
@@ -310,8 +264,8 @@ export class TaskService implements ITaskService {
   }
 
   async cancelTask(taskId: string): Promise<void> {
-    const task = await TaskRepo.getByIdOrNull(taskId)
-    ensureTaskFound(task, taskId)
+    const taskDto = await TaskRepo.getByIdOrNull(taskId)
+    ensureTaskFound(taskDto, taskId)
     await TaskRepo.update({
       id: taskId,
       status: STATUS.CANCELED,
@@ -320,11 +274,11 @@ export class TaskService implements ITaskService {
     })
   }
 
-  async getTaskById(taskId: string): Promise<TaskEntity | null> {
+  async getTaskById(taskId: string): Promise<TTaskServerDTO | null> {
     return TaskRepo.getByIdOrNull(taskId)
   }
 
-  async getTasksByWorkflow(workflowId: string): Promise<TaskEntity[]> {
+  async getTasksByWorkflow(workflowId: string): Promise<TTaskServerDTO[]> {
     return TaskRepo.getByWorkflowId(workflowId)
   }
 

@@ -12,16 +12,16 @@ import { getDataSource } from '@domains/App'
 import { TaskDependencyEntity } from '../entities/TaskDependencyEntity'
 
 async function createTaskDependency(
-  tasksWorkflowDto: TCreateTaskDependencyServerDTO
+  taskDependencyDto: TCreateTaskDependencyServerDTO
 ): Promise<TTaskDependencyServerDTO> {
   return createEntity<TaskDependencyEntity, TTaskDependencyServerDTO>(
     TaskDependencyEntity,
     TaskDependencyServerSchema,
-    tasksWorkflowDto
+    taskDependencyDto
   )
 }
 
-async function getAllTaskDependencys(): Promise<TTaskDependencyServerDTO[]> {
+async function getAllTaskDependencies(): Promise<TTaskDependencyServerDTO[]> {
   return findEntities<TaskDependencyEntity, TTaskDependencyServerDTO>(
     TaskDependencyEntity,
     TaskDependencyServerSchema
@@ -37,13 +37,13 @@ async function getTaskDependencyById(id: string): Promise<TTaskDependencyServerD
 }
 
 async function updateTaskDependency(
-  tasksWorkflowDto: TUpdateTaskDependencyServerDTO
+  taskDependencyDto: TUpdateTaskDependencyServerDTO
 ): Promise<TTaskDependencyServerDTO> {
   return updateEntity<TaskDependencyEntity, TTaskDependencyServerDTO>(
     TaskDependencyEntity,
     TaskDependencyServerSchema,
-    { id: tasksWorkflowDto.id },
-    tasksWorkflowDto
+    { id: taskDependencyDto.id },
+    taskDependencyDto
   )
 }
 
@@ -59,7 +59,7 @@ async function getDependencyTaskIdsByTaskId(taskId: string): Promise<string[]> {
 
 export const TaskDependencyRepo = {
   create: createTaskDependency,
-  getAll: getAllTaskDependencys,
+  getAll: getAllTaskDependencies,
   getById: getTaskDependencyById,
   getDependencyTaskIdsByTaskId,
   update: updateTaskDependency,

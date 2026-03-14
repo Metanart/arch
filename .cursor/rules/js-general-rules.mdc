@@ -17,10 +17,10 @@ Avoid hidden side effects.
 
 # Variables
 
-Use descriptive variable names.
-Avoid single-letter variables except in small scopes.
+Always use descriptive variable names.
+Never use single-letter variables except in small scopes.
 Prefer `const` over `let`.
-Avoid `var`.
+Never use `var`.
 Do not reassign function parameters.
 
 # Data Handling
@@ -68,8 +68,8 @@ Prefer built-in array methods:
 
 # Equality
 
-Use strict equality: === !==
-Avoid loose equality.
+Always use strict equality: === !==
+Neven use loose equality.
 
 # Type Safety
 
