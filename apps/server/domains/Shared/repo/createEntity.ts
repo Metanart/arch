@@ -19,19 +19,19 @@ const messages = {
 
 const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'createEntity' }
 
-export async function createEntity<TEntity extends ObjectLiteral, TOutputDto>(
-  entityTarget: EntityTarget<TEntity>,
-  outputSchema: z.ZodType<TOutputDto>,
-  inputDto: DeepPartial<TEntity>
-): Promise<TOutputDto> {
-  const repo = getDataSource().getRepository<TEntity>(entityTarget)
+export async function createEntity<GEntity extends ObjectLiteral, GOutputDto>(
+  entityTarget: EntityTarget<GEntity>,
+  outputSchema: z.ZodType<GOutputDto>,
+  inputDto: DeepPartial<GEntity>
+): Promise<GOutputDto> {
+  const repo = getDataSource().getRepository<GEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start, inputDto)
 
   const newEntity = repo.create(inputDto)
 
-  let savedEntity: TEntity
+  let savedEntity: GEntity
   try {
     savedEntity = await repo.save(newEntity)
     logger.success(messages.saveSuccess, savedEntity)

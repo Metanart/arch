@@ -16,11 +16,11 @@ const messages = {
 
 const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'removeEntity' }
 
-export async function removeEntity<TEntity extends BaseEntity>(
-  entityTarget: EntityTarget<TEntity>,
-  entityWhere: FindOptionsWhere<TEntity>
+export async function removeEntity<GEntity extends BaseEntity>(
+  entityTarget: EntityTarget<GEntity>,
+  entityWhere: FindOptionsWhere<GEntity>
 ): Promise<boolean> {
-  const repo = getDataSource().getRepository<TEntity>(entityTarget)
+  const repo = getDataSource().getRepository<GEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start)

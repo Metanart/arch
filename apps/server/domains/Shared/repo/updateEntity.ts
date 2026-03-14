@@ -21,18 +21,18 @@ const messages = {
   dtoFailed: 'Failed to map updated entity to DTO'
 }
 
-export async function updateEntity<TEntity extends BaseEntity, TOutputDto>(
-  entityTarget: EntityTarget<TEntity>,
-  outputSchema: z.ZodType<TOutputDto>,
-  entityWhere: FindOptionsWhere<TEntity>,
-  inputDto: DeepPartial<TEntity>
-): Promise<TOutputDto> {
-  const repo = getDataSource().getRepository<TEntity>(entityTarget)
+export async function updateEntity<GEntity extends BaseEntity, GOutputDto>(
+  entityTarget: EntityTarget<GEntity>,
+  outputSchema: z.ZodType<GOutputDto>,
+  entityWhere: FindOptionsWhere<GEntity>,
+  inputDto: DeepPartial<GEntity>
+): Promise<GOutputDto> {
+  const repo = getDataSource().getRepository<GEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start, inputDto)
 
-  let existingEntity: TEntity | null
+  let existingEntity: GEntity | null
   try {
     existingEntity = await repo.findOne({
       where: entityWhere
@@ -53,7 +53,7 @@ export async function updateEntity<TEntity extends BaseEntity, TOutputDto>(
 
   const mergedEntity = repo.merge(existingEntity, inputDto)
 
-  let savedEntity: TEntity
+  let savedEntity: GEntity
   try {
     savedEntity = await repo.save(mergedEntity)
     logger.success(messages.updateSuccess, savedEntity)
@@ -63,7 +63,7 @@ export async function updateEntity<TEntity extends BaseEntity, TOutputDto>(
     throw normalizedError
   }
 
-  let outputDto: TOutputDto
+  let outputDto: GOutputDto
   try {
     outputDto = await outputSchema.parseAsync(savedEntity)
     logger.info(messages.dtoSuccess, outputDto)

@@ -21,16 +21,16 @@ const messages = {
 
 const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'getEntity' }
 
-export async function findEntity<TEntity extends BaseEntity, TOutputDto>(
-  entityTarget: EntityTarget<TEntity>,
-  outputSchema: z.ZodType<TOutputDto>,
-  entityWhere: FindOptionsWhere<TEntity> = {}
-): Promise<TOutputDto> {
-  const repo = getDataSource().getRepository<TEntity>(entityTarget)
+export async function findEntity<GEntity extends BaseEntity, GOutputDto>(
+  entityTarget: EntityTarget<GEntity>,
+  outputSchema: z.ZodType<GOutputDto>,
+  entityWhere: FindOptionsWhere<GEntity> = {}
+): Promise<GOutputDto> {
+  const repo = getDataSource().getRepository<GEntity>(entityTarget)
   const logger = createLogger(appContext)
 
   logger.info(messages.start, entityWhere)
-  let entity: TEntity | null
+  let entity: GEntity | null
   try {
     entity = await repo.findOne({ where: entityWhere })
   } catch (error) {
@@ -47,7 +47,7 @@ export async function findEntity<TEntity extends BaseEntity, TOutputDto>(
     })
   }
 
-  let outputDto: TOutputDto
+  let outputDto: GOutputDto
   try {
     outputDto = await outputSchema.parseAsync(entity)
     logger.info(messages.dtoSuccess, outputDto)

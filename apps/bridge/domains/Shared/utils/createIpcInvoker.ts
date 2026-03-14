@@ -9,16 +9,16 @@ const logger = createLogger({
   origin: 'Bridge invokers expose'
 })
 
-export function createIpcInvoker<Data>(channel: IpcChannel): () => Promise<IpcResponse<Data>> {
+export function createIpcInvoker<GData>(channel: IpcChannel): () => Promise<IpcResponse<GData>> {
   return async function invokeIpc() {
     logger.info(`Invoking ${channel}`)
     return ipcRenderer.invoke(channel)
   }
 }
 
-export function createIpcInvokerWithPayload<TData, TPayload = void>(
+export function createIpcInvokerWithPayload<GData, GPayload = void>(
   channel: IpcChannel
-): (payload: TPayload) => Promise<IpcResponse<TData>> {
+): (payload: GPayload) => Promise<IpcResponse<GData>> {
   return async function invokeIpcWithPayload(payload) {
     logger.info(`Invoking ${channel} with payload`, payload)
 
