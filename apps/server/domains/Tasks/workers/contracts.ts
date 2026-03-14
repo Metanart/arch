@@ -10,30 +10,30 @@ type TErrorResponse = {
   }
 }
 
-type BaseResponse<GType extends TaskType, GResponsePayload> = {
+type TBaseResponse<GType extends TaskType, GResponsePayload> = {
   requestId: number
   type: GType
   payload: GResponsePayload
 }
 
-type BaseRequest<GType extends TaskType, GRequestPayload> = {
+type TBaseRequest<GType extends TaskType, GRequestPayload> = {
   requestId: number
   type: GType
   payload: GRequestPayload
 }
 
-type BaseContract<GType extends TaskType, GRequestPayload, GResponsePayload> = {
-  request: BaseRequest<GType, GRequestPayload>
-  response: BaseResponse<GType, GResponsePayload> | TErrorResponse
+type TBaseContract<GType extends TaskType, GRequestPayload, GResponsePayload> = {
+  request: TBaseRequest<GType, GRequestPayload>
+  response: TBaseResponse<GType, GResponsePayload> | TErrorResponse
 }
 
-type TMultiplyContract = BaseContract<
+type TMultiplyContract = TBaseContract<
   typeof TASK_TYPE.MULTIPLY,
   { value: number },
   { result: number }
 >
 
-type TScanSourceContract = BaseContract<
+type TScanSourceContract = TBaseContract<
   typeof TASK_TYPE.SCAN_SOURCE,
   { dirPath: string },
   { dirTree: TDirectoryTree }

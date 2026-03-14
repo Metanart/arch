@@ -1,10 +1,10 @@
-type Deferred<GData> = {
+type TDeferred<GData> = {
   promise: Promise<GData>
   resolve: (value: GData) => void
   reject: (error: Error) => void
 }
 
-export function createDeferredPromise<GData>(): Deferred<GData> {
+export function createDeferredPromise<GData>(): TDeferred<GData> {
   let resolve!: (value: GData) => void
   let reject!: (error: Error) => void
 
