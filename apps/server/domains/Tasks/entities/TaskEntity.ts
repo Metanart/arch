@@ -13,7 +13,7 @@ import { TasksWorkflowEntity } from './TasksWorkflowEntity'
 @Index(['takenBy'])
 @Index(['nextRunAt'])
 export class TaskEntity extends BaseEntity {
-  @Column()
+  @Column({ type: 'varchar' })
   workflowId!: string
 
   @ManyToOne(() => TasksWorkflowEntity, (workflow) => workflow.tasks, {

@@ -7,14 +7,14 @@ import { TaskEntity } from './TaskEntity'
 @Entity({ name: 'tasks_dependencies' })
 @Index(['taskId', 'dependsOnTaskId'], { unique: true })
 export class TaskDependencyEntity extends BaseEntity {
-  @Column()
+  @Column({ type: 'varchar' })
   taskId!: string
 
   @ManyToOne(() => TaskEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'taskId' })
   task!: TaskEntity
 
-  @Column()
+  @Column({ type: 'varchar' })
   dependsOnTaskId!: string
 
   @ManyToOne(() => TaskEntity, { onDelete: 'CASCADE' })
