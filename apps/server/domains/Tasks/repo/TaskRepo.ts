@@ -9,7 +9,13 @@ import {
   TUpdateTaskServerDTO
 } from '@arch/contracts'
 
-import { createEntity, findEntities, removeEntity, updateEntity } from '@domains/Shared'
+import {
+  createEntity,
+  createEntityBatch,
+  findEntities,
+  removeEntity,
+  updateEntity
+} from '@domains/Shared'
 
 import { getDataSource } from '@domains/App'
 
@@ -132,20 +138,24 @@ type CreateTasksBatchInput = {
 
 async function createTasksBatch(input: CreateTasksBatchInput): Promise<TTaskServerDTO[]> {
   const now = new Date()
+  const taskRows: Array<Partial<TaskEntity>> = input.tasks.map((taskInput) => ({
+    workflowId: input.workflowId,
+    type: taskInput.type,
+    status: STATUS.PENDING,
+    payload: taskInput.payload,
+    priority: taskInput.priority ?? 0,
+    predictedWeight: taskInput.predictedWeight ?? 0,
+    maxAttempts: taskInput.maxAttempts ?? 3,
+    nextRunAt: now
+  }))
   return getDataSource().transaction(async (entityManager) => {
-    const taskRepository = entityManager.getRepository(TaskEntity)
+    const savedTasks = await createEntityBatch<TaskEntity, TTaskServerDTO>(
+      TaskEntity,
+      TaskServerSchema,
+      taskRows,
+      entityManager
+    )
     const taskDependencyRepository = entityManager.getRepository(TaskDependencyEntity)
-    const taskRows: Array<Partial<TaskEntity>> = input.tasks.map((taskInput) => ({
-      workflowId: input.workflowId,
-      type: taskInput.type,
-      status: STATUS.PENDING,
-      payload: taskInput.payload,
-      priority: taskInput.priority ?? 0,
-      predictedWeight: taskInput.predictedWeight ?? 0,
-      maxAttempts: taskInput.maxAttempts ?? 3,
-      nextRunAt: now
-    }))
-    const savedTasks = await taskRepository.save(taskRepository.create(taskRows))
     const dependencyPayloads: Array<{ taskId: string; dependsOnTaskId: string }> = []
     input.tasks.forEach((taskInput, index) => {
       const taskId = savedTasks[index]!.id
@@ -156,7 +166,7 @@ async function createTasksBatch(input: CreateTasksBatchInput): Promise<TTaskServ
     if (dependencyPayloads.length > 0) {
       await taskDependencyRepository.save(taskDependencyRepository.create(dependencyPayloads))
     }
-    return savedTasks.map((savedTaskEntity) => TaskServerSchema.parse(savedTaskEntity))
+    return savedTasks
   })
 }
 
