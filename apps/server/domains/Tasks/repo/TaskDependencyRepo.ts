@@ -52,9 +52,9 @@ async function removeTaskDependency(id: string): Promise<boolean> {
 }
 
 async function getDependencyTaskIdsByTaskId(taskId: string): Promise<string[]> {
-  const repo = getDataSource().getRepository(TaskDependencyEntity)
-  const rows = await repo.find({ where: { taskId } })
-  return rows.map((r) => r.dependsOnTaskId)
+  const taskDependencyRepository = getDataSource().getRepository(TaskDependencyEntity)
+  const dependencyRows = await taskDependencyRepository.find({ where: { taskId } })
+  return dependencyRows.map((dependencyRow) => dependencyRow.dependsOnTaskId)
 }
 
 export const TaskDependencyRepo = {

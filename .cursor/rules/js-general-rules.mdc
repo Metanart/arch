@@ -18,7 +18,7 @@ Avoid hidden side effects.
 # Variables
 
 Always use descriptive variable names.
-Never use single-letter variables except in small scopes.
+Never use shortened single-letter variables.
 Prefer `const` over `let`.
 Never use `var`.
 Do not reassign function parameters.

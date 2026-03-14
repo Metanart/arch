@@ -21,8 +21,8 @@ async function createTask(taskDto: TCreateTaskServerDTO): Promise<TTaskServerDTO
 }
 
 async function getByIdOrNull(id: string): Promise<TTaskServerDTO | null> {
-  const repo = getDataSource().getRepository(TaskEntity)
-  const entity = await repo.findOne({ where: { id } })
+  const taskRepository = getDataSource().getRepository(TaskEntity)
+  const entity = await taskRepository.findOne({ where: { id } })
   if (!entity) return null
   return TaskServerSchema.parse(entity)
 }
@@ -45,15 +45,15 @@ async function removeTask(id: string): Promise<boolean> {
 }
 
 async function getPendingRunnable(now: Date): Promise<TTaskServerDTO[]> {
-  const repo = getDataSource().getRepository(TaskEntity)
-  const entities = await repo.find({
+  const taskRepository = getDataSource().getRepository(TaskEntity)
+  const entities = await taskRepository.find({
     where: {
       status: STATUS.PENDING,
       nextRunAt: LessThanOrEqual(now)
     },
     order: { priority: 'DESC' }
   })
-  return entities.map((e) => TaskServerSchema.parse(e))
+  return entities.map((entity) => TaskServerSchema.parse(entity))
 }
 
 async function tryClaimTask(
@@ -62,9 +62,9 @@ async function tryClaimTask(
   now: Date,
   leaseDurationMs: number
 ): Promise<TTaskServerDTO | null> {
-  return getDataSource().transaction(async (manager) => {
-    const em = manager.getRepository(TaskEntity)
-    const result = await em.update(
+  return getDataSource().transaction(async (entityManager) => {
+    const taskRepository = entityManager.getRepository(TaskEntity)
+    const result = await taskRepository.update(
       { id: taskId, status: STATUS.PENDING },
       {
         takenBy: workerId,
@@ -73,7 +73,7 @@ async function tryClaimTask(
       }
     )
     if (result.affected !== 1) return null
-    const entity = await em.findOne({ where: { id: taskId } })
+    const entity = await taskRepository.findOne({ where: { id: taskId } })
     return entity ? TaskServerSchema.parse(entity) : null
   })
 }
@@ -91,9 +91,9 @@ type CreateTaskWithDependenciesInput = {
 async function createTaskWithDependencies(
   input: CreateTaskWithDependenciesInput
 ): Promise<TTaskServerDTO> {
-  return getDataSource().transaction(async (manager) => {
-    const taskRepo = manager.getRepository(TaskEntity)
-    const depRepo = manager.getRepository(TaskDependencyEntity)
+  return getDataSource().transaction(async (entityManager) => {
+    const taskRepository = entityManager.getRepository(TaskEntity)
+    const taskDependencyRepository = entityManager.getRepository(TaskDependencyEntity)
     const taskPayload = {
       workflowId: input.workflowId,
       type: input.type,
@@ -104,13 +104,13 @@ async function createTaskWithDependencies(
       maxAttempts: input.maxAttempts ?? 3,
       nextRunAt: new Date()
     }
-    const savedTask = await taskRepo.save(taskRepo.create(taskPayload))
-    const depPayloads = (input.dependsOnTaskIds ?? []).map((dependsOnTaskId) => ({
+    const savedTask = await taskRepository.save(taskRepository.create(taskPayload))
+    const dependencyPayloads = (input.dependsOnTaskIds ?? []).map((dependsOnTaskId) => ({
       taskId: savedTask.id,
       dependsOnTaskId
     }))
-    if (depPayloads.length > 0) {
-      await depRepo.save(depRepo.create(depPayloads))
+    if (dependencyPayloads.length > 0) {
+      await taskDependencyRepository.save(taskDependencyRepository.create(dependencyPayloads))
     }
     return TaskServerSchema.parse(savedTask)
   })
@@ -132,31 +132,31 @@ type CreateTasksBatchInput = {
 
 async function createTasksBatch(input: CreateTasksBatchInput): Promise<TTaskServerDTO[]> {
   const now = new Date()
-  return getDataSource().transaction(async (manager) => {
-    const taskRepo = manager.getRepository(TaskEntity)
-    const depRepo = manager.getRepository(TaskDependencyEntity)
-    const taskRows: Array<Partial<TaskEntity>> = input.tasks.map((t) => ({
+  return getDataSource().transaction(async (entityManager) => {
+    const taskRepository = entityManager.getRepository(TaskEntity)
+    const taskDependencyRepository = entityManager.getRepository(TaskDependencyEntity)
+    const taskRows: Array<Partial<TaskEntity>> = input.tasks.map((taskInput) => ({
       workflowId: input.workflowId,
-      type: t.type,
+      type: taskInput.type,
       status: STATUS.PENDING,
-      payload: t.payload,
-      priority: t.priority ?? 0,
-      predictedWeight: t.predictedWeight ?? 0,
-      maxAttempts: t.maxAttempts ?? 3,
+      payload: taskInput.payload,
+      priority: taskInput.priority ?? 0,
+      predictedWeight: taskInput.predictedWeight ?? 0,
+      maxAttempts: taskInput.maxAttempts ?? 3,
       nextRunAt: now
     }))
-    const savedTasks = await taskRepo.save(taskRepo.create(taskRows))
-    const deps: Array<{ taskId: string; dependsOnTaskId: string }> = []
-    input.tasks.forEach((t, i) => {
-      const taskId = savedTasks[i]!.id
-      for (const dependsOnTaskId of t.dependsOnTaskIds ?? []) {
-        deps.push({ taskId, dependsOnTaskId })
+    const savedTasks = await taskRepository.save(taskRepository.create(taskRows))
+    const dependencyPayloads: Array<{ taskId: string; dependsOnTaskId: string }> = []
+    input.tasks.forEach((taskInput, index) => {
+      const taskId = savedTasks[index]!.id
+      for (const dependsOnTaskId of taskInput.dependsOnTaskIds ?? []) {
+        dependencyPayloads.push({ taskId, dependsOnTaskId })
       }
     })
-    if (deps.length > 0) {
-      await depRepo.save(depRepo.create(deps))
+    if (dependencyPayloads.length > 0) {
+      await taskDependencyRepository.save(taskDependencyRepository.create(dependencyPayloads))
     }
-    return savedTasks.map((entity) => TaskServerSchema.parse(entity))
+    return savedTasks.map((savedTaskEntity) => TaskServerSchema.parse(savedTaskEntity))
   })
 }
 

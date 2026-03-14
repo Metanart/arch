@@ -83,10 +83,10 @@ export interface ITaskService {
 }
 
 async function areDependenciesResolved(taskId: string): Promise<boolean> {
-  const depIds = await TaskDependencyRepo.getDependencyTaskIdsByTaskId(taskId)
-  if (depIds.length === 0) return true
-  for (const id of depIds) {
-    const taskDto = await TaskRepo.getByIdOrNull(id)
+  const dependencyTaskIds = await TaskDependencyRepo.getDependencyTaskIdsByTaskId(taskId)
+  if (dependencyTaskIds.length === 0) return true
+  for (const dependencyTaskId of dependencyTaskIds) {
+    const taskDto = await TaskRepo.getByIdOrNull(dependencyTaskId)
     if (!taskDto || taskDto.status !== STATUS.COMPLETED) return false
   }
   return true
@@ -127,13 +127,13 @@ export class TaskService implements ITaskService {
   }): Promise<TTaskServerDTO[]> {
     return TaskRepo.createTasksBatch({
       workflowId: input.workflowId,
-      tasks: input.tasks.map((t) => ({
-        type: t.type,
-        payload: JSON.stringify(t.payload),
-        priority: t.priority,
-        predictedWeight: t.predictedWeight,
-        maxAttempts: t.maxAttempts,
-        dependsOnTaskIds: t.dependsOnTaskIds
+      tasks: input.tasks.map((taskInput) => ({
+        type: taskInput.type,
+        payload: JSON.stringify(taskInput.payload),
+        priority: taskInput.priority,
+        predictedWeight: taskInput.predictedWeight,
+        maxAttempts: taskInput.maxAttempts,
+        dependsOnTaskIds: taskInput.dependsOnTaskIds
       }))
     })
   }
@@ -145,13 +145,15 @@ export class TaskService implements ITaskService {
   }): Promise<TTaskServerDTO | null> {
     const candidates = await TaskRepo.getPendingRunnable(input.now)
     const available = candidates.filter(
-      (dto) => dto.leaseUntil == null || dto.leaseUntil.getTime() < input.now.getTime()
+      (candidateTaskDto) =>
+        candidateTaskDto.leaseUntil == null ||
+        candidateTaskDto.leaseUntil.getTime() < input.now.getTime()
     )
-    for (const dto of available) {
-      const resolved = await areDependenciesResolved(dto.id)
+    for (const candidateTaskDto of available) {
+      const resolved = await areDependenciesResolved(candidateTaskDto.id)
       if (!resolved) continue
       const claimed = await TaskRepo.tryClaimTask(
-        dto.id,
+        candidateTaskDto.id,
         input.workerId,
         input.now,
         input.leaseDurationMs

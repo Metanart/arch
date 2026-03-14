@@ -35,14 +35,14 @@ async function createTasksWorkflow(
 }
 
 async function getAllTasksWorkflows(): Promise<TTasksWorkflowServerDTO[]> {
-  const repo = getDataSource().getRepository(TasksWorkflowEntity)
-  const entities = await repo.find({ relations: ['source'] })
-  return entities.map((e) => TasksWorkflowServerSchema.parse(e))
+  const tasksWorkflowRepository = getDataSource().getRepository(TasksWorkflowEntity)
+  const entities = await tasksWorkflowRepository.find({ relations: ['source'] })
+  return entities.map((entity) => TasksWorkflowServerSchema.parse(entity))
 }
 
 async function getTasksWorkflowById(id: string): Promise<TTasksWorkflowServerDTO> {
-  const repo = getDataSource().getRepository(TasksWorkflowEntity)
-  const entity = await repo.findOne({ where: { id }, relations: ['source'] })
+  const tasksWorkflowRepository = getDataSource().getRepository(TasksWorkflowEntity)
+  const entity = await tasksWorkflowRepository.findOne({ where: { id }, relations: ['source'] })
   if (!entity) {
     throw new AppError({
       domain: 'Tasks',
