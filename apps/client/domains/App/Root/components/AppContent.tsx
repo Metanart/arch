@@ -2,11 +2,11 @@ import { FC, JSX, PropsWithChildren } from 'react'
 
 import { Box } from '@mui/material'
 
-type Props = PropsWithChildren & {
+type TProps = PropsWithChildren & {
   navigationWidth: number
 }
 
-export const AppContent: FC<Props> = (props): JSX.Element => {
+export const AppContent: FC<TProps> = (props): JSX.Element => {
   const { children, navigationWidth } = props
 
   return (

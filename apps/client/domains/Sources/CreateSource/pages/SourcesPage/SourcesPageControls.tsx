@@ -3,9 +3,9 @@ import { FC } from 'react'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import { CardActions, IconButton, Tooltip } from '@mui/material'
 
-type Props = { onAddNew: () => void }
+type TProps = { onAddNew: () => void }
 
-export const SourcesPageControls: FC<Props> = (props) => {
+export const SourcesPageControls: FC<TProps> = (props) => {
   const { onAddNew } = props
 
   return (

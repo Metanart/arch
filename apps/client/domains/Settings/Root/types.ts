@@ -1,7 +1,7 @@
-import { SettingsClientDTO } from '@arch/contracts'
+import { TSettingsClientDTO } from '@arch/contracts'
 
-export type SettingsStore = {
-  settings: SettingsClientDTO | null
+export type TSettingsStore = {
+  settings: TSettingsClientDTO | null
   isLoading: boolean
   error: string | null
 }

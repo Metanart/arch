@@ -1,11 +1,11 @@
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
 
 import { runExecutable } from './runExecutable'
 
 import { TTUnrarServiceErrorCode } from './types'
 
-const appContext: AppContext = {
+const appContext: TAppContext = {
   domain: 'Global',
   layer: 'FileSystem',
   origin: 'UnrarService.isPasswordProtected'

@@ -1,19 +1,19 @@
 import { JSX, ReactElement } from 'react'
 
-export type AppNavigationItem = {
+export type TAppNavigationItem = {
   id: string
   testId?: string
   text: string
   icon: JSX.Element
 }
 
-export type AppNavigationParams = {
+export type TAppNavigationParams = {
   isOpen: boolean
   openWidth: number
   closeWidth: number
 }
 
-export type AppRoute = {
+export type TAppRoute = {
   id: string
   title: string
   testId?: string
@@ -22,8 +22,8 @@ export type AppRoute = {
   element: ReactElement
 }
 
-export type AppBaseDomains = 'App' | 'Common'
+export type TAppBaseDomains = 'App' | 'Common'
 
-export type AppFeatureDomains = 'Home' | 'Models' | 'Sources' | 'Settings' | 'Tasks'
+export type TAppFeatureDomains = 'Home' | 'Models' | 'Sources' | 'Settings' | 'Tasks'
 
-export type AppDomains = AppBaseDomains | AppFeatureDomains
+export type TAppDomains = TAppBaseDomains | TAppFeatureDomains

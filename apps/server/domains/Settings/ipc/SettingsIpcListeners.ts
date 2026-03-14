@@ -1,10 +1,10 @@
-import { SettingsClientDTO, UpdateSettingsClientDTO } from '@arch/contracts'
+import { TSettingsClientDTO, TUpdateSettingsClientDTO } from '@arch/contracts'
 import { IpcResponse } from '@arch/types'
 import { getMessageFromError } from '@arch/utils'
 
 import { SettingsRepo } from '../repo/SettingsRepo'
 
-async function get(): Promise<IpcResponse<SettingsClientDTO>> {
+async function get(): Promise<IpcResponse<TSettingsClientDTO>> {
   try {
     const settingsDto = await SettingsRepo.get()
     return { status: 'success', data: settingsDto }
@@ -13,7 +13,7 @@ async function get(): Promise<IpcResponse<SettingsClientDTO>> {
   }
 }
 
-async function update(settings: UpdateSettingsClientDTO): Promise<IpcResponse<SettingsClientDTO>> {
+async function update(settings: TUpdateSettingsClientDTO): Promise<IpcResponse<TSettingsClientDTO>> {
   try {
     const settingsDto = await SettingsRepo.update(settings)
     return { status: 'success', data: settingsDto }

@@ -39,8 +39,8 @@ export const UpdateTaskServerSchema = UpdateTaskBaseSchema
 
 export const CreateTaskServerSchema = CreateTaskBaseSchema
 
-export type TaskServerDTO = z.infer<typeof TaskServerSchema>
+export type TTaskServerDTO = z.infer<typeof TaskServerSchema>
 
-export type UpdateTaskServerDTO = z.infer<typeof UpdateTaskServerSchema>
+export type TUpdateTaskServerDTO = z.infer<typeof UpdateTaskServerSchema>
 
-export type CreateTaskServerDTO = z.infer<typeof CreateTaskServerSchema>
+export type TCreateTaskServerDTO = z.infer<typeof CreateTaskServerSchema>

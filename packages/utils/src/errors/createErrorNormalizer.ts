@@ -1,10 +1,10 @@
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 
 import { AppError } from './AppError'
 
 type ErrorAdapter<GErrorCode, GErrorDetails> = (
   error: unknown,
-  context: AppContext
+  context: TAppContext
 ) => AppError<GErrorCode, GErrorDetails> | null
 
 export function createErrorNormalizer<GErrorCode, GErrorDetails>(
@@ -12,7 +12,7 @@ export function createErrorNormalizer<GErrorCode, GErrorDetails>(
 ) {
   return function normalizeError(
     error: unknown,
-    context: AppContext
+    context: TAppContext
   ): AppError<GErrorCode, GErrorDetails> {
     for (const adapter of adapters) {
       const mappedAppError = adapter(error, context)

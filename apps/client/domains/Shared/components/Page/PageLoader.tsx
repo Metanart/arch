@@ -2,13 +2,13 @@ import { FC } from 'react'
 
 import { Box } from '@mui/material'
 
-import { Loader, LoaderProps } from '../Loader/Loader'
+import { Loader, TLoaderProps } from '../Loader/Loader'
 
-export type PageLoaderProps = {
+export type TPageLoaderProps = {
   height?: number
-} & LoaderProps
+} & TLoaderProps
 
-export const PageLoader: FC<PageLoaderProps> = (props) => {
+export const PageLoader: FC<TPageLoaderProps> = (props) => {
   return (
     <Box
       display="flex"

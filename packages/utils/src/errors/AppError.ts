@@ -1,23 +1,23 @@
-import { AppDomain, AppLayer } from '@arch/types'
+import { TAppDomain, TAppLayer } from '@arch/types'
 
-type AppErrorCode = 'UNKNOWN' | 'EMPTY_ARGUMENTS'
+type TAppErrorCode = 'UNKNOWN' | 'EMPTY_ARGUMENTS'
 
 export class AppError<GErrorCode, GErrorDetails = Record<string, unknown>> extends Error {
   readonly kind = 'AppError' as const
 
-  readonly layer: AppLayer
-  readonly domain: AppDomain
+  readonly layer: TAppLayer
+  readonly domain: TAppDomain
   readonly origin?: string
 
-  readonly code: GErrorCode | AppErrorCode
+  readonly code: GErrorCode | TAppErrorCode
   readonly details?: GErrorDetails
   readonly cause?: unknown
 
   constructor(params: {
-    layer: AppLayer
-    domain: AppDomain
+    layer: TAppLayer
+    domain: TAppDomain
     origin?: string
-    code: GErrorCode | AppErrorCode
+    code: GErrorCode | TAppErrorCode
     message: string
     details?: GErrorDetails
     cause?: unknown

@@ -2,12 +2,12 @@ import { FC, Fragment } from 'react'
 
 import { CircularProgress, Typography } from '@mui/material'
 
-export type LoaderProps = {
+export type TLoaderProps = {
   message?: string
   size?: number
 }
 
-export const Loader: FC<LoaderProps> = ({ message = 'Loading...', size = 40 }) => {
+export const Loader: FC<TLoaderProps> = ({ message = 'Loading...', size = 40 }) => {
   return (
     <Fragment>
       <CircularProgress size={size} />

@@ -2,11 +2,11 @@
 
 export const OMIT = Symbol('OMIT')
 
-type Key = string | number | symbol
+type TKey = string | number | symbol
 
 export function convertDto<
-  GSourceObject extends Record<Key, any>,
-  GTargetObject extends Record<Key, any>
+  GSourceObject extends Record<TKey, any>,
+  GTargetObject extends Record<TKey, any>
 >(
   sourceObject: GSourceObject,
   options?: {

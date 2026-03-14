@@ -3,14 +3,14 @@ import { Link as RouterLink } from 'react-router-dom'
 
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 
-import { AppNavigationItem } from '../types'
+import { TAppNavigationItem } from '../types'
 
-type Props = AppNavigationItem & {
+type TProps = TAppNavigationItem & {
   to: string
   isOpen: boolean
 }
 
-export const AppNavigationButton: FC<Props> = (props) => {
+export const AppNavigationButton: FC<TProps> = (props) => {
   const { id, testId, text, icon, to, isOpen } = props
 
   return (

@@ -1,8 +1,8 @@
-import { TaskType } from '@arch/contracts'
+import { TTaskType } from '@arch/contracts'
 
 import { TaskWorkerClient } from './TaskWorkerClient'
 
-type TQueuedTask = { taskId: string; type: TaskType; payload: unknown }
+type TQueuedTask = { taskId: string; type: TTaskType; payload: unknown }
 type TBusyEntry = { taskId: string; startMs: number }
 
 export interface ITaskWorkerManager {
@@ -34,7 +34,7 @@ export interface ITaskWorkerManager {
   /**
    * Отправить задачу на выполнение
    */
-  executeTask(input: { taskId: string; type: TaskType; payload: unknown }): Promise<void>
+  executeTask(input: { taskId: string; type: TTaskType; payload: unknown }): Promise<void>
 
   /**
    * Подписаться на событие успешного выполнения задачи
@@ -123,7 +123,7 @@ export class TaskWorkerManager implements ITaskWorkerManager {
     return this.maxWorkers
   }
 
-  executeTask(input: { taskId: string; type: TaskType; payload: unknown }): Promise<void> {
+  executeTask(input: { taskId: string; type: TTaskType; payload: unknown }): Promise<void> {
     if (!this.started || this.workers.length === 0) {
       return Promise.resolve()
     }

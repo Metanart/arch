@@ -1,8 +1,8 @@
-export type AppPart = 'Server' | 'Bridge' | 'Client'
+export type TAppPart = 'Server' | 'Bridge' | 'Client'
 
-export type AppDomain = 'Settings' | 'Sources' | 'Global' | 'Tasks' | 'Shared'
+export type TAppDomain = 'Settings' | 'Sources' | 'Global' | 'Tasks' | 'Shared'
 
-export type AppLayer =
+export type TAppLayer =
   | 'Database'
   | 'Service'
   | 'IpcAPI'
@@ -14,8 +14,8 @@ export type AppLayer =
   | 'FileSystem'
   | 'Worker'
 
-export type AppContext = {
-  domain: AppDomain
-  layer: AppLayer
+export type TAppContext = {
+  domain: TAppDomain
+  layer: TAppLayer
   origin: string
 }

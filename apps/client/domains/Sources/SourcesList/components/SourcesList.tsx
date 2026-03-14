@@ -1,14 +1,14 @@
 import { FC, Fragment, JSX, useMemo } from 'react'
 
-import { SourceClientDTO } from '@arch/contracts'
+import { TSourceClientDTO } from '@arch/contracts'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { IconButton, Tooltip } from '@mui/material'
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid'
 
-type Props = {
-  sources: SourceClientDTO[]
+type TProps = {
+  sources: TSourceClientDTO[]
   onEdit: (id: string) => void
   onDelete: (id: string) => void
   isLoading: boolean
@@ -37,10 +37,10 @@ export function Controls({
   )
 }
 
-export const SourcesList: FC<Props> = (props) => {
+export const SourcesList: FC<TProps> = (props) => {
   const { sources, onEdit, onDelete, isLoading } = props
 
-  const columns = useMemo<GridColDef<SourceClientDTO>[]>(
+  const columns = useMemo<GridColDef<TSourceClientDTO>[]>(
     () => [
       { field: 'name', headerName: 'Name', flex: 1, editable: false },
       { field: 'path', headerName: 'Path', flex: 2 },
@@ -50,7 +50,7 @@ export const SourcesList: FC<Props> = (props) => {
         headerName: 'Actions',
         sortable: false,
         flex: 1,
-        renderCell: (params: GridRenderCellParams<SourceClientDTO>) => (
+        renderCell: (params: GridRenderCellParams<TSourceClientDTO>) => (
           <Controls onEdit={() => onEdit(params.row.id)} onDelete={() => onDelete(params.row.id)} />
         )
       }
@@ -59,7 +59,7 @@ export const SourcesList: FC<Props> = (props) => {
   )
 
   return (
-    <DataGrid<SourceClientDTO>
+    <DataGrid<TSourceClientDTO>
       rows={sources}
       columns={columns}
       getRowId={(row) => row.id}

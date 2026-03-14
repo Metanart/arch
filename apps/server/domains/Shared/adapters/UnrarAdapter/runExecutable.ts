@@ -1,13 +1,13 @@
 import { spawn } from 'child_process'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
 
 import { resolvePathToExecutable } from './resolvePathToExecutable'
 
 import { TTUnrarServiceErrorCode } from './types'
 
-const appContext: AppContext = {
+const appContext: TAppContext = {
   domain: 'Global',
   layer: 'FileSystem',
   origin: 'UnrarService.runExecutable'

@@ -20,8 +20,8 @@ export const UpdateTaskDependencyServerSchema = UpdateTaskDependencyBaseSchema
 
 export const CreateTaskDependencyServerSchema = CreateTaskDependencyBaseSchema
 
-export type TaskDependencyServerDTO = z.infer<typeof TaskDependencyServerSchema>
+export type TTaskDependencyServerDTO = z.infer<typeof TaskDependencyServerSchema>
 
-export type UpdateTaskDependencyServerDTO = z.infer<typeof UpdateTaskDependencyServerSchema>
+export type TUpdateTaskDependencyServerDTO = z.infer<typeof UpdateTaskDependencyServerSchema>
 
-export type CreateTaskDependencyServerDTO = z.infer<typeof CreateTaskDependencyServerSchema>
+export type TCreateTaskDependencyServerDTO = z.infer<typeof CreateTaskDependencyServerSchema>

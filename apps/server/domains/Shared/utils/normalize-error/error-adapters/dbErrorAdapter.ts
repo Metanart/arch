@@ -1,6 +1,6 @@
 import { QueryFailedError } from 'typeorm'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
 
 export type TDBErrorCode =
@@ -18,7 +18,7 @@ export type TDBErrorDetails = {
 
 export function dbErrorAdapter(
   error: unknown,
-  context: AppContext
+  context: TAppContext
 ): AppError<TDBErrorCode, TDBErrorDetails> | null {
   if (!(error instanceof QueryFailedError)) return null
 

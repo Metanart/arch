@@ -6,12 +6,12 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined'
 import { Alert } from '@mui/material'
 
-type Props = {
+type TProps = {
   message: string
   severity: 'success' | 'error' | 'warning' | 'info'
 }
 
-export const Notification: FC<Props> = forwardRef<HTMLDivElement, Props>(
+export const Notification: FC<TProps> = forwardRef<HTMLDivElement, TProps>(
   ({ message, severity }, ref) => {
     const renderIcon = (): JSX.Element => {
       switch (severity) {

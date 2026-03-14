@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useCallback } from 'react'
 
-import { CreateSourceClientDTO } from '@arch/contracts'
+import { TCreateSourceClientDTO } from '@arch/contracts'
 import { createLogger } from '@arch/utils'
 
 import { notify } from '@domains/Shared'
@@ -27,7 +27,7 @@ export const CreateSourceFormContainer: FC<PropsWithChildren> = () => {
   const [createSource, { isLoading }] = useCreateSourceMutation()
 
   const handleSave = useCallback(
-    async (sourceCreateFormDTO: CreateSourceClientDTO, isDirty: boolean): Promise<void> => {
+    async (sourceCreateFormDTO: TCreateSourceClientDTO, isDirty: boolean): Promise<void> => {
       if (!isDirty) {
         notify(messages.notify.isEmpty, 'warning')
         return

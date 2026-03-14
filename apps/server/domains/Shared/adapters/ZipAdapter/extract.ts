@@ -1,13 +1,13 @@
 import { mkdir } from 'node:fs/promises'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
 
 import StreamZip from 'node-stream-zip'
 
 import { TTZipServiceErrorCode } from './types'
 
-const appContext: AppContext = {
+const appContext: TAppContext = {
   domain: 'Global',
   layer: 'FileSystem',
   origin: 'ZipService.extract'

@@ -1,7 +1,7 @@
 import { SHARED_IPC_CHANNELS } from '@arch/enums'
-import { IpcChannel } from '@arch/types'
+import { TIpcChannel } from '@arch/types'
 
-async function callSharedIpcMethod<GData>(channel: IpcChannel): Promise<GData> {
+async function callSharedIpcMethod<GData>(channel: TIpcChannel): Promise<GData> {
   const ipcMethod = window.ipc.Shared[channel]
 
   if (!ipcMethod || typeof ipcMethod !== 'function') {

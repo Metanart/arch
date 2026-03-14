@@ -1,12 +1,12 @@
 import { createReadStream } from 'fs'
 import { createHash } from 'crypto'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError, getMessageFromError } from '@arch/utils'
 
 import { TFileSystemErrorCode } from './types'
 
-const appContext: AppContext = {
+const appContext: TAppContext = {
   domain: 'Global',
   layer: 'FileSystem',
   origin: 'calculateFileHash'

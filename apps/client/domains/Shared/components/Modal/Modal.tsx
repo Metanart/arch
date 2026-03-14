@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material'
 
-type Props = {
+type TProps = {
   isOpen: boolean
   title?: string
   children: ReactNode
@@ -11,7 +11,7 @@ type Props = {
   onClose: () => void
 }
 
-export const Modal: FC<Props> = (props) => {
+export const Modal: FC<TProps> = (props) => {
   const { isOpen, title, children, actions, onClose } = props
 
   return (

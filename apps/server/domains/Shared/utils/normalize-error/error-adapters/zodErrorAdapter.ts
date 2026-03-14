@@ -1,6 +1,6 @@
 import { z, ZodError } from 'zod'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError } from '@arch/utils'
 
 export type TZodErrorCode = 'ZOD_VALIDATION_ERROR'
@@ -50,7 +50,7 @@ function buildMessage(issues: TZodIssueDTO[], includeSummary: boolean): string {
 
 export function zodErrorAdapter(
   error: unknown,
-  context: AppContext,
+  context: TAppContext,
   options: TZodAdapterOptions = {}
 ): AppError<TZodErrorCode> | null {
   if (!(error instanceof ZodError)) return null

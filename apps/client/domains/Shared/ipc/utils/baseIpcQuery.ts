@@ -1,15 +1,15 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 
-import { AppDomain, IpcChannel, IpcResponse } from '@arch/types'
+import { TAppDomain, TIpcChannel, IpcResponse } from '@arch/types'
 import { AppError, getMessageFromError } from '@arch/utils'
 
-export type IpcQueryArgs = {
-  domain: AppDomain
-  channel: IpcChannel
+export type TIpcQueryArgs = {
+  domain: TAppDomain
+  channel: TIpcChannel
   payload?: unknown
 }
 
-export const baseIpcQuery: BaseQueryFn<IpcQueryArgs, unknown, string> = async ({
+export const baseIpcQuery: BaseQueryFn<TIpcQueryArgs, unknown, string> = async ({
   domain,
   channel,
   payload

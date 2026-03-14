@@ -2,14 +2,14 @@ import { FC, ReactNode } from 'react'
 
 import { Box, Divider, Stack, Typography } from '@mui/material'
 
-export type PageHeaderActions = Record<string, ReactNode>
+export type TPageHeaderActions = Record<string, ReactNode>
 
-type Props = {
+type TProps = {
   title: string
   controls?: ReactNode
 }
 
-export const PageHeader: FC<Props> = (props) => {
+export const PageHeader: FC<TProps> = (props) => {
   const { title, controls } = props
 
   return (

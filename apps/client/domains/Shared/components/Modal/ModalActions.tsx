@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import { Button, DialogActions } from '@mui/material'
 
-type Props = {
+type TProps = {
   onClose?: () => void
   onSubmit?: () => void
   labelClose?: string
@@ -10,7 +10,7 @@ type Props = {
   isSubmitDisabled?: boolean
 }
 
-export const ModalActions: FC<Props> = (props) => {
+export const ModalActions: FC<TProps> = (props) => {
   const {
     labelClose = 'Cancel',
     labelSubmit = 'Submit',

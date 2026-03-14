@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { SETTINGS_IPC_CHANNELS } from '@arch/enums'
-import type { IpcChannel } from '@arch/types'
+import type { TIpcChannel } from '@arch/types'
 
 import { addIpcListener, addIpcListenerWithPayload } from './addIpcListener'
 
@@ -16,7 +16,7 @@ vi.mock('@arch/utils', () => ({
 }))
 
 describe('addIpcListener', () => {
-  const channel: IpcChannel = SETTINGS_IPC_CHANNELS.GET
+  const channel: TIpcChannel = SETTINGS_IPC_CHANNELS.GET
 
   beforeEach(() => {
     handleMock.mockClear()
@@ -71,7 +71,7 @@ describe('addIpcListener', () => {
 })
 
 describe('addIpcListenerWithPayload', () => {
-  const channel: IpcChannel = SETTINGS_IPC_CHANNELS.UPDATE
+  const channel: TIpcChannel = SETTINGS_IPC_CHANNELS.UPDATE
 
   beforeEach(() => {
     handleMock.mockClear()

@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { CreateSourceClientDTO, CreateSourceClientSchema } from '@arch/contracts'
+import { TCreateSourceClientDTO, CreateSourceClientSchema } from '@arch/contracts'
 
 import { FolderInput } from '@domains/Shared'
 
@@ -15,8 +15,8 @@ const DEFAULT_VALUES = {
   comment: ''
 }
 
-type Props = {
-  onSave: (sourceDto: CreateSourceClientDTO, isDirty: boolean) => void
+type TProps = {
+  onSave: (sourceDto: TCreateSourceClientDTO, isDirty: boolean) => void
   onCancel?: () => void
   isDisabled?: boolean
 }
@@ -42,17 +42,17 @@ const messages = {
   }
 }
 
-export const CreateSourceForm: FC<Props> = ({ onSave, onCancel, isDisabled }) => {
+export const CreateSourceForm: FC<TProps> = ({ onSave, onCancel, isDisabled }) => {
   const {
     control,
     handleSubmit,
     formState: { isDirty }
-  } = useForm<CreateSourceClientDTO>({
+  } = useForm<TCreateSourceClientDTO>({
     resolver: zodResolver(CreateSourceClientSchema),
     defaultValues: DEFAULT_VALUES
   })
 
-  const onSubmit = (sourceDto: CreateSourceClientDTO): void => {
+  const onSubmit = (sourceDto: TCreateSourceClientDTO): void => {
     onSave(sourceDto, isDirty)
   }
 

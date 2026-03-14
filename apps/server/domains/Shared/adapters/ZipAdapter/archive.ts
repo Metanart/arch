@@ -3,7 +3,7 @@ import { createWriteStream } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import { dirname, join, posix as pathPosix } from 'node:path'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError, createLogger } from '@arch/utils'
 
 import * as yazl from 'yazl'
@@ -23,7 +23,7 @@ type TArchiveOptions = {
   signal?: AbortSignal
 }
 
-const appContext: AppContext = {
+const appContext: TAppContext = {
   domain: 'Global',
   layer: 'FileSystem',
   origin: 'ZipService.archive'

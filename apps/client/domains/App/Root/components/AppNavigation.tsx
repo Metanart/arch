@@ -3,18 +3,18 @@ import { Children, FC, ReactElement } from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Drawer, IconButton, List, ListItem, Toolbar } from '@mui/material'
 
-import { AppNavigationItem } from '../types'
+import { TAppNavigationItem } from '../types'
 
 const drawerWidthExpanded = 160
 const drawerWidthCollapsed = 52
 
-type Props = {
-  children: ReactElement<AppNavigationItem>[]
+type TProps = {
+  children: ReactElement<TAppNavigationItem>[]
   onToggleClick: () => void
   isOpen: boolean
 }
 
-export const AppNavigation: FC<Props> = (props) => {
+export const AppNavigation: FC<TProps> = (props) => {
   const { children, onToggleClick, isOpen } = props
 
   return (

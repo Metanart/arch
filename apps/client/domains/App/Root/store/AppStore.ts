@@ -15,6 +15,6 @@ export const AppStore = configureStore({
     getDefaultMiddleware().concat(SettingsIpcApi.middleware, SourcesIpcApi.middleware)
 })
 
-export type AppState = ReturnType<typeof AppStore.getState>
+export type TAppState = ReturnType<typeof AppStore.getState>
 
-export type AppDispatch = typeof AppStore.dispatch
+export type TAppDispatch = typeof AppStore.dispatch

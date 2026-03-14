@@ -5,7 +5,7 @@ import { SharedIpcApi } from '@domains/Shared'
 import FolderOpenIcon from '@mui/icons-material/FolderOpen'
 import { IconButton, InputAdornment, StandardTextFieldProps, TextField } from '@mui/material'
 
-type Props = {
+type TProps = {
   label: string
   value: string
   name: string
@@ -21,7 +21,7 @@ type Props = {
   slotProps?: StandardTextFieldProps['slotProps']
 }
 
-export const FolderInput: FC<Props> = (props) => {
+export const FolderInput: FC<TProps> = (props) => {
   const {
     label,
     value,

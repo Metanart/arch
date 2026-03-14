@@ -1,8 +1,8 @@
 import {
-  CreateTaskServerDTO,
-  TaskServerDTO,
+  TCreateTaskServerDTO,
+  TTaskServerDTO,
   TaskServerSchema,
-  UpdateTaskServerDTO
+  TUpdateTaskServerDTO
 } from '@arch/contracts'
 
 import { getDataSource } from '@domains/App'
@@ -10,12 +10,12 @@ import { createEntity, findEntity, removeEntity, updateEntity } from '@domains/S
 
 import { TaskEntity } from '../entities/TaskEntity'
 
-async function createTask(taskQueueDto: CreateTaskServerDTO): Promise<TaskServerDTO> {
-  return createEntity<TaskEntity, TaskServerDTO>(TaskEntity, TaskServerSchema, taskQueueDto)
+async function createTask(taskQueueDto: TCreateTaskServerDTO): Promise<TTaskServerDTO> {
+  return createEntity<TaskEntity, TTaskServerDTO>(TaskEntity, TaskServerSchema, taskQueueDto)
 }
 
-async function getTaskById(id: string): Promise<TaskServerDTO> {
-  return findEntity<TaskEntity, TaskServerDTO>(TaskEntity, TaskServerSchema, { id })
+async function getTaskById(id: string): Promise<TTaskServerDTO> {
+  return findEntity<TaskEntity, TTaskServerDTO>(TaskEntity, TaskServerSchema, { id })
 }
 
 async function getByIdOrNull(id: string): Promise<TaskEntity | null> {
@@ -28,8 +28,8 @@ async function getByWorkflowId(workflowId: string): Promise<TaskEntity[]> {
   return repo.find({ where: { workflowId } })
 }
 
-async function updateTask(taskQueueDto: UpdateTaskServerDTO): Promise<TaskServerDTO> {
-  return updateEntity<TaskEntity, TaskServerDTO>(
+async function updateTask(taskQueueDto: TUpdateTaskServerDTO): Promise<TTaskServerDTO> {
+  return updateEntity<TaskEntity, TTaskServerDTO>(
     TaskEntity,
     TaskServerSchema,
     { id: taskQueueDto.id },

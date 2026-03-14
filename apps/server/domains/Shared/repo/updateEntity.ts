@@ -2,7 +2,7 @@ import { DeepPartial, EntityTarget, FindOptionsWhere } from 'typeorm'
 
 import { z } from 'zod'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError, createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
@@ -11,7 +11,7 @@ import { getDataSource } from '@domains/App'
 
 import { BaseEntity } from '../entities/BaseEntity'
 
-const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'updateEntity' }
+const appContext: TAppContext = { domain: 'Shared', layer: 'Database', origin: 'updateEntity' }
 
 const messages = {
   start: 'Update requested entity from database',

@@ -1,4 +1,4 @@
-import { TASK_TYPE, TaskType } from '@arch/contracts'
+import { TASK_TYPE, TTaskType } from '@arch/contracts'
 
 import type { TDirectoryTree } from '@domains/Shared'
 
@@ -10,19 +10,19 @@ type TErrorResponse = {
   }
 }
 
-type TBaseResponse<GType extends TaskType, GResponsePayload> = {
+type TBaseResponse<GType extends TTaskType, GResponsePayload> = {
   requestId: number
   type: GType
   payload: GResponsePayload
 }
 
-type TBaseRequest<GType extends TaskType, GRequestPayload> = {
+type TBaseRequest<GType extends TTaskType, GRequestPayload> = {
   requestId: number
   type: GType
   payload: GRequestPayload
 }
 
-type TBaseContract<GType extends TaskType, GRequestPayload, GResponsePayload> = {
+type TBaseContract<GType extends TTaskType, GRequestPayload, GResponsePayload> = {
   request: TBaseRequest<GType, GRequestPayload>
   response: TBaseResponse<GType, GResponsePayload> | TErrorResponse
 }

@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
@@ -17,7 +17,7 @@ const messages = {
   dtoFailed: 'Failed to map saved entity to DTO'
 }
 
-const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'createEntity' }
+const appContext: TAppContext = { domain: 'Shared', layer: 'Database', origin: 'createEntity' }
 
 export async function createEntity<GEntity extends ObjectLiteral, GOutputDto>(
   entityTarget: EntityTarget<GEntity>,

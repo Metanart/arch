@@ -3,15 +3,15 @@ import { Worker } from 'node:worker_threads'
 
 import { app } from 'electron'
 
-import { TaskType } from '@arch/contracts'
-import { AppContext } from '@arch/types'
+import { TTaskType } from '@arch/contracts'
+import { TAppContext } from '@arch/types'
 import { AppError, createLogger, isNumber, isObject, isString } from '@arch/utils'
 
 import { createDeferredPromise } from '@domains/Shared'
 
 import { TTaskWorkerRequestByType, TTaskWorkerResponse, TTaskWorkerResponseByType } from './types'
 
-const appContext: AppContext = { domain: 'Tasks', layer: 'Worker', origin: 'TaskWorkerClient' }
+const appContext: TAppContext = { domain: 'Tasks', layer: 'Worker', origin: 'TaskWorkerClient' }
 
 const logger = createLogger(appContext)
 
@@ -25,7 +25,7 @@ function resolveTaskWorkerEntryPath(): string {
 
 const DEFAULT_REQUEST_TIMEOUT_MS = 5_000
 
-type TPendingRequest<GType extends TaskType> = {
+type TPendingRequest<GType extends TTaskType> = {
   request: TTaskWorkerRequestByType<GType>
   promise: Promise<TTaskWorkerResponseByType<GType>>
   resolve: (value: TTaskWorkerResponseByType<GType>) => void
@@ -35,7 +35,7 @@ type TPendingRequest<GType extends TaskType> = {
 
 export class TaskWorkerClient {
   private isTerminated: boolean = false
-  private pendingRequests = new Map<number, TPendingRequest<TaskType>>()
+  private pendingRequests = new Map<number, TPendingRequest<TTaskType>>()
   private lastRequestId: number = 0
   private worker: Worker | null = null
 
@@ -63,7 +63,7 @@ export class TaskWorkerClient {
     return worker
   }
 
-  private getRequest(requestId: number): TPendingRequest<TaskType> | undefined {
+  private getRequest(requestId: number): TPendingRequest<TTaskType> | undefined {
     return this.pendingRequests.get(requestId)
   }
 
@@ -92,7 +92,7 @@ export class TaskWorkerClient {
       })
     }
 
-    this.pendingRequests.set(requestId, pendingRequest as unknown as TPendingRequest<TaskType>)
+    this.pendingRequests.set(requestId, pendingRequest as unknown as TPendingRequest<TTaskType>)
 
     return this
   }

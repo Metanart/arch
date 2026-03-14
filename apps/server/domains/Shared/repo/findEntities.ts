@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
 import { BaseEntity, normalizeError } from '@domains/Shared'
@@ -18,7 +18,7 @@ const messages = {
   dtoFailed: 'Failed to map entities to DTOs'
 }
 
-const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'getAllEntities' }
+const appContext: TAppContext = { domain: 'Shared', layer: 'Database', origin: 'getAllEntities' }
 
 export async function findEntities<GEntity extends BaseEntity, GOutputDto>(
   entityTarget: EntityTarget<GEntity>,

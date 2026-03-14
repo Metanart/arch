@@ -2,15 +2,15 @@ import { FC } from 'react'
 
 import { Alert, AlertTitle, Box } from '@mui/material'
 
-type MessageType = 'error' | 'warning' | 'info' | 'success'
+type TMessageType = 'error' | 'warning' | 'info' | 'success'
 
-type Props = {
-  type: MessageType
+type TProps = {
+  type: TMessageType
   title?: string
   message: string
 }
 
-export const Message: FC<Props> = ({ type, title, message }) => {
+export const Message: FC<TProps> = ({ type, title, message }) => {
   return (
     <Box my={2}>
       <Alert severity={type}>

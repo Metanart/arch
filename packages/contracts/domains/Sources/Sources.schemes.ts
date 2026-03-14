@@ -31,11 +31,11 @@ export const CreateSourceServerSchema = CreateSourceBaseSchema
 export const UpdateSourceClientSchema = UpdateSourceBaseSchema
 export const UpdateSourceServerSchema = UpdateSourceBaseSchema
 
-export type SourceClientDTO = z.infer<typeof SourceClientSchema>
-export type SourceServerDTO = z.infer<typeof SourceServerSchema>
+export type TSourceClientDTO = z.infer<typeof SourceClientSchema>
+export type TSourceServerDTO = z.infer<typeof SourceServerSchema>
 
-export type CreateSourceClientDTO = z.infer<typeof CreateSourceClientSchema>
-export type CreateSourceServerDTO = z.infer<typeof CreateSourceServerSchema>
+export type TCreateSourceClientDTO = z.infer<typeof CreateSourceClientSchema>
+export type TCreateSourceServerDTO = z.infer<typeof CreateSourceServerSchema>
 
-export type UpdateSourceClientDTO = z.infer<typeof UpdateSourceClientSchema>
-export type UpdateSourceServerDTO = z.infer<typeof UpdateSourceServerSchema>
+export type TUpdateSourceClientDTO = z.infer<typeof UpdateSourceClientSchema>
+export type TUpdateSourceServerDTO = z.infer<typeof UpdateSourceServerSchema>

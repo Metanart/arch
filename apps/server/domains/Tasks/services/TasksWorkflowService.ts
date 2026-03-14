@@ -1,4 +1,4 @@
-import { TasksWorkflowStatus } from '@arch/contracts'
+import { TTasksWorkflowStatus } from '@arch/contracts'
 
 import { TasksWorkflowEntity } from '../entities/TasksWorkflowEntity'
 
@@ -22,7 +22,7 @@ export interface ITasksWorkflowService {
    * Получить все workflow
    */
   listWorkflows(input?: {
-    status?: TasksWorkflowStatus
+    status?: TTasksWorkflowStatus
     sourceId?: string
     limit?: number
     offset?: number
@@ -31,7 +31,7 @@ export interface ITasksWorkflowService {
   /**
    * Обновить статус workflow
    */
-  updateWorkflowStatus(workflowId: string, status: TasksWorkflowStatus): Promise<void>
+  updateWorkflowStatus(workflowId: string, status: TTasksWorkflowStatus): Promise<void>
 
   /**
    * Отменить workflow

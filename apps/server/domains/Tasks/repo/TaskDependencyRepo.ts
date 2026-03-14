@@ -1,8 +1,8 @@
 import {
-  CreateTaskDependencyServerDTO,
-  TaskDependencyServerDTO,
+  TCreateTaskDependencyServerDTO,
+  TTaskDependencyServerDTO,
   TaskDependencyServerSchema,
-  UpdateTaskDependencyServerDTO
+  TUpdateTaskDependencyServerDTO
 } from '@arch/contracts'
 
 import { createEntity, findEntities, findEntity, removeEntity, updateEntity } from '@domains/Shared'
@@ -12,24 +12,24 @@ import { getDataSource } from '@domains/App'
 import { TaskDependencyEntity } from '../entities/TaskDependencyEntity'
 
 async function createTaskDependency(
-  tasksWorkflowDto: CreateTaskDependencyServerDTO
-): Promise<TaskDependencyServerDTO> {
-  return createEntity<TaskDependencyEntity, TaskDependencyServerDTO>(
+  tasksWorkflowDto: TCreateTaskDependencyServerDTO
+): Promise<TTaskDependencyServerDTO> {
+  return createEntity<TaskDependencyEntity, TTaskDependencyServerDTO>(
     TaskDependencyEntity,
     TaskDependencyServerSchema,
     tasksWorkflowDto
   )
 }
 
-async function getAllTaskDependencys(): Promise<TaskDependencyServerDTO[]> {
-  return findEntities<TaskDependencyEntity, TaskDependencyServerDTO>(
+async function getAllTaskDependencys(): Promise<TTaskDependencyServerDTO[]> {
+  return findEntities<TaskDependencyEntity, TTaskDependencyServerDTO>(
     TaskDependencyEntity,
     TaskDependencyServerSchema
   )
 }
 
-async function getTaskDependencyById(id: string): Promise<TaskDependencyServerDTO> {
-  return findEntity<TaskDependencyEntity, TaskDependencyServerDTO>(
+async function getTaskDependencyById(id: string): Promise<TTaskDependencyServerDTO> {
+  return findEntity<TaskDependencyEntity, TTaskDependencyServerDTO>(
     TaskDependencyEntity,
     TaskDependencyServerSchema,
     { id }
@@ -37,9 +37,9 @@ async function getTaskDependencyById(id: string): Promise<TaskDependencyServerDT
 }
 
 async function updateTaskDependency(
-  tasksWorkflowDto: UpdateTaskDependencyServerDTO
-): Promise<TaskDependencyServerDTO> {
-  return updateEntity<TaskDependencyEntity, TaskDependencyServerDTO>(
+  tasksWorkflowDto: TUpdateTaskDependencyServerDTO
+): Promise<TTaskDependencyServerDTO> {
+  return updateEntity<TaskDependencyEntity, TTaskDependencyServerDTO>(
     TaskDependencyEntity,
     TaskDependencyServerSchema,
     { id: tasksWorkflowDto.id },

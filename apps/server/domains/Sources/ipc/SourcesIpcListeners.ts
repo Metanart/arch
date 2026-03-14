@@ -1,4 +1,4 @@
-import { CreateSourceClientDTO, SourceServerDTO, UpdateSourceClientDTO } from '@arch/contracts'
+import { TCreateSourceClientDTO, TSourceServerDTO, TUpdateSourceClientDTO } from '@arch/contracts'
 import { IpcResponse } from '@arch/types'
 import { getMessageFromError } from '@arch/utils'
 
@@ -6,7 +6,7 @@ import { getAllSources } from './getAllSources'
 
 import { SourcesRepo } from '../repo/SourcesRepo'
 
-async function create(source: CreateSourceClientDTO): Promise<IpcResponse<SourceServerDTO>> {
+async function create(source: TCreateSourceClientDTO): Promise<IpcResponse<TSourceServerDTO>> {
   try {
     const sourceDto = await SourcesRepo.create(source)
     return { status: 'success', data: sourceDto }
@@ -15,7 +15,7 @@ async function create(source: CreateSourceClientDTO): Promise<IpcResponse<Source
   }
 }
 
-async function update(source: UpdateSourceClientDTO): Promise<IpcResponse<SourceServerDTO>> {
+async function update(source: TUpdateSourceClientDTO): Promise<IpcResponse<TSourceServerDTO>> {
   if (!source) {
     return { status: 'error', error: { message: 'Source is required' } }
   }

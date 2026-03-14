@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 
-import { STATUS, TASK_TYPE, type TaskStatus, type TaskType } from '@arch/contracts'
+import { STATUS, TASK_TYPE, type TTaskStatus, type TTaskType } from '@arch/contracts'
 
 import { BaseEntity } from '@domains/Shared'
 
@@ -23,10 +23,10 @@ export class TaskEntity extends BaseEntity {
   workflow!: TasksWorkflowEntity
 
   @Column({ type: 'enum', enum: TASK_TYPE })
-  type!: TaskType
+  type!: TTaskType
 
   @Column({ type: 'enum', enum: STATUS })
-  status!: TaskStatus
+  status!: TTaskStatus
 
   @Column({ type: 'json' })
   payload!: string

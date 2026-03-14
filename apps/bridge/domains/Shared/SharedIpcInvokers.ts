@@ -7,4 +7,4 @@ export const sharedIpcInvokers = {
     ipcRenderer.invoke(SHARED_IPC_CHANNELS.SELECT_FOLDER)
 } as const
 
-export type SharedIpcInvokers = typeof sharedIpcInvokers
+export type TSharedIpcInvokers = typeof sharedIpcInvokers

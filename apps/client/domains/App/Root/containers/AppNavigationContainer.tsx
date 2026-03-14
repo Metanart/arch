@@ -3,14 +3,14 @@ import { FC } from 'react'
 import { AppNavigation } from '../components/AppNavigation'
 import { AppNavigationButton } from '../components/AppNavigationButton'
 import { APP_ROUTES } from '../routes'
-import { AppNavigationParams } from '../types'
+import { TAppNavigationParams } from '../types'
 
-type Props = {
+type TProps = {
   onToggleClick: () => void
-  navigation: AppNavigationParams
+  navigation: TAppNavigationParams
 }
 
-export const AppNavigationContainer: FC<Props> = (props) => {
+export const AppNavigationContainer: FC<TProps> = (props) => {
   const {
     onToggleClick,
     navigation: { isOpen }

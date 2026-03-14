@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron'
 
-import { IpcChannel, IpcResponse } from '@arch/types'
+import { TIpcChannel, IpcResponse } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
 const logger = createLogger({
@@ -9,7 +9,7 @@ const logger = createLogger({
   origin: 'Bridge invokers expose'
 })
 
-export function createIpcInvoker<GData>(channel: IpcChannel): () => Promise<IpcResponse<GData>> {
+export function createIpcInvoker<GData>(channel: TIpcChannel): () => Promise<IpcResponse<GData>> {
   return async function invokeIpc() {
     logger.info(`Invoking ${channel}`)
     return ipcRenderer.invoke(channel)
@@ -17,7 +17,7 @@ export function createIpcInvoker<GData>(channel: IpcChannel): () => Promise<IpcR
 }
 
 export function createIpcInvokerWithPayload<GData, GPayload = void>(
-  channel: IpcChannel
+  channel: TIpcChannel
 ): (payload: GPayload) => Promise<IpcResponse<GData>> {
   return async function invokeIpcWithPayload(payload) {
     logger.info(`Invoking ${channel} with payload`, payload)

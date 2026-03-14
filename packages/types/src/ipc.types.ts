@@ -1,15 +1,15 @@
 import { SETTINGS_IPC_CHANNELS, SHARED_IPC_CHANNELS, SOURCES_IPC_CHANNELS } from '@arch/enums'
 
-export type IpcError = {
+export type TIpcError = {
   message: string
 }
 export type IpcResponse<GData> =
   | { status: 'success'; data: GData }
-  | { status: 'error'; error: IpcError }
+  | { status: 'error'; error: TIpcError }
 
-export type IpcChannel = SETTINGS_IPC_CHANNELS | SHARED_IPC_CHANNELS | SOURCES_IPC_CHANNELS
+export type TIpcChannel = SETTINGS_IPC_CHANNELS | SHARED_IPC_CHANNELS | SOURCES_IPC_CHANNELS
 
 export type IpcQuery<GPayload = void> = {
-  channel: IpcChannel
+  channel: TIpcChannel
   payload?: GPayload
 }

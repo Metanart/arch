@@ -22,8 +22,8 @@ export const UpdateTasksWorkflowServerSchema = UpdateTasksWorkflowBaseSchema
 
 export const CreateTasksWorkflowServerSchema = CreateTasksWorkflowBaseSchema
 
-export type TasksWorkflowServerDTO = z.infer<typeof TasksWorkflowServerSchema>
+export type TTasksWorkflowServerDTO = z.infer<typeof TasksWorkflowServerSchema>
 
-export type UpdateTasksWorkflowServerDTO = z.infer<typeof UpdateTasksWorkflowServerSchema>
+export type TUpdateTasksWorkflowServerDTO = z.infer<typeof UpdateTasksWorkflowServerSchema>
 
-export type CreateTasksWorkflowServerDTO = z.infer<typeof CreateTasksWorkflowServerSchema>
+export type TCreateTasksWorkflowServerDTO = z.infer<typeof CreateTasksWorkflowServerSchema>

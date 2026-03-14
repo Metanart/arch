@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm'
 
-import { STATUS, type TasksWorkflowStatus } from '@arch/contracts'
+import { STATUS, type TTasksWorkflowStatus } from '@arch/contracts'
 
 import { BaseEntity } from '@domains/Shared'
 
@@ -15,7 +15,7 @@ export class TasksWorkflowEntity extends BaseEntity {
   sourceId!: string | null
 
   @Column({ type: 'enum', enum: STATUS })
-  status!: TasksWorkflowStatus
+  status!: TTasksWorkflowStatus
 
   @OneToMany(() => TaskEntity, (task) => task.workflow)
   tasks!: TaskEntity[]

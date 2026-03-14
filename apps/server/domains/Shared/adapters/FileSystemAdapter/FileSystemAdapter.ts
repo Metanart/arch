@@ -1,7 +1,7 @@
 import { constants } from 'fs'
 import { access, copyFile, lstat, mkdir, rename, stat, unlink, writeFile } from 'fs/promises'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError, getMessageFromError } from '@arch/utils'
 
 import { join } from 'path'
@@ -12,7 +12,7 @@ import { flattenDirectoryTree } from './flattenDirectoryTree'
 
 import { TFileSystemErrorCode, TNodeJsErrnoException } from './types'
 
-const appContext: AppContext = {
+const appContext: TAppContext = {
   domain: 'Global',
   layer: 'FileSystem',
   origin: 'FileSystemService'

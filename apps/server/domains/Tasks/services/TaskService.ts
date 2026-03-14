@@ -1,6 +1,6 @@
 import { LessThanOrEqual } from 'typeorm'
 
-import { STATUS, TaskType } from '@arch/contracts'
+import { STATUS, TTaskType } from '@arch/contracts'
 import { AppError } from '@arch/utils'
 
 import { getDataSource } from '@domains/App'
@@ -35,7 +35,7 @@ function ensureTakenBy(task: TaskEntity, workerId: string): void {
 export interface ITaskService {
   createTask(input: {
     workflowId: string
-    type: TaskType
+    type: TTaskType
     payload: unknown
     priority?: number
     predictedWeight?: number
@@ -46,7 +46,7 @@ export interface ITaskService {
   createTasksBatch(input: {
     workflowId: string
     tasks: Array<{
-      type: TaskType
+      type: TTaskType
       payload: unknown
       priority?: number
       predictedWeight?: number
@@ -98,7 +98,7 @@ async function areDependenciesResolved(taskId: string): Promise<boolean> {
 export class TaskService implements ITaskService {
   async createTask(input: {
     workflowId: string
-    type: TaskType
+    type: TTaskType
     payload: unknown
     priority?: number
     predictedWeight?: number
@@ -134,7 +134,7 @@ export class TaskService implements ITaskService {
   async createTasksBatch(input: {
     workflowId: string
     tasks: Array<{
-      type: TaskType
+      type: TTaskType
       payload: unknown
       priority?: number
       predictedWeight?: number

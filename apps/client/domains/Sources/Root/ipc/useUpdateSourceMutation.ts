@@ -1,4 +1,4 @@
-import { SourceClientDTO, UpdateSourceClientDTO } from '@arch/contracts'
+import { TSourceClientDTO, TUpdateSourceClientDTO } from '@arch/contracts'
 import { SOURCES_IPC_CHANNELS } from '@arch/enums'
 
 import { SourcesIpcApi } from './SourcesIpcApi'
@@ -7,8 +7,8 @@ import { SOURCES_IPC_API_TAGS } from './enums'
 
 export const { useUpdateSourceMutation } = SourcesIpcApi.injectEndpoints({
   endpoints: (builder) => ({
-    updateSource: builder.mutation<SourceClientDTO, UpdateSourceClientDTO>({
-      query: (payload: UpdateSourceClientDTO) => {
+updateSource: builder.mutation<TSourceClientDTO, TUpdateSourceClientDTO>({
+  query: (payload: TUpdateSourceClientDTO) => {
         return {
           domain: 'Sources',
           channel: SOURCES_IPC_CHANNELS.UPDATE,

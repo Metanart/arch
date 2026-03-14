@@ -4,9 +4,9 @@ declare global {
   interface Window {
     electron: ElectronAPI
     ipc: {
-      Shared: SharedIpcInvokers
-      Settings: SettingsIpcInvokers
-      Sources: SourcesIpcInvokers
+      Shared: TSharedIpcInvokers
+      Settings: TSettingsIpcInvokers
+      Sources: TSourcesIpcInvokers
     }
   }
 }

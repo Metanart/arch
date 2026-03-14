@@ -1,10 +1,10 @@
 import { TASK_TYPE } from '@arch/contracts'
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
 import { taskWorkerClient } from '@domains/Tasks'
 
-const appContext: AppContext = { domain: 'Sources', layer: 'Service', origin: 'scanSource' }
+const appContext: TAppContext = { domain: 'Sources', layer: 'Service', origin: 'scanSource' }
 
 const logger = createLogger(appContext)
 

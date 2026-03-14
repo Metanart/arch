@@ -1,10 +1,10 @@
-import { AppRoute } from '@domains/App/Root'
+import { TAppRoute } from '@domains/App/Root'
 
 import SettingsIcon from '@mui/icons-material/Settings'
 
 import { UpdateSettingsPage } from '../pages/UpdateSettingsPage'
 
-export const UpdateSettingsRoute: AppRoute = {
+export const UpdateSettingsRoute: TAppRoute = {
   title: 'Settings',
   id: 'UpdateSettingsRoute',
   testId: 'update-settings-route',

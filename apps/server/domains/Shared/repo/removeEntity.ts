@@ -1,6 +1,6 @@
 import { DeleteResult, EntityTarget, FindOptionsWhere } from 'typeorm'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
 import { getDataSource } from '@domains/App'
@@ -14,7 +14,7 @@ const messages = {
   removeFailed: 'Failed to remove requested entity from database'
 }
 
-const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'removeEntity' }
+const appContext: TAppContext = { domain: 'Shared', layer: 'Database', origin: 'removeEntity' }
 
 export async function removeEntity<GEntity extends BaseEntity>(
   entityTarget: EntityTarget<GEntity>,

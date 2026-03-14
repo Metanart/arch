@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export type AppUiState = {
+export type TAppUiState = {
   theme: 'light' | 'dark'
 }
 
-const initialState: AppUiState = {
+const initialState: TAppUiState = {
   theme: 'light'
 }
 

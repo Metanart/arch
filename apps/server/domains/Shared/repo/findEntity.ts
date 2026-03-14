@@ -2,7 +2,7 @@ import { EntityTarget, FindOptionsWhere } from 'typeorm'
 
 import { z } from 'zod'
 
-import { AppContext } from '@arch/types'
+import { TAppContext } from '@arch/types'
 import { AppError, createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared'
@@ -19,7 +19,7 @@ const messages = {
   dtoFailed: 'Failed to map requested entity to DTO'
 }
 
-const appContext: AppContext = { domain: 'Shared', layer: 'Database', origin: 'getEntity' }
+const appContext: TAppContext = { domain: 'Shared', layer: 'Database', origin: 'getEntity' }
 
 export async function findEntity<GEntity extends BaseEntity, GOutputDto>(
   entityTarget: EntityTarget<GEntity>,
