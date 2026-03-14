@@ -1,12 +1,13 @@
 import {
+  TaskServerSchema,
   TCreateTaskServerDTO,
   TTaskServerDTO,
-  TaskServerSchema,
   TUpdateTaskServerDTO
 } from '@arch/contracts'
 
-import { getDataSource } from '@domains/App'
 import { createEntity, findEntity, removeEntity, updateEntity } from '@domains/Shared'
+
+import { getDataSource } from '@domains/App'
 
 import { TaskEntity } from '../entities/TaskEntity'
 

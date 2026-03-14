@@ -7,8 +7,8 @@ import { SOURCES_IPC_API_TAGS } from './enums'
 
 export const { useUpdateSourceMutation } = SourcesIpcApi.injectEndpoints({
   endpoints: (builder) => ({
-updateSource: builder.mutation<TSourceClientDTO, TUpdateSourceClientDTO>({
-  query: (payload: TUpdateSourceClientDTO) => {
+    updateSource: builder.mutation<TSourceClientDTO, TUpdateSourceClientDTO>({
+      query: (payload: TUpdateSourceClientDTO) => {
         return {
           domain: 'Sources',
           channel: SOURCES_IPC_CHANNELS.UPDATE,

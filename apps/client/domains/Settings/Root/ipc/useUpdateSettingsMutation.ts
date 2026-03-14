@@ -7,8 +7,8 @@ import { SETTINGS_IPC_API_TAGS } from './enums'
 
 export const { useUpdateSettingsMutation } = SettingsIpcApi.injectEndpoints({
   endpoints: (builder) => ({
-updateSettings: builder.mutation<TSettingsClientDTO, TUpdateSettingsClientDTO>({
-  query: (payload: TUpdateSettingsClientDTO) => {
+    updateSettings: builder.mutation<TSettingsClientDTO, TUpdateSettingsClientDTO>({
+      query: (payload: TUpdateSettingsClientDTO) => {
         return {
           domain: 'Settings',
           channel: SETTINGS_IPC_CHANNELS.UPDATE,

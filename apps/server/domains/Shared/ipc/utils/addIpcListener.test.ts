@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { SETTINGS_IPC_CHANNELS } from '@arch/enums'
 import type { TIpcChannel } from '@arch/types'
+
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { addIpcListener, addIpcListenerWithPayload } from './addIpcListener'
 
@@ -11,8 +11,7 @@ vi.mock('electron', () => ({
 }))
 
 vi.mock('@arch/utils', () => ({
-  getMessageFromError: (error: unknown) =>
-    error instanceof Error ? error.message : String(error)
+  getMessageFromError: (error: unknown) => (error instanceof Error ? error.message : String(error))
 }))
 
 describe('addIpcListener', () => {

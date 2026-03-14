@@ -70,11 +70,7 @@ type TCompletedHandler = (event: {
   result?: unknown
   durationMs: number
 }) => Promise<void>
-type TFailedHandler = (event: {
-  taskId: string
-  error: Error
-  durationMs: number
-}) => Promise<void>
+type TFailedHandler = (event: { taskId: string; error: Error; durationMs: number }) => Promise<void>
 type TProgressHandler = (event: {
   taskId: string
   step?: string
@@ -168,12 +164,13 @@ export class TaskWorkerManager implements ITaskWorkerManager {
     const startMs = Date.now()
     this.busy.set(worker, { taskId: input.taskId, startMs })
     worker
-      .sendRequest(input.type, input.payload as object)
+      .sendRequest(input.type, input.payload as unknown as { value: number } | { dirPath: string })
       .then((response) => {
         const entry = this.busy.get(worker)
         this.busy.delete(worker)
         const durationMs = Date.now() - startMs
-        const result = 'payload' in response ? (response as { payload: unknown }).payload : undefined
+        const result =
+          'payload' in response ? (response as { payload: unknown }).payload : undefined
         this.emitCompleted({
           taskId: entry?.taskId ?? input.taskId,
           result,
@@ -201,23 +198,15 @@ export class TaskWorkerManager implements ITaskWorkerManager {
     }
   }
 
-  private emitCompleted(event: {
-    taskId: string
-    result?: unknown
-    durationMs: number
-  }): void {
+  private emitCompleted(event: { taskId: string; result?: unknown; durationMs: number }): void {
     for (const h of this.completedHandlers) {
-      h(event).catch(() => {})
+      h(event).catch(() => null)
     }
   }
 
-  private emitFailed(event: {
-    taskId: string
-    error: Error
-    durationMs: number
-  }): void {
+  private emitFailed(event: { taskId: string; error: Error; durationMs: number }): void {
     for (const h of this.failedHandlers) {
-      h(event).catch(() => {})
+      h(event).catch(() => null)
     }
   }
 }

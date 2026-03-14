@@ -93,7 +93,7 @@ If database schema changed:
 
 If task system changed:
 
-- Mention TaskType impact
+- Mention TTaskType impact
 - Mention weight logic changes
 - Mention concurrency behavior
 

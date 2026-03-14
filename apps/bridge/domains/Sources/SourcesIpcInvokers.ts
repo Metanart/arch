@@ -4,7 +4,9 @@ import { SOURCES_IPC_CHANNELS } from '@arch/enums'
 import { createIpcInvoker, createIpcInvokerWithPayload } from '@domains/Shared'
 
 export const sourcesIpcInvokers = {
-  [SOURCES_IPC_CHANNELS.GET_ALL]: createIpcInvoker<TSourceClientDTO[]>(SOURCES_IPC_CHANNELS.GET_ALL),
+  [SOURCES_IPC_CHANNELS.GET_ALL]: createIpcInvoker<TSourceClientDTO[]>(
+    SOURCES_IPC_CHANNELS.GET_ALL
+  ),
   [SOURCES_IPC_CHANNELS.CREATE]: createIpcInvokerWithPayload<
     TSourceClientDTO,
     TCreateSourceClientDTO

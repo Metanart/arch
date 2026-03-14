@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { TCreateSourceClientDTO, CreateSourceClientSchema } from '@arch/contracts'
+import { CreateSourceClientSchema, TCreateSourceClientDTO } from '@arch/contracts'
 
 import { FolderInput } from '@domains/Shared'
 

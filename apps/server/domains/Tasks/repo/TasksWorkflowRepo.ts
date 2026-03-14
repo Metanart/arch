@@ -1,7 +1,7 @@
 import {
+  TasksWorkflowServerSchema,
   TCreateTasksWorkflowServerDTO,
   TTasksWorkflowServerDTO,
-  TasksWorkflowServerSchema,
   TUpdateTasksWorkflowServerDTO
 } from '@arch/contracts'
 

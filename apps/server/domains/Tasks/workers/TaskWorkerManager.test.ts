@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { TASK_TYPE } from '@arch/contracts'
+
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { TaskWorkerManager } from './TaskWorkerManager'
 
@@ -79,7 +79,11 @@ describe('TaskWorkerManager', () => {
       const completed = vi.fn().mockResolvedValue(undefined)
       manager.onTaskCompleted(completed)
 
-      mockSendRequest.mockResolvedValueOnce({ requestId: 1, type: TASK_TYPE.MULTIPLY, payload: { result: 10 } })
+      mockSendRequest.mockResolvedValueOnce({
+        requestId: 1,
+        type: TASK_TYPE.MULTIPLY,
+        payload: { result: 10 }
+      })
 
       await manager.executeTask({
         taskId: 't1',
@@ -184,7 +188,11 @@ describe('TaskWorkerManager', () => {
       const h2 = vi.fn().mockResolvedValue(undefined)
       manager.onTaskCompleted(h1)
       manager.onTaskCompleted(h2)
-      mockSendRequest.mockResolvedValueOnce({ requestId: 1, type: TASK_TYPE.MULTIPLY, payload: { result: 0 } })
+      mockSendRequest.mockResolvedValueOnce({
+        requestId: 1,
+        type: TASK_TYPE.MULTIPLY,
+        payload: { result: 0 }
+      })
 
       await manager.executeTask({ taskId: 't6', type: TASK_TYPE.MULTIPLY, payload: { value: 0 } })
 

@@ -1,6 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 
-import { TAppDomain, TIpcChannel, IpcResponse } from '@arch/types'
+import { IpcResponse, TAppDomain, TIpcChannel } from '@arch/types'
 import { AppError, getMessageFromError } from '@arch/utils'
 
 export type TIpcQueryArgs = {

@@ -1,7 +1,7 @@
 import {
+  TaskDependencyServerSchema,
   TCreateTaskDependencyServerDTO,
   TTaskDependencyServerDTO,
-  TaskDependencyServerSchema,
   TUpdateTaskDependencyServerDTO
 } from '@arch/contracts'
 

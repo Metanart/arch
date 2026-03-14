@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest'
 import { detectPlatform } from '../../../utils/platform/detectPlatform'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
 import { runExecutable } from '../runExecutable'
-import { TTUnrarServiceErrorCode } from '../types'
+import { TUnrarServiceErrorCode } from '../types'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

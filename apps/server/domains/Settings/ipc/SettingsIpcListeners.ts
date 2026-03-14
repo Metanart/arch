@@ -13,7 +13,9 @@ async function get(): Promise<IpcResponse<TSettingsClientDTO>> {
   }
 }
 
-async function update(settings: TUpdateSettingsClientDTO): Promise<IpcResponse<TSettingsClientDTO>> {
+async function update(
+  settings: TUpdateSettingsClientDTO
+): Promise<IpcResponse<TSettingsClientDTO>> {
   try {
     const settingsDto = await SettingsRepo.update(settings)
     return { status: 'success', data: settingsDto }

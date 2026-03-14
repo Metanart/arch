@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest'
 import { extract } from '../extract'
 import { listContents } from '../listContents'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
-import { TTUnrarServiceErrorCode } from '../types'
+import { TUnrarServiceErrorCode } from '../types'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

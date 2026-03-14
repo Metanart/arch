@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { detectPlatform } from '../../../utils/platform/detectPlatform'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
-import { TTUnrarServiceErrorCode } from '../types'
+import { TUnrarServiceErrorCode } from '../types'
 
 const { realExistsSync } = vi.hoisted(() => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports -- need sync require for vi.hoisted before mock

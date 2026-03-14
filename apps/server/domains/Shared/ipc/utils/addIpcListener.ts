@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
 import { IpcMainInvokeEvent } from 'electron/main'
 
-import { TIpcChannel, IpcResponse } from '@arch/types'
+import { IpcResponse, TIpcChannel } from '@arch/types'
 import { getMessageFromError } from '@arch/utils'
 
 export function addIpcListener<GData>(

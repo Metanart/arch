@@ -79,7 +79,7 @@ export class TaskWorkerClient {
     return this.pendingRequests.delete(requestId)
   }
 
-  private setRequest<GType extends TaskType>(
+  private setRequest<GType extends TTaskType>(
     requestId: number,
     pendingRequest: TPendingRequest<GType>
   ) {
@@ -97,7 +97,7 @@ export class TaskWorkerClient {
     return this
   }
 
-  private makeRequest<GType extends TaskType>(
+  private makeRequest<GType extends TTaskType>(
     requestId: number,
     type: GType,
     payload: TTaskWorkerRequestByType<GType>['payload']
@@ -107,7 +107,7 @@ export class TaskWorkerClient {
     return { requestId, type, payload } as TTaskWorkerRequestByType<GType>
   }
 
-  public sendRequest<GType extends TaskType>(
+  public sendRequest<GType extends TTaskType>(
     type: GType,
     payload: TTaskWorkerRequestByType<GType>['payload'],
     timeoutMs: number = DEFAULT_REQUEST_TIMEOUT_MS

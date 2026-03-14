@@ -5,7 +5,7 @@ import { AppError } from '@arch/utils'
 
 import { resolvePathToExecutable } from './resolvePathToExecutable'
 
-import { TTUnrarServiceErrorCode } from './types'
+import { TUnrarServiceErrorCode } from './types'
 
 const appContext: TAppContext = {
   domain: 'Global',

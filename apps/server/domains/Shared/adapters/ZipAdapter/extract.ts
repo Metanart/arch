@@ -5,8 +5,6 @@ import { AppError } from '@arch/utils'
 
 import StreamZip from 'node-stream-zip'
 
-import { TTZipServiceErrorCode } from './types'
-
 const appContext: TAppContext = {
   domain: 'Global',
   layer: 'FileSystem',

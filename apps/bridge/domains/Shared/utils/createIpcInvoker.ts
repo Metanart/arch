@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron'
 
-import { TIpcChannel, IpcResponse } from '@arch/types'
+import { IpcResponse, TIpcChannel } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
 const logger = createLogger({
