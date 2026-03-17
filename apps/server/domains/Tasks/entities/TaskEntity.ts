@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 
-import { STATUS, TASK_TYPE, type TTaskStatus, type TTaskType } from '@arch/contracts'
+import { type TTaskStatus, type TTaskType } from '@arch/contracts'
 
 import { BaseEntity } from '@domains/Shared'
 
@@ -22,14 +22,14 @@ export class TaskEntity extends BaseEntity {
   @JoinColumn({ name: 'workflowId' })
   workflow!: TasksWorkflowEntity
 
-  @Column({ type: 'varchar', enum: TASK_TYPE })
+  @Column({ type: 'text' })
   type!: TTaskType
 
-  @Column({ type: 'varchar', enum: STATUS })
+  @Column({ type: 'text' })
   status!: TTaskStatus
 
-  @Column({ type: 'json' })
-  payload!: string
+  @Column({ type: 'simple-json' })
+  payload!: unknown
 
   @Column({ type: 'int', default: 0 })
   priority!: number
@@ -62,7 +62,13 @@ export class TaskEntity extends BaseEntity {
   progressTotal!: number
 
   @Column({ type: 'text', nullable: true })
-  error!: string | null
+  errorCode!: string | null
+
+  @Column({ type: 'text', nullable: true })
+  errorMessage!: string | null
+
+  @Column({ type: 'simple-json', nullable: true })
+  errorDetails!: unknown | null
 
   @OneToMany(() => TaskDependencyEntity, (dependency) => dependency.task)
   dependencies!: TaskDependencyEntity[]
