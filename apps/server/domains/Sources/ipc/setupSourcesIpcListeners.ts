@@ -1,7 +1,7 @@
 import { TCreateSourceClientDTO, TSourceServerDTO, TUpdateSourceClientDTO } from '@arch/contracts'
 import { SOURCES_IPC_CHANNELS } from '@arch/enums'
 
-import { addIpcListener, addIpcListenerWithPayload } from '@domains/Shared'
+import { addIpcListener, addIpcListenerWithPayload } from '@domains/Shared/ipc'
 
 import { SourcesIpcListeners } from './SourcesIpcListeners'
 

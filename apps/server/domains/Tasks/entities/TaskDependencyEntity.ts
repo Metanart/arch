@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
 
-import { BaseEntity } from '@domains/Shared'
+import { BaseEntity } from '@domains/Shared/entities'
 
 import { TaskEntity } from './TaskEntity'
 

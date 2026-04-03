@@ -1,7 +1,7 @@
 import { TSettingsClientDTO, TUpdateSettingsClientDTO } from '@arch/contracts'
 import { SETTINGS_IPC_CHANNELS } from '@arch/enums'
 
-import { addIpcListener, addIpcListenerWithPayload } from '@domains/Shared'
+import { addIpcListener, addIpcListenerWithPayload } from '@domains/Shared/ipc'
 
 import { SettingsIpcListeners } from './SettingsIpcListeners'
 

@@ -1,0 +1,1 @@
+export { setupSettingsIpcListeners } from './setupSettingsIpcListeners'

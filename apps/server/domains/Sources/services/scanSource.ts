@@ -2,7 +2,7 @@ import { TASK_TYPE } from '@arch/contracts'
 import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
-import { taskWorkerClient } from '@domains/Tasks'
+import { taskWorkerClient } from '@domains/Tasks/workers'
 
 const appContext: TAppContext = { domain: 'Sources', layer: 'Service', origin: 'scanSource' }
 

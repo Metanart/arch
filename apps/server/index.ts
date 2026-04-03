@@ -4,11 +4,14 @@ import { app, BrowserWindow, shell } from 'electron'
 
 import { createLogger } from '@arch/utils'
 
-import { getDefaultAppPaths, setupSharedIpcHandlers } from '@domains/Shared'
+import { setupSharedIpcHandlers } from '@domains/Shared/ipc'
+import { getDefaultAppPaths } from '@domains/Shared/utils'
 
-import { createAppDataSource } from '@domains/App'
-import { createDefaultSettings, SettingsRepo, setupSettingsIpcListeners } from '@domains/Settings'
-import { setupSourcesIpcListeners } from '@domains/Sources'
+import { createAppDataSource } from '@domains/App/database'
+import { createDefaultSettings } from '@domains/Settings/entities'
+import { setupSettingsIpcListeners } from '@domains/Settings/ipc'
+import { SettingsRepo } from '@domains/Settings/repo'
+import { setupSourcesIpcListeners } from '@domains/Sources/ipc'
 
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { join } from 'path'

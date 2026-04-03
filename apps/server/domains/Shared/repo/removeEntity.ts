@@ -3,7 +3,7 @@ import { DeleteResult, EntityTarget, FindOptionsWhere } from 'typeorm'
 import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
-import { getDataSource } from '@domains/App'
+import { getDataSource } from '@domains/App/database'
 
 import { BaseEntity } from '../entities/BaseEntity'
 import { normalizeError } from '../utils/normalize-error/normalizeError'

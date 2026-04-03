@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm'
 
-import { BaseEntity } from '@domains/Shared'
+import { BaseEntity } from '@domains/Shared/entities'
 
 @Entity({ name: 'sources' })
 export class SourceEntity extends BaseEntity {

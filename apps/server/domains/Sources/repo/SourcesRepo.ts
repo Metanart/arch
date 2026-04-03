@@ -5,7 +5,7 @@ import {
   TUpdateSourceServerDTO
 } from '@arch/contracts'
 
-import { createEntity, findEntities, removeEntity, updateEntity } from '@domains/Shared'
+import { createEntity, findEntities, removeEntity, updateEntity } from '@domains/Shared/repo'
 
 import { SourceEntity } from '../entities/SourceEntity'
 

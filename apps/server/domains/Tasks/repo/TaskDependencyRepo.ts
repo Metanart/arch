@@ -5,9 +5,15 @@ import {
   TUpdateTaskDependencyServerDTO
 } from '@arch/contracts'
 
-import { createEntity, findEntities, findEntity, removeEntity, updateEntity } from '@domains/Shared'
+import {
+  createEntity,
+  findEntities,
+  findEntity,
+  removeEntity,
+  updateEntity
+} from '@domains/Shared/repo'
 
-import { getDataSource } from '@domains/App'
+import { getDataSource } from '@domains/App/database'
 
 import { TaskDependencyEntity } from '../entities/TaskDependencyEntity'
 

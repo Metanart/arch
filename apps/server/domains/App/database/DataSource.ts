@@ -1,10 +1,8 @@
 import { DataSource } from 'typeorm'
 
-import { SettingsEntity } from '@domains/Settings'
-import { SourceEntity } from '@domains/Sources'
-import { TaskDependencyEntity, TaskEntity, TasksWorkflowEntity } from '@domains/Tasks'
-
-import { TestEntity } from './TestEntity'
+import { SettingsEntity } from '@domains/Settings/entities'
+import { SourceEntity } from '@domains/Sources/entities'
+import { TaskDependencyEntity, TaskEntity, TasksWorkflowEntity } from '@domains/Tasks/entities'
 
 let dataSource: DataSource | null = null
 
@@ -18,12 +16,7 @@ export const appEntities = [
 
 export type TAppEntities = typeof appEntities
 
-export type TTestEntities = [typeof TestEntity]
-
-function createDataSource(
-  database: string | ':memory:',
-  entities: TAppEntities | TTestEntities
-): DataSource {
+function createDataSource(database: string | ':memory:', entities: TAppEntities): DataSource {
   if (dataSource) return dataSource
 
   if (!entities || !Array.isArray(entities)) {
@@ -56,11 +49,9 @@ export function createAppDataSource(database: string) {
   return createDataSource(database, appEntities)
 }
 
-export function createTestDataSource(entities: TAppEntities | TTestEntities) {
+export function createTestDataSource(entities: TAppEntities) {
   return createDataSource(':memory:', entities)
 }
-
-export { TestEntity }
 
 export function getDataSource(): DataSource {
   if (!dataSource) {

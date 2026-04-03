@@ -16,9 +16,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@domains/*": [
-        "domains/*/public-api.ts"
-      ],
+      "@domains/App/*": ["domains/App/*/public-api.ts"],
+      "@domains/Settings/*": ["domains/Settings/*/public-api.ts"],
+      "@domains/Sources/*": ["domains/Sources/*/public-api.ts"],
+      "@domains/Tasks/*": ["domains/Tasks/*/public-api.ts"],
+      "@domains/Shared/*": ["domains/Shared/*/public-api.ts"]
     }
   }
 }
