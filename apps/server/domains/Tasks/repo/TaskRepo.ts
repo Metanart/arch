@@ -18,7 +18,7 @@ import {
   updateEntity
 } from '@domains/Shared/repo'
 
-import { getDataSource } from '@domains/App/database'
+import { getDataSource } from '@domains/Shared/database'
 
 import { TaskDependencyEntity } from '../entities/TaskDependencyEntity'
 import { TaskEntity } from '../entities/TaskEntity'

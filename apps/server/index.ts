@@ -7,7 +7,7 @@ import { createLogger } from '@arch/utils'
 import { setupSharedIpcHandlers } from '@domains/Shared/ipc'
 import { getDefaultAppPaths } from '@domains/Shared/utils'
 
-import { createAppDataSource } from '@domains/App/database'
+import { createAppDataSource } from '@domains/Shared/database'
 import { createDefaultSettings } from '@domains/Settings/entities'
 import { setupSettingsIpcListeners } from '@domains/Settings/ipc'
 import { SettingsRepo } from '@domains/Settings/repo'

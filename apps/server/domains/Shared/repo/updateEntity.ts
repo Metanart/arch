@@ -7,7 +7,7 @@ import { AppError, createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared/utils'
 
-import { getDataSource } from '@domains/App/database'
+import { getDataSource } from '@domains/Shared/database'
 
 import { BaseEntity } from '../entities/BaseEntity'
 

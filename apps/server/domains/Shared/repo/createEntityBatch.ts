@@ -5,7 +5,7 @@ import { createLogger } from '@arch/utils'
 
 import { normalizeError } from '@domains/Shared/utils'
 
-import { getDataSource } from '@domains/App/database'
+import { getDataSource } from '@domains/Shared/database'
 
 import type { DeepPartial, EntityManager, EntityTarget, ObjectLiteral } from 'typeorm'
 

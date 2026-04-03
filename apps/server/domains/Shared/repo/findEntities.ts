@@ -3,10 +3,9 @@ import type { z } from 'zod'
 import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
+import { getDataSource } from '@domains/Shared/database'
 import { BaseEntity } from '@domains/Shared/entities'
 import { normalizeError } from '@domains/Shared/utils'
-
-import { getDataSource } from '@domains/App/database'
 
 import type { EntityTarget, FindOptionsWhere } from 'typeorm'
 
