@@ -1,0 +1,1 @@
+export { UpdateSettingsRoute } from './UpdateSettingsRoute'

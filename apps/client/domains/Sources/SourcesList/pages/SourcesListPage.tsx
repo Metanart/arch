@@ -1,8 +1,8 @@
 import { FC, JSX, useState } from 'react'
 
-import { Modal, Page, PageContent, PageHeader } from '@domains/Shared'
+import { Modal, Page, PageContent, PageHeader } from '@domains/Shared/components'
 
-import { CreateSourceFormContainer } from '@domains/Sources/CreateSource'
+import { CreateSourceFormContainer } from '@domains/Sources/CreateSource/containers'
 
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import { CardActions, IconButton, Tooltip } from '@mui/material'

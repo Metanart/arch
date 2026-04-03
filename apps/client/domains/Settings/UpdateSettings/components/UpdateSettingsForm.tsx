@@ -9,7 +9,7 @@ import {
   UpdateSettingsClientSchema
 } from '@arch/contracts'
 
-import { FolderInput } from '@domains/Shared'
+import { FolderInput } from '@domains/Shared/components'
 
 import {
   Button,
@@ -22,8 +22,6 @@ import {
   TextField
 } from '@mui/material'
 
-import { TEST_IDS } from './test-ids'
-
 const DEFAULT_VALUES = {
   outputFolder: '',
   tempFolder: '',
@@ -33,6 +31,17 @@ const DEFAULT_VALUES = {
   useMultithreading: false,
   debugMode: false
 }
+
+const TEST_IDS = {
+  outputFolderInput: 'settings-update-form-output-folder-input',
+  tempFolderInput: 'settings-update-form-temp-folder-input',
+  maxThreadsInput: 'settings-update-form-max-threads-input',
+  autoProcessOnScanSwitch: 'settings-update-form-auto-process-on-scan-switch',
+  autoArchiveOnCompleteSwitch: 'settings-update-form-auto-archive-on-complete-switch',
+  useMultithreadingSwitch: 'settings-update-form-use-multithreading-switch',
+  debugModeSwitch: 'settings-update-form-debug-mode-switch',
+  submitButton: 'settings-update-form-submit-button'
+} as const
 
 type TProps = {
   dto?: TSettingsClientDTO

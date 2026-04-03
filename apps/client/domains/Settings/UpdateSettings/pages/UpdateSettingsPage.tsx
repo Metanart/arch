@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { Page, PageContent, PageHeader } from '@domains/Shared'
+import { Page, PageContent, PageHeader } from '@domains/Shared/components'
 
 import { UpdateSettingsFormContainer } from '../containers/UpdateSettingsFormContainer'
 

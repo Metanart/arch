@@ -1,4 +1,4 @@
-import { TAppRoute } from '@domains/App/Root'
+import type { TAppRoute } from '@domains/App/Root'
 
 import FolderZipIcon from '@mui/icons-material/FolderZip'
 

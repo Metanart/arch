@@ -1,4 +1,4 @@
-import { TAppRoute } from '@domains/App/Root'
+import type { TAppRoute } from '@domains/App/Root/types'
 
 import SettingsIcon from '@mui/icons-material/Settings'
 

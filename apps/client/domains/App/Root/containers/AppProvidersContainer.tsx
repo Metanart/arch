@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 
 import { SnackbarProvider } from 'notistack'
 
-import { Notification } from '@domains/Shared'
+import { Notification } from '@domains/Shared/components'
 
 import { AppStore } from '../store/AppStore'
 

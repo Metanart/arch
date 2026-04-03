@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { SettingsIpcApi } from '@domains/Settings/Root'
-import { SourcesIpcApi } from '@domains/Sources/Root'
+import { SettingsIpcApi } from '@domains/Settings/Root/ipc'
+import { SourcesIpcApi } from '@domains/Sources/Root/ipc'
 
 import { AppUiSlice } from './AppUiSlice'
 

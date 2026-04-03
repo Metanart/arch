@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { CreateSourceClientSchema, TCreateSourceClientDTO } from '@arch/contracts'
 
-import { FolderInput } from '@domains/Shared'
+import { FolderInput } from '@domains/Shared/components'
 
 import { Button, Card, CardActions, CardContent, Grid, TextField } from '@mui/material'
 

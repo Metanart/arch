@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 
-import { SharedIpcApi } from '@domains/Shared'
+import { SharedIpcApi } from '@domains/Shared/ipc'
 
 import FolderOpenIcon from '@mui/icons-material/FolderOpen'
 import { IconButton, InputAdornment, StandardTextFieldProps, TextField } from '@mui/material'

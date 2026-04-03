@@ -1,5 +1,5 @@
-import { UpdateSettingsRoute } from '@domains/Settings/UpdateSettings'
-import { SourcesListRoute } from '@domains/Sources/SourcesList'
+import { UpdateSettingsRoute } from '@domains/Settings/UpdateSettings/routes'
+import { SourcesListRoute } from '@domains/Sources/SourcesList/routes'
 
 import { TAppRoute } from './types'
 
