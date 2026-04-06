@@ -2,9 +2,8 @@ import { FC, useCallback } from 'react'
 
 import { createLogger } from '@arch/utils'
 
-import { notify } from '@domains/Shared/utils'
-
-import { useGetAllSourcesQuery, useRemoveSourceMutation } from '@domains/Sources/Root/ipc'
+import { notify } from '@/Shared/utils'
+import { useGetAllSourcesQuery, useRemoveSourceMutation } from '@/Sources/Root/ipc'
 
 import { SourcesList } from '../components/SourcesList'
 

@@ -3,10 +3,9 @@ import { FC, Fragment, JSX, useCallback } from 'react'
 import { TUpdateSettingsClientDTO } from '@arch/contracts'
 import { createLogger } from '@arch/utils'
 
-import { Message } from '@domains/Shared/components'
-import { notify } from '@domains/Shared/utils'
-
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '@domains/Settings/Root/ipc'
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '@/Settings/Root/ipc'
+import { Message } from '@/Shared/components'
+import { notify } from '@/Shared/utils'
 
 import { UpdateSettingsForm } from '../components/UpdateSettingsForm'
 

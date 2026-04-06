@@ -1,5 +1,4 @@
 import { FC } from 'react'
-
 import { Alert, AlertTitle, Box } from '@mui/material'
 
 type TMessageType = 'error' | 'warning' | 'info' | 'success'

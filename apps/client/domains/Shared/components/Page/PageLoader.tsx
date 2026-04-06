@@ -1,5 +1,4 @@
 import { FC } from 'react'
-
 import { Box } from '@mui/material'
 
 import { Loader, TLoaderProps } from '../Loader/Loader'

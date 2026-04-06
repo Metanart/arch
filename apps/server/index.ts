@@ -1,20 +1,18 @@
 import 'dotenv/config'
 
 import { app, BrowserWindow, shell } from 'electron'
+import { join } from 'path'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 
 import { createLogger } from '@arch/utils'
 
-import { setupSharedIpcHandlers } from '@domains/Shared/ipc'
-import { getDefaultAppPaths } from '@domains/Shared/utils'
-
-import { createAppDataSource } from '@domains/Shared/database'
-import { createDefaultSettings } from '@domains/Settings/entities'
-import { setupSettingsIpcListeners } from '@domains/Settings/ipc'
-import { SettingsRepo } from '@domains/Settings/repo'
-import { setupSourcesIpcListeners } from '@domains/Sources/ipc'
-
-import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { join } from 'path'
+import { createDefaultSettings } from '@/Settings/entities'
+import { setupSettingsIpcListeners } from '@/Settings/ipc'
+import { SettingsRepo } from '@/Settings/repo'
+import { createAppDataSource } from '@/Shared/database'
+import { setupSharedIpcHandlers } from '@/Shared/ipc'
+import { getDefaultAppPaths } from '@/Shared/utils'
+import { setupSourcesIpcListeners } from '@/Sources/ipc'
 
 import icon from '../../resources/icon.png?asset'
 

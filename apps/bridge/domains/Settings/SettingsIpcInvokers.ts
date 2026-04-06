@@ -1,7 +1,7 @@
 import { TSettingsClientDTO, TUpdateSettingsClientDTO } from '@arch/contracts'
 import { SETTINGS_IPC_CHANNELS } from '@arch/enums'
 
-import { createIpcInvoker, createIpcInvokerWithPayload } from '@domains/Shared'
+import { createIpcInvoker, createIpcInvokerWithPayload } from '@/Shared'
 
 export const settingsIpcInvokers = {
   [SETTINGS_IPC_CHANNELS.GET]: createIpcInvoker<TSettingsClientDTO>(SETTINGS_IPC_CHANNELS.GET),

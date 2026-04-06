@@ -5,7 +5,7 @@ import {
   TUpdateSettingsServerDTO
 } from '@arch/contracts'
 
-import { createEntity, findEntity, updateEntity } from '@domains/Shared/repo'
+import { createEntity, findEntity, updateEntity } from '@/Shared/repo'
 
 import { SettingsEntity } from '../entities/SettingsEntity'
 

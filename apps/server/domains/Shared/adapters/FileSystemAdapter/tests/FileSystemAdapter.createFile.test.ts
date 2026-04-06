@@ -1,5 +1,4 @@
 import { mkdtemp, readFile, rm, stat, writeFile } from 'fs/promises'
-
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'

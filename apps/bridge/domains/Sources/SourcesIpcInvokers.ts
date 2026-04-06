@@ -1,7 +1,7 @@
 import { TCreateSourceClientDTO, TSourceClientDTO, TUpdateSourceClientDTO } from '@arch/contracts'
 import { SOURCES_IPC_CHANNELS } from '@arch/enums'
 
-import { createIpcInvoker, createIpcInvokerWithPayload } from '@domains/Shared'
+import { createIpcInvoker, createIpcInvokerWithPayload } from '@/Shared'
 
 export const sourcesIpcInvokers = {
   [SOURCES_IPC_CHANNELS.GET_ALL]: createIpcInvoker<TSourceClientDTO[]>(

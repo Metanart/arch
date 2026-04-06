@@ -1,13 +1,12 @@
+import { app } from 'electron'
 import { resolve } from 'node:path'
 import { Worker } from 'node:worker_threads'
-
-import { app } from 'electron'
 
 import { TTaskType } from '@arch/contracts'
 import { TAppContext } from '@arch/types'
 import { AppError, createLogger, isNumber, isObject, isString } from '@arch/utils'
 
-import { createDeferredPromise } from '@domains/Shared/utils'
+import { createDeferredPromise } from '@/Shared/utils'
 
 import { TTaskWorkerRequestByType, TTaskWorkerResponse, TTaskWorkerResponseByType } from './types'
 

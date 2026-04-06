@@ -1,13 +1,12 @@
+import type { EntityTarget, FindOptionsWhere } from 'typeorm'
 import type { z } from 'zod'
 
 import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
-import { getDataSource } from '@domains/Shared/database'
-import { BaseEntity } from '@domains/Shared/entities'
-import { normalizeError } from '@domains/Shared/utils'
-
-import type { EntityTarget, FindOptionsWhere } from 'typeorm'
+import { getDataSource } from '@/Shared/database'
+import { BaseEntity } from '@/Shared/entities'
+import { normalizeError } from '@/Shared/utils'
 
 const messages = {
   start: 'Get all entities from database',

@@ -1,10 +1,9 @@
 import { existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { describe, expect, it } from 'vitest'
 
 import { AppError } from '@arch/utils'
-
-import { describe, expect, it } from 'vitest'
 
 import { isPasswordProtected } from '../isPasswordProtected'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'

@@ -1,13 +1,11 @@
 import { EntityTarget, FindOptionsWhere } from 'typeorm'
-
 import { z } from 'zod'
 
 import { TAppContext } from '@arch/types'
 import { AppError, createLogger } from '@arch/utils'
 
-import { normalizeError } from '@domains/Shared/utils'
-
-import { getDataSource } from '@domains/Shared/database'
+import { getDataSource } from '@/Shared/database'
+import { normalizeError } from '@/Shared/utils'
 
 import { BaseEntity } from '../entities/BaseEntity'
 

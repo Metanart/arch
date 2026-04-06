@@ -51,7 +51,7 @@ const main: UserConfig = {
   resolve: {
     alias: [
       {
-        find: /^@domains\/(.+)$/,
+        find: /^@\/(.+)$/,
         replacement: resolve(__dirname, 'apps/server/domains/$1/public-api.ts')
       }
     ]
@@ -70,7 +70,7 @@ const preload: UserConfig = {
   resolve: {
     alias: [
       {
-        find: /^@domains\/(.+)$/,
+        find: /^@\/(.+)$/,
         replacement: resolve(__dirname, 'apps/bridge/domains/$1/public-api.ts')
       }
     ]
@@ -87,7 +87,7 @@ const renderer: UserConfig = {
   resolve: {
     alias: [
       {
-        find: /^@domains\/(.+)$/,
+        find: /^@\/(.+)$/,
         replacement: resolve('apps/client/domains/$1/public-api.ts')
       }
     ]

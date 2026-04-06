@@ -1,16 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-
 import { zodResolver } from '@hookform/resolvers/zod'
-
-import {
-  TSettingsClientDTO,
-  TUpdateSettingsClientDTO,
-  UpdateSettingsClientSchema
-} from '@arch/contracts'
-
-import { FolderInput } from '@domains/Shared/components'
-
 import {
   Button,
   Card,
@@ -21,6 +11,14 @@ import {
   Switch,
   TextField
 } from '@mui/material'
+
+import {
+  TSettingsClientDTO,
+  TUpdateSettingsClientDTO,
+  UpdateSettingsClientSchema
+} from '@arch/contracts'
+
+import { FolderInput } from '@/Shared/components'
 
 const DEFAULT_VALUES = {
   outputFolder: '',

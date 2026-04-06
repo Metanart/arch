@@ -1,5 +1,4 @@
 import { FC, Fragment } from 'react'
-
 import { CircularProgress, Typography } from '@mui/material'
 
 export type TLoaderProps = {

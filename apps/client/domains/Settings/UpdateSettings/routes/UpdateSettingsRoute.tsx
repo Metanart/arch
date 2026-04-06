@@ -1,6 +1,6 @@
-import type { TAppRoute } from '@domains/App/Root/types'
-
 import SettingsIcon from '@mui/icons-material/Settings'
+
+import type { TAppRoute } from '@/App/Root/types'
 
 import { UpdateSettingsPage } from '../pages/UpdateSettingsPage'
 

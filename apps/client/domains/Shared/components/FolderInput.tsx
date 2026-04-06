@@ -1,9 +1,8 @@
 import { FC, useState } from 'react'
-
-import { SharedIpcApi } from '@domains/Shared/ipc'
-
 import FolderOpenIcon from '@mui/icons-material/FolderOpen'
 import { IconButton, InputAdornment, StandardTextFieldProps, TextField } from '@mui/material'
+
+import { SharedIpcApi } from '@/Shared/ipc'
 
 type TProps = {
   label: string

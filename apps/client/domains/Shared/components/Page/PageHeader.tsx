@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-
 import { Box, Divider, Stack, Typography } from '@mui/material'
 
 export type TPageHeaderActions = Record<string, ReactNode>

@@ -2,11 +2,10 @@ import type { Stats, WriteStream } from 'node:fs'
 import { createWriteStream } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import { dirname, join, posix as pathPosix } from 'node:path'
+import * as yazl from 'yazl'
 
 import { TAppContext } from '@arch/types'
 import { AppError, createLogger } from '@arch/utils'
-
-import * as yazl from 'yazl'
 
 import { FileSystemAdapter } from '../FileSystemAdapter/FileSystemAdapter'
 

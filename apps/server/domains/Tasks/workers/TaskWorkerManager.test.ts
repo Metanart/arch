@@ -1,6 +1,6 @@
-import { TASK_TYPE } from '@arch/contracts'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { TASK_TYPE } from '@arch/contracts'
 
 import { TaskWorkerManager } from './TaskWorkerManager'
 

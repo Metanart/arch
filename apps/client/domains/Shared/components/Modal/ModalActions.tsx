@@ -1,5 +1,4 @@
 import { FC } from 'react'
-
 import { Button, DialogActions } from '@mui/material'
 
 type TProps = {

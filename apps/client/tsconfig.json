@@ -11,7 +11,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@domains/*": ["./domains/*/public-api.ts"],
+      "@/*": ["domains/*/public-api.ts"],
     }
   }
 }

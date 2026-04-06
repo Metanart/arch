@@ -9,6 +9,7 @@ import {
   TUpdateTaskServerDTO
 } from '@arch/contracts'
 
+import { getDataSource } from '@/Shared/database'
 import {
   createEntity,
   createEntityBatch,
@@ -16,9 +17,7 @@ import {
   getEntityById,
   removeEntity,
   updateEntity
-} from '@domains/Shared/repo'
-
-import { getDataSource } from '@domains/Shared/database'
+} from '@/Shared/repo'
 
 import { TaskDependencyEntity } from '../entities/TaskDependencyEntity'
 import { TaskEntity } from '../entities/TaskEntity'

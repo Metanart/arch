@@ -1,13 +1,11 @@
 import { contextBridge } from 'electron'
+import { electronAPI } from '@electron-toolkit/preload'
 
 import { createLogger } from '@arch/utils'
 
-import { sharedIpcInvokers } from '@domains/Shared'
-
-import { settingsIpcInvokers } from '@domains/Settings'
-import { sourcesIpcInvokers } from '@domains/Sources'
-
-import { electronAPI } from '@electron-toolkit/preload'
+import { settingsIpcInvokers } from '@/Settings'
+import { sharedIpcInvokers } from '@/Shared'
+import { sourcesIpcInvokers } from '@/Sources'
 
 const logger = createLogger({ layer: 'IPC', domain: 'Global', origin: 'Bridge invokers expose' })
 

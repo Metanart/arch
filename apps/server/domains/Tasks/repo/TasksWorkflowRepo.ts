@@ -6,9 +6,8 @@ import {
 } from '@arch/contracts'
 import { AppError } from '@arch/utils'
 
-import { createEntity, removeEntity, updateEntity } from '@domains/Shared/repo'
-
-import { getDataSource } from '@domains/Shared/database'
+import { getDataSource } from '@/Shared/database'
+import { createEntity, removeEntity, updateEntity } from '@/Shared/repo'
 
 import { TasksWorkflowEntity } from '../entities/TasksWorkflowEntity'
 

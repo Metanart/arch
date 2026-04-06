@@ -1,13 +1,11 @@
 import { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, Card, CardActions, CardContent, Grid, TextField } from '@mui/material'
 
 import { CreateSourceClientSchema, TCreateSourceClientDTO } from '@arch/contracts'
 
-import { FolderInput } from '@domains/Shared/components'
-
-import { Button, Card, CardActions, CardContent, Grid, TextField } from '@mui/material'
+import { FolderInput } from '@/Shared/components'
 
 const DEFAULT_VALUES = {
   name: '',

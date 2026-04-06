@@ -1,5 +1,4 @@
 import { FC, JSX, PropsWithChildren } from 'react'
-
 import { Box } from '@mui/material'
 
 export const AppRoot: FC<PropsWithChildren> = ({ children }): JSX.Element => {

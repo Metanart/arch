@@ -2,7 +2,7 @@ import { type MessagePort, parentPort } from 'node:worker_threads'
 
 import { TASK_TYPE } from '@arch/contracts'
 
-import { FileSystemAdapter } from '@domains/Shared/adapters'
+import { FileSystemAdapter } from '@/Shared/adapters'
 
 import type { TTaskWorkerRequest, TTaskWorkerResponse } from './types'
 

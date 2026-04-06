@@ -1,13 +1,11 @@
+import type { DeepPartial, EntityTarget, ObjectLiteral } from 'typeorm'
 import type { z } from 'zod'
 
 import { TAppContext } from '@arch/types'
 import { createLogger } from '@arch/utils'
 
-import { normalizeError } from '@domains/Shared/utils'
-
-import { getDataSource } from '@domains/Shared/database'
-
-import type { DeepPartial, EntityTarget, ObjectLiteral } from 'typeorm'
+import { getDataSource } from '@/Shared/database'
+import { normalizeError } from '@/Shared/utils'
 
 const messages = {
   start: 'Create new entity with payload',

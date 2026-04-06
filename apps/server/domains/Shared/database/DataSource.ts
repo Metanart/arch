@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm'
 
-import { SettingsEntity } from '@domains/Settings/entities'
-import { SourceEntity } from '@domains/Sources/entities'
-import { TaskDependencyEntity, TaskEntity, TasksWorkflowEntity } from '@domains/Tasks/entities'
+import { SettingsEntity } from '@/Settings/entities'
+import { SourceEntity } from '@/Sources/entities'
+import { TaskDependencyEntity, TaskEntity, TasksWorkflowEntity } from '@/Tasks/entities'
 
 let dataSource: DataSource | null = null
 

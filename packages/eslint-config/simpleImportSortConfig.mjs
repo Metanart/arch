@@ -1,63 +1,29 @@
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 
-const CLIENT_GROUPS = [
-  ['^react'],
-  ['^notistack'],
-  ['^zod'],
-  ['^@reduxjs'],
-  ['^@react-hook-form'],
-  ['^@react-error-boundary'],
-  ['^@react-router-dom'],
-  ['^@react-redux'],
-  ['^@react-router'],
-  ['^@react-router-dom'],
-  ['^@react-router-dom'],
-  ['^@hookform'],
+const COMMON_GROUPS = [
+  // Side-effect imports
+  ['^\\u0000'],
+
+  // External packages
+  ['^[a-zA-Z]', '^@?[a-zA-Z]'],
+
+  // Internal aliases
   ['^@arch'],
-  ['^@domains/Shared'],
-  ['^@domains'],
-  ['^@mui'],
+  ['^@/'],
   ['^@'],
-  ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+
+  // Parent imports
   ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-  ['^\\.(?!/?$)', '^\\./?$'],
+
+  // Same-folder imports
+  ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+
+  // Specific local groups
   ['^./enums'],
   ['^./types'],
+
+  // Styles
   ['^.+\\.s?css$']
-]
-
-const SERVER_GROUPS = [
-  ['^\\u0000', '^reflect-metadata$'],
-  ['^node:'],
-  ['^child_process'],
-  ['^fs', '^crypto'],
-  ['^electron'],
-  ['^typeorm$'],
-  ['^zod'],
-  ['^@arch'],
-  ['^@appPaths'],
-  ['^@domains/Shared'],
-  ['^@domains'],
-  ['^@?\\w'],
-  ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-  ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-  ['^\\.(?!/?$)', '^\\./?$'],
-  ['^./enums'],
-  ['^./types']
-]
-
-const COMMON_GROUPS = [
-  ['^\\u0000'],
-  ['^electron'],
-  ['^@arch'],
-  ['^@domains/Shared'],
-  ['^@domains'],
-  ['^@?\\w'],
-  ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-  ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-  ['^\\.(?!/?$)', '^\\./?$'],
-  ['^./enums'],
-  ['^./types']
 ]
 
 function makeSimpleImportSortConfig({ name, files, groups }) {
@@ -75,13 +41,13 @@ function makeSimpleImportSortConfig({ name, files, groups }) {
 export const clientSimpleImportSortConfig = makeSimpleImportSortConfig({
   name: 'simple-import-sort/client',
   files: [`./apps/client/**/*.{ts,tsx}`],
-  groups: CLIENT_GROUPS
+  groups: COMMON_GROUPS
 })
 
 export const serverSimpleImportSortConfig = makeSimpleImportSortConfig({
   name: 'simple-import-sort/server',
   files: [`./apps/server/**/*.ts`],
-  groups: SERVER_GROUPS
+  groups: COMMON_GROUPS
 })
 
 export const bridgeSimpleImportSortConfig = makeSimpleImportSortConfig({

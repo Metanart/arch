@@ -1,11 +1,10 @@
 import { FC, Fragment, JSX, useMemo } from 'react'
-
-import { TSourceClientDTO } from '@arch/contracts'
-
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { IconButton, Tooltip } from '@mui/material'
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid'
+
+import { TSourceClientDTO } from '@arch/contracts'
 
 type TProps = {
   sources: TSourceClientDTO[]

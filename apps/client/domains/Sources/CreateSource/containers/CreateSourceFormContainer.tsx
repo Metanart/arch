@@ -3,9 +3,8 @@ import { FC, PropsWithChildren, useCallback } from 'react'
 import { TCreateSourceClientDTO } from '@arch/contracts'
 import { createLogger } from '@arch/utils'
 
-import { notify } from '@domains/Shared/utils'
-
-import { useCreateSourceMutation } from '@domains/Sources/Root/ipc'
+import { notify } from '@/Shared/utils'
+import { useCreateSourceMutation } from '@/Sources/Root/ipc'
 
 import { CreateSourceForm } from '../components/CreateSourceForm'
 

@@ -1,7 +1,7 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import { SETTINGS_IPC_CHANNELS } from '@arch/enums'
 import type { TIpcChannel } from '@arch/types'
-
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { addIpcListener, addIpcListenerWithPayload } from './addIpcListener'
 

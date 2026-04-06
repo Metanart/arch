@@ -2,7 +2,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm
 
 import { type TTaskStatus, type TTaskType } from '@arch/contracts'
 
-import { BaseEntity } from '@domains/Shared/entities'
+import { BaseEntity } from '@/Shared/entities'
 
 import { TaskDependencyEntity } from './TaskDependencyEntity'
 import { TasksWorkflowEntity } from './TasksWorkflowEntity'

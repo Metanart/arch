@@ -2,9 +2,9 @@ import { TCreateSourceClientDTO, TSourceServerDTO, TUpdateSourceClientDTO } from
 import { IpcResponse } from '@arch/types'
 import { getMessageFromError } from '@arch/utils'
 
-import { getAllSources } from './getAllSources'
-
 import { SourcesRepo } from '../repo/SourcesRepo'
+
+import { getAllSources } from './getAllSources'
 
 async function create(source: TCreateSourceClientDTO): Promise<IpcResponse<TSourceServerDTO>> {
   try {

@@ -1,5 +1,4 @@
 import { FC, PropsWithChildren } from 'react'
-
 import { Box } from '@mui/material'
 
 type TProps = {

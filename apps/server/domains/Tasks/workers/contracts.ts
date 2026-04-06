@@ -1,6 +1,6 @@
 import { TASK_TYPE, TTaskType } from '@arch/contracts'
 
-import type { TDirectoryTree } from '@domains/Shared/adapters'
+import type { TDirectoryTree } from '@/Shared/adapters'
 
 type TErrorResponse = {
   requestId: number

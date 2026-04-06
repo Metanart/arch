@@ -1,8 +1,7 @@
 import { resolve } from 'node:path'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { AppError } from '@arch/utils'
-
-import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { detectPlatform } from '../../../utils/platform/detectPlatform'
 import { resolvePathToExecutable } from '../resolvePathToExecutable'
